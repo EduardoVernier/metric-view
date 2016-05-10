@@ -11,8 +11,7 @@ void display();
 void reshape(int w, int h);
 void mouse_click(int button, int state, int x, int y);
 void render();
-
-//Canvas *p_canvas;
-//Canvas *t_canvas;
+void setCanvassesSizes(int w, int h);
+void idle();
 
 #endif

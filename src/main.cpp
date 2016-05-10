@@ -14,12 +14,13 @@ int main(int argc, char **argv)
 {
 	printf("MetricView\n");
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+	//glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(W,H);
 	main_window = glutCreateWindow("MetricView");
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutMouseFunc(mouse_click);
+	glutIdleFunc(idle);
 
 	glutMainLoop();
 	return 0;
