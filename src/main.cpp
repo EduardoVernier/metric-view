@@ -5,21 +5,21 @@ using namespace std;
 #include <GL/glui.h>
 
 #include "../include/renderer.h"
+#include "../include/interaction.h"
+
 
 int main_window;
-int W = 1400, H = 1000;
-
 
 int main(int argc, char **argv)
 {
 	printf("MetricView\n");
 	glutInit(&argc, argv);
-	//glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize(W,H);
+	glutInitWindowSize(1400,1000);
 	main_window = glutCreateWindow("MetricView");
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
-	glutMouseFunc(mouse_click);
+	glutMouseFunc(mouseClick);
+	glutKeyboardFunc(keyboard);
 	glutIdleFunc(idle);
 
 	glutMainLoop();

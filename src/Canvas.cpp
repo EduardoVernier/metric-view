@@ -2,15 +2,17 @@
 
 Canvas::Canvas(Point tl, Point br)
 {
-    glColor3f(1, 1, 1);
-    glBegin(GL_TRIANGLES);
-    glVertex2f(100, 0);
-    glVertex2f(30, 0);
-    glVertex2f(0, 50);
-    glEnd();
+    top_left = tl;
+    bottom_right = br;
 }
 
 void Canvas::setSize(Point tl, Point br)
 {
+    top_left = tl;
+    bottom_right = br;
+}
 
+void Canvas::drawCanvas()
+{
+    glRecti(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 }

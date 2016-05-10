@@ -12,5 +12,6 @@ private:
 public:
     Canvas(Point tl, Point br);
     void setSize(Point tl, Point br);
+    void drawCanvas();
 };
 #endif

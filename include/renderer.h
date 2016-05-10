@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <GL/glut.h>
 #include <GL/glui.h>
-#include "Mouse.h"
 #include "Canvas.h"
+#include "Mouse.h"
 
 void display();
 void reshape(int w, int h);
