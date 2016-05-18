@@ -1,4 +1,8 @@
 #include "../include/CsvParser.h"
+#include "../include/TreeManager.h"
+#include "../include/Package.h" // Remove after testing
+
+extern TreeManager *treeManager;
 
 CsvParser::CsvParser(string dataDirName)
 {
@@ -30,8 +34,8 @@ CsvParser::CsvParser(string dataDirName)
 		}
 	}
 	closedir (dataDir);
-	cout << dataDirName + '/' + lastRev <<  endl;
-	parseMetricFile(dataDirName + '/' + lastRev);
+	cout << dataDirName + lastRev <<  endl;
+	parseMetricFile(dataDirName + lastRev);
 }
 
 void CsvParser::parseMetricFile(string filename)
@@ -39,16 +43,23 @@ void CsvParser::parseMetricFile(string filename)
 	int nEntities, nAttributes;
 	ifstream file(filename.c_str());
 	string line;
-	getline(file,line); // 'DY' - flush
+	
+	if (!getline(file,line) && line != "DY/n") // 'DY' - flush
+	{
+		cout << filename << " - path not compatible" << endl;
+		return;
+	}
+	
 	getline(file,line); // number of classes in file
 	istringstream(line) >> nEntities;
 	getline(file,line); // number of attributes
 	istringstream(line) >> nAttributes;
 	getline(file,line); // name of attributes - flush
 	
+	Package newPackage("PackageA"); // test
 	while(getline(file,line))
     {
-        Entity *newEntity = new Entity(line);
+        newPackage.addEntity(Entity(line));
     }
 	
 	

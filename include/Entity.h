@@ -14,7 +14,7 @@ public:
 	string prefix;
 	string id;
 	vector <string> data;
-	int value;
+	float value;
 };
 
 #endif
