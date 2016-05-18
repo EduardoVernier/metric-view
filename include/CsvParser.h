@@ -2,7 +2,11 @@
 #define CSVPARSER_H
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <dirent.h>
+
+#include "Entity.h"
 
 using namespace std;
 
@@ -12,7 +16,7 @@ public:
 	CsvParser(string dataDir);
 	
 private:
-	string lastRev;
+	void parseMetricFile(string filename); 
 };
 
 

@@ -2,10 +2,10 @@
 
 CsvParser::CsvParser(string dataDirName)
 {
-	
 	int len;
 	struct dirent *dDirent;
 	DIR *dataDir;
+	string lastRev;
 	
 	// Check if it is a valid directory
 	dataDir = opendir(dataDirName.c_str());
@@ -29,6 +29,30 @@ CsvParser::CsvParser(string dataDirName)
 			}
 		}
 	}
-	cout << lastRev <<  endl;
-	closedir (dataDir);	
+	closedir (dataDir);
+	cout << dataDirName + '/' + lastRev <<  endl;
+	parseMetricFile(dataDirName + '/' + lastRev);
 }
+
+void CsvParser::parseMetricFile(string filename)
+{
+	int nEntities, nAttributes;
+	ifstream file(filename.c_str());
+	string line;
+	getline(file,line); // 'DY' - flush
+	getline(file,line); // number of classes in file
+	istringstream(line) >> nEntities;
+	getline(file,line); // number of attributes
+	istringstream(line) >> nAttributes;
+	getline(file,line); // name of attributes - flush
+	
+	while(getline(file,line))
+    {
+        Entity *newEntity = new Entity(line);
+    }
+	
+	
+	
+
+
+} 
