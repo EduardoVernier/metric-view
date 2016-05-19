@@ -28,9 +28,15 @@ void TreeManager::addEntity(Entity ent)
 			packageVector.push_back(newPackage);
 			sort (packageVector.begin(), packageVector.end(), compPackages());
 
+			// Test printing 
 			cout << endl;
 			for (unsigned i=0; i<packageVector.size(); i++)
-				cout << packageVector[i].sum << ' ' << packageVector[i].prefix << endl;
+			{
+				cout << packageVector[i].sum << "\t" << packageVector[i].prefix << endl;
+				
+				for (unsigned j=0; j < packageVector[i].entityVector.size(); ++j)
+					cout << "  " << packageVector[i].entityVector[j].value << "\t\t" << packageVector[i].entityVector[j].id << endl;
+			}
 		}
 	}
 }
