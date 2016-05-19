@@ -8,7 +8,7 @@ using namespace std;
 class Package
 {
 public:
-	Package(string _prefix) : prefix(_prefix){};
+	Package(string _prefix) : prefix(_prefix){sum=0;};
 	void addEntity(Entity ent);
 	
 	vector<Entity> entityVector;

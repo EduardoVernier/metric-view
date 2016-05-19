@@ -56,14 +56,10 @@ void CsvParser::parseMetricFile(string filename)
 	istringstream(line) >> nAttributes;
 	getline(file,line); // name of attributes - flush
 	
-	Package newPackage("PackageA"); // test
+	// Add all elements (classes) to the treeManager
 	while(getline(file,line))
     {
-        newPackage.addEntity(Entity(line));
+        treeManager->addEntity(Entity(line));
     }
 	
-	
-	
-
-
 } 
