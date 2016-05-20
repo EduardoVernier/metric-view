@@ -1,6 +1,7 @@
 #ifndef PACKAGE_H
 #define PACKAGE_H
 
+#include <iostream>
 #include <algorithm>
 #include <vector>
 #include "Entity.h"
@@ -17,9 +18,13 @@ struct compEntities
 class Package
 {
 public:
-	Package(string _prefix) : prefix(_prefix){sum=0;};
+	Package(string _prefix) : prefix(_prefix){sum=0;};	
 	void addEntity(Entity ent);
+	void addChild(Package child);
+	void printPackage(int level);
+
 	
+	vector<Package> childrenVector;
 	vector<Entity> entityVector;
 	string prefix;
 	float sum;

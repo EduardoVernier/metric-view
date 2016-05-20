@@ -61,5 +61,7 @@ void CsvParser::parseMetricFile(string filename)
     {
         treeManager->addEntity(Entity(line));
     }
+
+    treeManager->buildHierarchy();
 	
 } 

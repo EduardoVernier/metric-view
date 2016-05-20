@@ -26,17 +26,28 @@ void TreeManager::addEntity(Entity ent)
 			Package newPackage(ent.prefix);
 			newPackage.addEntity(ent);
 			packageVector.push_back(newPackage);
-			sort (packageVector.begin(), packageVector.end(), compPackages());
-
-			// Test printing 
-			cout << endl;
-			for (unsigned i=0; i<packageVector.size(); i++)
-			{
-				cout << packageVector[i].sum << "\t" << packageVector[i].prefix << endl;
-				
-				for (unsigned j=0; j < packageVector[i].entityVector.size(); ++j)
-					cout << "  " << packageVector[i].entityVector[j].value << "\t\t" << packageVector[i].entityVector[j].id << endl;
-			}
+			//sort (packageVector.begin(), packageVector.end(), compPackages());
 		}
 	}
+}
+
+void TreeManager::buildHierarchy()
+{
+	
+	for (std::vector<Package>::reverse_iterator i = packageVector.rbegin(); i!= packageVector.rend(); ++i)
+	{
+		for (std::vector<Package>::reverse_iterator j = i+1; j!= packageVector.rend(); ++j)
+		{
+			
+			if (i->prefix.find(j->prefix) != string::npos)
+			{
+				j->addChild(*i);
+				packageVector.erase((i+1).base());
+				break;
+			}
+			
+		}
+	}
+
+	packageVector[0].printPackage(0);
 }

@@ -20,10 +20,12 @@ struct compPackages
 class TreeManager
 {
 public:
-	TreeManager(){ make_heap (packageVector.begin(),packageVector.end(),compPackages()); };
+	TreeManager(){ };
 	void addEntity(Entity ent);
 	
 	vector<Package> packageVector;
+	void buildHierarchy();
+
 
 private:
 
