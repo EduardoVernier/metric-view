@@ -13,14 +13,23 @@ void Package::addChild(Package child)
 	childrenVector.push_back(child);
 }
 
+
 void Package::printPackage(int level)
 {
-	cout << prefix << endl;
-
+	cout << sum << " "<<   prefix << endl;
+	
 	for (unsigned i = 0; i < childrenVector.size(); ++i)
 	{
 		for (unsigned j = 0; j <= level; j++) 
 			cout << "  ";
+
 		childrenVector[i].printPackage(level+1);
-	}	
+		for (unsigned k = 0; k < entityVector.size(); ++k)
+		{
+			for (unsigned l = 0; l <= level+1; l++) 
+				cout << "  ";
+			
+			cout << entityVector[k].value << ' ' <<  entityVector[k].id << endl;
+		}
+	}
 }

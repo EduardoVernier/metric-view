@@ -22,9 +22,10 @@ class TreeManager
 public:
 	TreeManager(){ };
 	void addEntity(Entity ent);
+	void buildHierarchy();
+	void sortPackages(Package *p);
 	
 	vector<Package> packageVector;
-	void buildHierarchy();
 
 
 private:

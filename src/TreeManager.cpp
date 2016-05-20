@@ -48,6 +48,18 @@ void TreeManager::buildHierarchy()
 			
 		}
 	}
-
-	packageVector[0].printPackage(0);
+	sortPackages(&packageVector[0]);
+	packageVector[0].printPackage(0);	
 }
+
+void TreeManager::sortPackages(Package *p)
+{
+	sort (p->childrenVector.begin(), p->childrenVector.end(), compPackages());
+
+	for(unsigned i = 0; i < p->childrenVector.size(); ++i)
+	{
+		sortPackages(&p->childrenVector[i]);
+	}
+}
+
+
