@@ -2,6 +2,8 @@
 
 Entity::Entity (string csvLine)
 {
+    // Super class heads-up
+    isPackage = 0;
 	// Collect all data
 	stringstream ss(csvLine);
     string item;

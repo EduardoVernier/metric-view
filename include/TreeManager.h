@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+
+#include "BaseEntity.h"
 #include "Entity.h"
 #include "Package.h"
 
@@ -17,6 +19,7 @@ struct compPackages
     }
 };
 
+
 class TreeManager
 {
 public:
@@ -24,8 +27,10 @@ public:
 	void addEntity(Entity ent);
 	void buildHierarchy();
 	void sortPackages(Package *p);
+	void generateOutputVector(Package *p);
 	
 	vector<Package> packageVector;
+	vector<BaseEntity*> output;
 
 
 private:

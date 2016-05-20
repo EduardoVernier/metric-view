@@ -56,6 +56,9 @@ void CsvParser::parseMetricFile(string filename)
 	istringstream(line) >> nAttributes;
 	getline(file,line); // name of attributes - flush
 	
+	// Add tree root
+	treeManager->addEntity(Entity(";0;0;0;0;0;0;0;0.0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.0;0;0;0;0;0;0"));
+
 	// Add all elements (classes) to the treeManager
 	while(getline(file,line))
     {

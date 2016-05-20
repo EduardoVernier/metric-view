@@ -48,8 +48,18 @@ void TreeManager::buildHierarchy()
 			
 		}
 	}
+
 	sortPackages(&packageVector[0]);
-	packageVector[0].printPackage(0);	
+	//packageVector[0].printPackage(0);
+	generateOutputVector(&packageVector[0]);
+
+
+	for (vector<BaseEntity*>::iterator b = output.begin() ; b != output.end(); ++b)
+	{
+		cout << (*b)->getScore() << " " << (*b)->getName() << endl;
+	}
+
+
 }
 
 void TreeManager::sortPackages(Package *p)
@@ -59,6 +69,53 @@ void TreeManager::sortPackages(Package *p)
 	for(unsigned i = 0; i < p->childrenVector.size(); ++i)
 	{
 		sortPackages(&p->childrenVector[i]);
+	}
+}
+
+
+void TreeManager::generateOutputVector(Package *p)
+{
+
+	int i = 0, j = 0;
+	while (1)
+	{
+		// If both are comparable
+		if (i < p->childrenVector.size() && j < p->entityVector.size())
+		{
+			if (p->childrenVector[i].sum >= p->entityVector[j].value)
+			{
+				output.push_back((BaseEntity*) &p->childrenVector[i]);
+				generateOutputVector(&p->childrenVector[i]);
+				i++;
+			}
+			else
+			{
+				output.push_back((BaseEntity*) &p->entityVector[j]);
+				j++;
+			}
+		}
+		else if (i < p->childrenVector.size() && j == p->entityVector.size())
+		{
+			// Only packages left
+			for (; i < p->childrenVector.size(); ++i)
+			{
+				output.push_back((BaseEntity*) &p->childrenVector[i]);
+				generateOutputVector(&p->childrenVector[i]);
+			}
+		}
+		else if (i == p->childrenVector.size() && j < p->entityVector.size())
+		{
+			// Only entities left
+			for (; j < p->entityVector.size(); ++j)
+			{
+				output.push_back((BaseEntity*) &p->entityVector[j]);
+			}			
+		}
+
+		if (i == p->childrenVector.size() && j == p->entityVector.size())
+		{
+			break;
+		}
 	}
 }
 

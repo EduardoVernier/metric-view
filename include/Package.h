@@ -4,7 +4,10 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+
+#include "BaseEntity.h"
 #include "Entity.h"
+
 using namespace std;
 
 struct compEntities 
@@ -15,15 +18,17 @@ struct compEntities
     }
 };
 
-class Package
+class Package : BaseEntity
 {
 public:
-	Package(string _prefix) : prefix(_prefix){sum=0;};	
+	Package(string _prefix) : prefix(_prefix){isPackage = 1; sum=0; };	
 	void addEntity(Entity ent);
 	void addChild(Package child);
 	void printPackage(int level);
+	float getScore(){ return sum; };
+	string getName(){ return prefix; };
 
-	
+
 	vector<Package> childrenVector;
 	vector<Entity> entityVector;
 	string prefix;
