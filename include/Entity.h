@@ -9,13 +9,13 @@
 
 using namespace std;
 
-class Entity : BaseEntity
+class Entity : public BaseEntity
 {
 public:
 	Entity (string csvLine);
+	// Overriding baseclass virtual methods
 	float getScore(){ return value; };
 	string getName(){ return id; };
-
 
 	string prefix;
 	string id;

@@ -1,5 +1,6 @@
 #include "../include/TreeManager.h"
 
+// Places a new entity in it's adequate package
 void TreeManager::addEntity(Entity ent)
 {
 	if (packageVector.empty())
@@ -18,7 +19,7 @@ void TreeManager::addEntity(Entity ent)
 				found = 1;
 				pckg->addEntity(ent);
 				break;
-			} 
+			}
 		}
 
 		if (found == 0)
@@ -26,42 +27,54 @@ void TreeManager::addEntity(Entity ent)
 			Package newPackage(ent.prefix);
 			newPackage.addEntity(ent);
 			packageVector.push_back(newPackage);
-			//sort (packageVector.begin(), packageVector.end(), compPackages());
 		}
 	}
 }
 
+// Takes the list of packages and organizes it in tree
 void TreeManager::buildHierarchy()
 {
-	
-	for (std::vector<Package>::reverse_iterator i = packageVector.rbegin(); i!= packageVector.rend(); ++i)
+	for (vector<Package>::reverse_iterator i = packageVector.rbegin(); i!= packageVector.rend(); ++i)
 	{
-		for (std::vector<Package>::reverse_iterator j = i+1; j!= packageVector.rend(); ++j)
+		for (vector<Package>::reverse_iterator j = i+1; j!= packageVector.rend(); ++j)
 		{
-			
 			if (i->prefix.find(j->prefix) != string::npos)
 			{
 				j->addChild(*i);
 				packageVector.erase((i+1).base());
 				break;
 			}
-			
 		}
 	}
 
+	setHierarchicalLevel(&packageVector[0], 0);
 	sortPackages(&packageVector[0]);
-	//packageVector[0].printPackage(0);
 	generateOutputVector(&packageVector[0]);
 
-
+	// Test printing
 	for (vector<BaseEntity*>::iterator b = output.begin() ; b != output.end(); ++b)
 	{
-		cout << (*b)->getScore() << " " << (*b)->getName() << endl;
+		for (unsigned j = 0; j < (*b)->getLevel(); ++j)
+			cout << " ";
+		cout  << (*b)->isPackage() << " - " << (*b)->getScore() << " " << (*b)->getName() << endl;
 	}
-
-
 }
 
+void TreeManager::setHierarchicalLevel(Package *p, int level)
+{
+	p->setLevel(level);
+	for (unsigned i = 0; i < p->entityVector.size(); ++i)
+	{
+		p->entityVector[i].setLevel(level+1);
+	}
+
+	for (unsigned i = 0; i < p->childrenVector.size(); ++i)
+	{
+		setHierarchicalLevel(&p->childrenVector[i], level+1);
+	}
+}
+
+// Sorts individual packages (parcial order)
 void TreeManager::sortPackages(Package *p)
 {
 	sort (p->childrenVector.begin(), p->childrenVector.end(), compPackages());
@@ -72,10 +85,9 @@ void TreeManager::sortPackages(Package *p)
 	}
 }
 
-
+// Creates a sorted vector of BaseEntity references
 void TreeManager::generateOutputVector(Package *p)
 {
-
 	int i = 0, j = 0;
 	while (1)
 	{
@@ -109,14 +121,10 @@ void TreeManager::generateOutputVector(Package *p)
 			for (; j < p->entityVector.size(); ++j)
 			{
 				output.push_back((BaseEntity*) &p->entityVector[j]);
-			}			
+			}
 		}
 
 		if (i == p->childrenVector.size() && j == p->entityVector.size())
-		{
 			break;
-		}
 	}
 }
-
-

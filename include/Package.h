@@ -10,7 +10,7 @@
 
 using namespace std;
 
-struct compEntities 
+struct compEntities
 {
     bool operator() (const Entity& e1, const Entity& e2) const
     {
@@ -18,21 +18,21 @@ struct compEntities
     }
 };
 
-class Package : BaseEntity
+class Package : public BaseEntity
 {
 public:
-	Package(string _prefix) : prefix(_prefix){isPackage = 1; sum=0; };	
+	Package(string _prefix) : prefix(_prefix){ setAsPackage(); };
 	void addEntity(Entity ent);
 	void addChild(Package child);
 	void printPackage(int level);
+  // Overriding baseclass virtual methods
 	float getScore(){ return sum; };
 	string getName(){ return prefix; };
-
 
 	vector<Package> childrenVector;
 	vector<Entity> entityVector;
 	string prefix;
-	float sum;
+	float sum = 0;
 };
 
 #endif
