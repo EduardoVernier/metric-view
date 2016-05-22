@@ -1,6 +1,7 @@
 
 CC = g++
 CFLAGS = -g -std=c++11 -Wall
+ONE_WARNING_AT_A_TIME = -Werror -fmax-errors=1
 SRCDIR = src
 BUILDDIR = build
 TARGET = bin/runner
@@ -17,13 +18,13 @@ INC = -I include
 
 
 (TARGET): $(OBJECTS)
+	@mkdir -p bin
 	@echo " Linking..."
 	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) $(LIB)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-	clear;
 	@mkdir -p $(BUILDDIR)
-	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(ONE_WARNING_AT_A_TIME) $(INC) -c -o $@ $<
 
 clean:
 	@echo " Cleaning...";
