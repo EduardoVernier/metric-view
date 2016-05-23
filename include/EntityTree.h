@@ -1,5 +1,5 @@
-#ifndef TREEMANAGER_H
-#define TREEMANAGER_H
+#ifndef ENTITYTREE_H
+#define ENTITYTREE_H
 
 #include <iostream>
 #include <vector>
@@ -26,11 +26,12 @@ public:
 	void addEntity(Entity ent);
 	void buildHierarchy();
 	void sortPackages(Package *p);
-  void setHierarchicalLevel(Package *p, int level);
-	void generateOutputVector(Package *p);
+ 	void setHierarchicalLevel(Package *p, int level);
+	void generateSortedEntitiesVector(Package *p);
 
 	vector<Package> packageVector;
-	vector<BaseEntity*> output;
+	vector<BaseEntity*> sortedEntities;
+	int depth = 0;
 };
 
 #endif

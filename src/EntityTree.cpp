@@ -40,29 +40,38 @@ void EntityTree::buildHierarchy()
 		{
 			if (i->prefix.find(j->prefix) != string::npos)
 			{
+				cout << i->prefix << " = " << j->prefix << endl;
 				j->addChild(*i);
 				packageVector.erase((i+1).base());
 				break;
 			}
 		}
 	}
-
 	setHierarchicalLevel(&packageVector[0], 0);
 	sortPackages(&packageVector[0]);
-	generateOutputVector(&packageVector[0]);
+	generateSortedEntitiesVector(&packageVector[0]);
+
+	for (unsigned i = 0; i <  packageVector.size(); ++i)
+		cout << packageVector[i].prefix << endl;
 
 	// Test printing
-	for (vector<BaseEntity*>::iterator b = output.begin() ; b != output.end(); ++b)
+	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
 	{
 		for (int j = 0; j < (*b)->getLevel(); ++j)
 			cout << " ";
-		cout  << (*b)->isPackage() << " - " << (*b)->getScore() << " " << (*b)->getName() << endl;
+		cout  << (*b)->getLevel()  << " "<< (*b)->isPackage() << " - " << (*b)->getScore() << " " << (*b)->getName() << endl;
 	}
+
+	cout << "Tree depth: " << depth << endl;
 }
 
+// Determines every entity tree level
 void EntityTree::setHierarchicalLevel(Package *p, int level)
 {
 	p->setLevel(level);
+	if (level + 1 > depth)
+		depth = level + 1;
+
 	for (unsigned i = 0; i < p->entityVector.size(); ++i)
 	{
 		p->entityVector[i].setLevel(level+1);
@@ -86,7 +95,7 @@ void EntityTree::sortPackages(Package *p)
 }
 
 // Creates a sorted vector of BaseEntity references
-void EntityTree::generateOutputVector(Package *p)
+void EntityTree::generateSortedEntitiesVector(Package *p)
 {
 	unsigned i = 0, j = 0;
 	while (1)
@@ -96,13 +105,15 @@ void EntityTree::generateOutputVector(Package *p)
 		{
 			if (p->childrenVector[i].sum >= p->entityVector[j].value)
 			{
-				output.push_back((BaseEntity*) &p->childrenVector[i]);
-				generateOutputVector(&p->childrenVector[i]);
+				// Package is bigger
+				sortedEntities.push_back((BaseEntity*) &p->childrenVector[i]);
+				generateSortedEntitiesVector(&p->childrenVector[i]);
 				i++;
 			}
 			else
 			{
-				output.push_back((BaseEntity*) &p->entityVector[j]);
+				// Entity is bigger
+				sortedEntities.push_back((BaseEntity*) &p->entityVector[j]);
 				j++;
 			}
 		}
@@ -111,8 +122,8 @@ void EntityTree::generateOutputVector(Package *p)
 			// Only packages left
 			for (; i < p->childrenVector.size(); ++i)
 			{
-				output.push_back((BaseEntity*) &p->childrenVector[i]);
-				generateOutputVector(&p->childrenVector[i]);
+				sortedEntities.push_back((BaseEntity*) &p->childrenVector[i]);
+				generateSortedEntitiesVector(&p->childrenVector[i]);
 			}
 		}
 		else if (i == p->childrenVector.size() && j < p->entityVector.size())
@@ -120,7 +131,7 @@ void EntityTree::generateOutputVector(Package *p)
 			// Only entities left
 			for (; j < p->entityVector.size(); ++j)
 			{
-				output.push_back((BaseEntity*) &p->entityVector[j]);
+				sortedEntities.push_back((BaseEntity*) &p->entityVector[j]);
 			}
 		}
 

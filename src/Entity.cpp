@@ -12,7 +12,10 @@ Entity::Entity (string csvLine)
   string name = data[0];
   size_t separator = name.rfind(".");
   id = name.substr(separator+1, name.length());
-  prefix = name.substr(0,separator);
+  if (separator == string::npos)
+    prefix = "";
+  else
+    prefix = name.substr(0,separator);
 
   // CountLine metric as value
   istringstream buffer(data[22]);

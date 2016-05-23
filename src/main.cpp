@@ -7,6 +7,7 @@
 //#include "../include/interaction.h"
 #include "../include/EntityTree.h"
 #include "../include/CsvParser.h"
+#include "../include/Treemap.h"
 
 using namespace std;
 
@@ -17,10 +18,10 @@ int main_window;
 
 int main(int argc, char **argv)
 {
-	//cout << "AAAAAAAAAAA" << endl;
-
+	
 	//initilizeVisualization(argc, argv);
 	EntityTree entityTree = buildEntityTree(argc, argv);
+	Treemap treemap (entityTree, 600, 450);
 
 	//glutIdleFunc(idle);
 	//glutMainLoop();
@@ -33,7 +34,6 @@ void initilizeVisualization(int argc, char **argv)
 	// Initialize Glut/Glui
 	glutInit(&argc, argv);
  	glutInitWindowSize(500,500);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
 	main_window = glutCreateWindow("MetricView");
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
