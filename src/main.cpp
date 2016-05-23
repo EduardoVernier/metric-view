@@ -18,7 +18,6 @@ int main_window;
 
 int main(int argc, char **argv)
 {
-	
 	//initilizeVisualization(argc, argv);
 	EntityTree entityTree = buildEntityTree(argc, argv);
 	Treemap treemap (entityTree, 600, 450);
@@ -41,7 +40,6 @@ void initilizeVisualization(int argc, char **argv)
 	glutMouseFunc(mouseClick);
 }
 */
-
 
 EntityTree buildEntityTree(int argc, char **argv)
 {
