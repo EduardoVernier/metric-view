@@ -9,6 +9,7 @@ class Container
 {
 public:
 	Container(int _width, int _height, int _xOffset, int _yOffset);
+	Container cutArea (float area);
 
 	int width, height, xOffset, yOffset, shortestEdge;
 

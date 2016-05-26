@@ -39,15 +39,9 @@ void Treemap::treemapSingledimensional(vector<BaseEntity*> *data, int width, int
 void Treemap::squarify(vector<BaseEntity*> *data, vector<BaseEntity*> *currentRow, Container container)
 {
 
-	for (vector<BaseEntity*>::iterator b = currentRow->begin() ; b != currentRow->end(); ++b)
-	{
-		cout << (*b)->getNormalizedScore() << endl;
-	}
-
-
 	if (data->size() == 0)
 	{
-		;//
+		return;//
 	}
 
 	if (improvesRatio (currentRow, ((*data)[0])->getNormalizedScore(), container.shortestEdge))
@@ -55,19 +49,19 @@ void Treemap::squarify(vector<BaseEntity*> *data, vector<BaseEntity*> *currentRo
 		cout << ((*data)[0])->getNormalizedScore() << " added." << endl;
 		currentRow->push_back((*data)[0]);
 		data->erase(data->begin());
-		for (vector<BaseEntity*>::iterator b = data->begin() ; b != data->end(); ++b)
-		{
-			cout << (*b)->getNormalizedScore() << endl;
-		}
+
 		squarify(data, currentRow, container);
 	}
 	else
 	{
 		cout << ((*data)[0])->getNormalizedScore() << " wasnt added." << endl;
+		Container newContainer = container.cutArea(sumNormalizedScores(currentRow));
 
+		// Save current row coordinates into the objects
+
+		vector<BaseEntity*> *newCurrentRow = new vector<BaseEntity*>;
+		squarify(data, newCurrentRow, newContainer);
 	}
-
-
 }
 
 int Treemap::improvesRatio(vector<BaseEntity*> *currentRow, float nextEntity, int length)
@@ -88,19 +82,18 @@ int Treemap::improvesRatio(vector<BaseEntity*> *currentRow, float nextEntity, in
 		if((*currentRow)[i]->getNormalizedScore() < minCurrent)
 			minCurrent = (*currentRow)[i]->getNormalizedScore();
 	}
-
+	
 	minNew = (nextEntity < minCurrent)? nextEntity : minCurrent;
 	maxNew = (nextEntity > maxCurrent)? nextEntity : maxCurrent;
 
 	float sumCurrent = sumNormalizedScores(currentRow);
 	float sumNew = sumCurrent + nextEntity;
 
-	float currentRatio = fmax(pow(length, 2) * maxCurrent / pow(sumCurrent, 2), pow(sumCurrent, 2) / (pow(length, 2) * minCurrent));
-	float newRatio = fmax(pow(length, 2) * maxNew / pow(sumNew, 2), pow(sumNew, 2) / (pow(length, 2) * minNew));
+	double currentRatio = fmax(pow(length, 2) * maxCurrent / pow(sumCurrent, 2), pow(sumCurrent, 2) / (pow(length, 2) * minCurrent));
+	double newRatio = fmax(pow(length, 2) * maxNew / pow(sumNew, 2), pow(sumNew, 2) / (pow(length, 2) * minNew));
 
 	cout << currentRatio << " >= " << newRatio << endl;
 	return currentRatio >= newRatio;
-
 }
 
 void Treemap::normalize(vector<BaseEntity*> *data, int area)
@@ -115,10 +108,9 @@ void Treemap::normalize(vector<BaseEntity*> *data, int area)
 	}
 }
 
-
 int Treemap::sumScores(vector<BaseEntity*> *data)
 {
-	int sum;
+	int sum = 0;
 	for (vector<BaseEntity*>::iterator b = data->begin() ; b != data->end(); ++b)
 		sum += (*b)->getScore();
 	return sum;
@@ -126,7 +118,7 @@ int Treemap::sumScores(vector<BaseEntity*> *data)
 
 float Treemap::sumNormalizedScores(vector<BaseEntity*> *data)
 {
-	int sum;
+	int sum = 0;
 	for (vector<BaseEntity*>::iterator b = data->begin() ; b != data->end(); ++b)
 		sum += (*b)->getNormalizedScore();
 	return sum;
