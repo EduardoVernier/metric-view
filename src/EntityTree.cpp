@@ -51,18 +51,6 @@ void EntityTree::buildHierarchy()
 	sortPackages(&packageVector[0]);
 	generateSortedEntitiesVector(&packageVector[0]);
 
-	for (unsigned i = 0; i <  packageVector.size(); ++i)
-		cout << packageVector[i].prefix << endl;
-
-	// Test printing
-	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
-	{
-		for (int j = 0; j < (*b)->getLevel(); ++j)
-			cout << " ";
-		cout  << (*b)->getLevel()  << " "<< (*b)->isPackage() << " - " << (*b)->getScore() << " " << (*b)->getName() << endl;
-	}
-
-	cout << "Tree depth: " << depth << endl;
 }
 
 // Determines every entity tree level
@@ -139,3 +127,18 @@ void EntityTree::generateSortedEntitiesVector(Package *p)
 			break;
 	}
 }
+
+void EntityTree::printTree()
+{
+	// Test printing
+	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	{
+		for (int j = 0; j < (*b)->getLevel(); ++j)
+			cout << " ";
+		cout  << (*b)->getLevel()  << " "<< (*b)->isPackage() << " - " << (*b)->getScore() << " " << (*b)->getName() << endl << "Coords: ";
+		for (int i = 0; i < 4; ++i)
+			cout << (*b)->coords[i] << " ";
+		cout << endl;
+	}
+
+} 

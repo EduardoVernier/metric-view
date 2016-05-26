@@ -1,5 +1,6 @@
 #ifndef BASEENTITY_H
 #define BASEENTITY_H
+
 #include <string>
 
 // Abstract class
@@ -14,9 +15,10 @@ public:
 	int isPackage() { return packageFlag; };
 	void setNormalizedScore(float s) { normalizedScore = s; };
 	float getNormalizedScore() { return normalizedScore; };
-	int coords [4] = {-1,-1,-1,-1};
+	void setCoords(float *_coords);
+	float coords[4];
 
-protected:
+private:
 	float normalizedScore = -1;
 	int packageFlag = 0;
 	int level = -1;

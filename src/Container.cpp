@@ -31,3 +31,36 @@ Container Container::cutArea(float area)
 	}
 	return *newContainer;	
 }
+
+void Container::saveCoordinates (vector<BaseEntity*> *row, float scoreSum) 
+{
+	float subxOffset = xOffset, subyOffset = yOffset; // Offset within the container
+	float areaWidth = scoreSum / height;
+	float areaHeight = scoreSum / width;
+	float coordinates [4];
+
+	if (width >= height) 
+	{
+		for (unsigned i = 0; i < row->size(); i++) 
+		{
+			coordinates[0] = subxOffset;
+			coordinates[1] = subyOffset;
+			coordinates[2] = subxOffset + areaWidth;
+			coordinates[3] = subyOffset + (*row)[i]->getNormalizedScore() / areaWidth;
+			(*row)[i]->setCoords(coordinates);
+			subyOffset = subyOffset + (*row)[i]->getNormalizedScore() / areaWidth;
+		}
+	} 
+	else 
+	{
+		for (unsigned i = 0; i < row->size(); i++) 
+		{
+			coordinates[0] = subxOffset;
+			coordinates[1] = subyOffset;
+			coordinates[2] = subxOffset + (*row)[i]->getNormalizedScore() / areaHeight;
+			coordinates[3] = subyOffset + areaHeight;
+			(*row)[i]->setCoords(coordinates);
+			subxOffset = subxOffset + (*row)[i]->getNormalizedScore() / areaHeight;
+		}
+	}
+};

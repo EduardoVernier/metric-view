@@ -28,6 +28,7 @@ public:
 	void sortPackages(Package *p);
  	void setHierarchicalLevel(Package *p, int level);
 	void generateSortedEntitiesVector(Package *p);
+	void printTree();
 
 	vector<Package> packageVector;
 	vector<BaseEntity*> sortedEntities;

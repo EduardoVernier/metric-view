@@ -58,6 +58,7 @@ void Treemap::squarify(vector<BaseEntity*> *data, vector<BaseEntity*> *currentRo
 		Container newContainer = container.cutArea(sumNormalizedScores(currentRow));
 
 		// Save current row coordinates into the objects
+		container.saveCoordinates(currentRow, sumNormalizedScores(currentRow));
 
 		vector<BaseEntity*> *newCurrentRow = new vector<BaseEntity*>;
 		squarify(data, newCurrentRow, newContainer);

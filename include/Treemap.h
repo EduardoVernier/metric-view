@@ -23,7 +23,6 @@ public:
 	float sumNormalizedScores(vector<BaseEntity*> *data);
 	int improvesRatio(vector<BaseEntity*> *currentRow, float nextEntity, int length);
 
-
 	EntityTree entityTree;
 	int width, height;
 };

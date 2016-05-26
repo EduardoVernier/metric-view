@@ -22,6 +22,9 @@ int main(int argc, char **argv)
 	EntityTree entityTree = buildEntityTree(argc, argv);
 	Treemap treemap (entityTree, 600, 450);
 
+
+	treemap.entityTree.printTree();
+
 	//glutIdleFunc(idle);
 	//glutMainLoop();
 	return 0;
