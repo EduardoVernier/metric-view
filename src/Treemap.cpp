@@ -11,21 +11,45 @@ Treemap::Treemap(EntityTree et, int _width, int _height)
 
 	vector<BaseEntity*> data;
 	for (vector<BaseEntity*>::iterator b = entityTree.sortedEntities.begin() ; b != entityTree.sortedEntities.end(); ++b)
-		if((*b)->getLevel() == 1)
+		if((*b)->getLevel() == 1 && (*b)->getScore() != 0)
 		{
 			data.push_back(*b);
 		}
-	treemapMultidimensional(&data, _width, _height, 0, 0);
+	treemapMultidimensional(&data, (float)_width, (float)_height, 0, 0);
 }
 
-void Treemap::treemapMultidimensional(vector<BaseEntity*> *data, int width, int height, int xOffset, int yOffset)
+void Treemap::treemapMultidimensional(vector<BaseEntity*> *data, float width, float height, float xOffset, float yOffset)
 {
-	// Just for testing
+	vector<BaseEntity*> dataCopy;
+	for (vector<BaseEntity*>::iterator b = data->begin() ; b != data->end(); ++b)
+		dataCopy.push_back(*b);
+
 	treemapSingledimensional(data, width, height, xOffset, yOffset);
+
+	for (vector<BaseEntity*>::iterator b = dataCopy.begin() ; b != dataCopy.end(); ++b)
+	{
+		if ((*b)->isPackage())
+		{
+			vector<BaseEntity*> newData;
+			((Package*)(*b))->sortEntities();
+			for (vector<BaseEntity*>::iterator child = ((Package*)(*b))->sortedEntities.begin() ; child != ((Package*)(*b))->sortedEntities.end(); ++child)
+			{
+				newData.push_back(*child);
+			}
+
+			float newWidth = (*b)->coords[2] - (*b)->coords[0];
+			float newHeight = (*b)->coords[3] - (*b)->coords[1];
+			float newxOff = (*b)->coords[0];
+			float newyOff = (*b)->coords[1]; 
+			treemapMultidimensional(&newData, newWidth, newHeight, newxOff, newyOff);
+		}
+		
+	}
+
 }
 
 
-void Treemap::treemapSingledimensional(vector<BaseEntity*> *data, int width, int height, int xOffset, int yOffset)
+void Treemap::treemapSingledimensional(vector<BaseEntity*> *data, float width, float height, float xOffset, float yOffset)
 {
 	normalize(data, width * height);
 	vector<BaseEntity*> *currentRow = new vector<BaseEntity*>;
@@ -41,12 +65,12 @@ void Treemap::squarify(vector<BaseEntity*> *data, vector<BaseEntity*> *currentRo
 
 	if (data->size() == 0)
 	{
-		return;//
+		container.saveCoordinates(currentRow, sumNormalizedScores(currentRow));
+		return;
 	}
 
 	if (improvesRatio (currentRow, ((*data)[0])->getNormalizedScore(), container.shortestEdge))
 	{
-		cout << ((*data)[0])->getNormalizedScore() << " added." << endl;
 		currentRow->push_back((*data)[0]);
 		data->erase(data->begin());
 
@@ -54,7 +78,6 @@ void Treemap::squarify(vector<BaseEntity*> *data, vector<BaseEntity*> *currentRo
 	}
 	else
 	{
-		cout << ((*data)[0])->getNormalizedScore() << " wasnt added." << endl;
 		Container newContainer = container.cutArea(sumNormalizedScores(currentRow));
 
 		// Save current row coordinates into the objects
@@ -93,7 +116,7 @@ int Treemap::improvesRatio(vector<BaseEntity*> *currentRow, float nextEntity, in
 	double currentRatio = fmax(pow(length, 2) * maxCurrent / pow(sumCurrent, 2), pow(sumCurrent, 2) / (pow(length, 2) * minCurrent));
 	double newRatio = fmax(pow(length, 2) * maxNew / pow(sumNew, 2), pow(sumNew, 2) / (pow(length, 2) * minNew));
 
-	cout << currentRatio << " >= " << newRatio << endl;
+	//cout << currentRatio << " >= " << newRatio << endl;
 	return currentRatio >= newRatio;
 }
 

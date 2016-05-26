@@ -40,7 +40,6 @@ void EntityTree::buildHierarchy()
 		{
 			if (i->prefix.find(j->prefix) != string::npos)
 			{
-				cout << i->prefix << " = " << j->prefix << endl;
 				j->addChild(*i);
 				packageVector.erase((i+1).base());
 				break;
@@ -133,12 +132,16 @@ void EntityTree::printTree()
 	// Test printing
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
 	{
+		if ((*b)->getName() == "") continue; // Ignore root
 		for (int j = 0; j < (*b)->getLevel(); ++j)
 			cout << " ";
-		cout  << (*b)->getLevel()  << " "<< (*b)->isPackage() << " - " << (*b)->getScore() << " " << (*b)->getName() << endl << "Coords: ";
+		cout  << (*b)->getLevel() << " - " << (*b)->getScore() << " " << (*b)->getName() << endl;
+		
+		for (int j = 0; j < (*b)->getLevel(); ++j)
+			cout << " ";
+		
 		for (int i = 0; i < 4; ++i)
 			cout << (*b)->coords[i] << " ";
 		cout << endl;
 	}
-
 } 

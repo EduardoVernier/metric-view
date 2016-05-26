@@ -33,3 +33,46 @@ void Package::printPackage(int level)
 		}
 	}
 }
+
+void Package::sortEntities()
+{
+	unsigned i = 0, j = 0;
+	while (1)
+	{
+		// If both are comparable
+		if (i < childrenVector.size() && j < entityVector.size())
+		{
+			if (childrenVector[i].sum >= entityVector[j].value)
+			{
+				// Package is bigger
+				sortedEntities.push_back((BaseEntity*) &childrenVector[i]);
+				i++;
+			}
+			else
+			{
+				// Entity is bigger
+				sortedEntities.push_back((BaseEntity*) &entityVector[j]);
+				j++;
+			}
+		}
+		else if (i < childrenVector.size() && j == entityVector.size())
+		{
+			// Only packages left
+			for (; i < childrenVector.size(); ++i)
+			{
+				sortedEntities.push_back((BaseEntity*) &childrenVector[i]);
+			}
+		}
+		else if (i == childrenVector.size() && j < entityVector.size())
+		{
+			// Only entities left
+			for (; j < entityVector.size(); ++j)
+			{
+				sortedEntities.push_back((BaseEntity*) &entityVector[j]);
+			}
+		}
+
+		if (i == childrenVector.size() && j == entityVector.size())
+			break;
+	}
+}	

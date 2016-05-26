@@ -25,10 +25,13 @@ public:
 	void addEntity(Entity ent);
 	void addChild(Package child);
 	void printPackage(int level);
-  // Overriding baseclass virtual methods
+	void sortEntities();	
+
+	// Overriding baseclass virtual methods
 	float getScore(){ return sum; };
 	string getName(){ return prefix; };
 
+	vector<BaseEntity*> sortedEntities;
 	vector<Package> childrenVector;
 	vector<Entity> entityVector;
 	string prefix;
