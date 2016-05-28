@@ -13,20 +13,21 @@ void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	render();
-    glFlush();
+  glFlush();
 }
 
-void reshape(int w, int h)
+// Function called when window dimentions change
+void reshape(int W, int H)
 {
-	  glViewport(0, 0, w, h);
-	  glMatrixMode(GL_PROJECTION);
-	  glLoadIdentity();
-	  // Map abstract coords directly to window coords.
-	  glOrtho(0, w, 0, h, -1, 1);
-	  glScalef(1, -1, 1);
-	  glTranslatef(0, -h, 0);
-	  // Update canvasses sizes
-	  setCanvassesSizes(w, h);
+	glViewport(0, 0, W, H);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	// Map abstract coords directly to window coords.
+	glOrtho(0, W, 0, H, -1, 1);
+	glScalef(1, -1, 1);
+	glTranslatef(0, -H, 0);
+	// Update canvasses sizes
+	setCanvassesSizes(W, H);
 }
 
 void idle()
@@ -43,12 +44,15 @@ void render()
 	tCanvas->drawCanvas();
 }
 
+// Update objects when window size changes
 void setCanvassesSizes(int W, int H)
 {
+	cout << "Width: " << W << " Height: " << H << endl;
+
 	// Let mouse object know that window has changed size
 	mouse->setWindowSize(W, H);
 
-	// Update treemap
+	// Update treemap given new width and height
 	treemap.updateSize(W, H);
 
 	// Vertices Top-Left and Bottom-Right of Projection canvas

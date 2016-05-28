@@ -1,6 +1,6 @@
 #include "../include/Container.h"
 
-
+// Initialize Container
 Container::Container(double _width, double _height, double _xOffset, double _yOffset)
 {
 	width = _width;
@@ -11,8 +11,7 @@ Container::Container(double _width, double _height, double _xOffset, double _yOf
 	shortestEdge = (width < height)? width : height;
 }
 
-
-
+// Subtract area from this container and return a new container
 Container Container::cutArea(double area)
 {
 	Container *newContainer;
@@ -32,6 +31,7 @@ Container Container::cutArea(double area)
 	return *newContainer;
 }
 
+// Save coordinates that correspond to each element on the treemap into BaseEntity coords member
 void Container::saveCoordinates (vector<BaseEntity*> *row, double scoreSum)
 {
 	double subxOffset = xOffset, subyOffset = yOffset; // Offset within the container

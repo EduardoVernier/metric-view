@@ -14,16 +14,19 @@ using namespace std;
 void initilizeVisualization(int argc, char **argv);
 EntityTree buildEntityTree(int argc, char **argv);
 
-
 int main_window;
-Treemap *treemap;
+Treemap *treemap; // Global singleton
 
 int main(int argc, char **argv)
 {
-	EntityTree entityTree = buildEntityTree(argc, argv);
-	treemap = new Treemap (entityTree, 600, 450);
-
 	initilizeVisualization(argc, argv);
+
+	// Build entity tree from csv metric files
+	EntityTree entityTree = buildEntityTree(argc, argv);
+	// Use entity tree to generate a squarified treemap
+	treemap = new Treemap (entityTree, 600, 450);
+	treemap->getTree()->printTree();
+	
 	glutIdleFunc(idle);
 	glutMainLoop();
 	return 0;

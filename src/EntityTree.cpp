@@ -49,7 +49,6 @@ void EntityTree::buildHierarchy()
 	setHierarchicalLevel(&packageVector[0], 0);
 	sortPackages(&packageVector[0]);
 	generateSortedEntitiesVector(&packageVector[0]);
-
 }
 
 // Determines every entity tree level
@@ -136,12 +135,13 @@ void EntityTree::printTree()
 		for (int j = 0; j < (*b)->getLevel(); ++j)
 			cout << " ";
 		cout  << (*b)->getLevel() << " - " << (*b)->getScore() << " " << (*b)->getName() << endl;
-		
+
 		for (int j = 0; j < (*b)->getLevel(); ++j)
 			cout << " ";
-		
+
+
 		for (int i = 0; i < 4; ++i)
-			cout << (*b)->coords[i] << " ";
+			cout << (*b)->getCoords()[i] << " ";
 		cout << endl;
 	}
-} 
+}

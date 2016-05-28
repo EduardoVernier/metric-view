@@ -24,15 +24,18 @@ class EntityTree
 public:
 	EntityTree(){ };
 	void addEntity(Entity ent);
-	void buildHierarchy();
-	void sortPackages(Package *p);
- 	void setHierarchicalLevel(Package *p, int level);
+  void buildHierarchy();
 	void generateSortedEntitiesVector(Package *p);
 	void printTree();
 
-	vector<Package> packageVector;
-	vector<BaseEntity*> sortedEntities;
+	vector<Package> packageVector; // Entity tree is a collection of Packages
+	vector<BaseEntity*> sortedEntities; // Contains both Packages and Entities ordered by score
 	int depth = 0;
+
+private:
+  void sortPackages(Package *p);
+  void setHierarchicalLevel(Package *p, int level);
+
 };
 
 #endif
