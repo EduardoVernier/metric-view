@@ -7,19 +7,19 @@
 class BaseEntity
 {
 public:
-	virtual float getScore() = 0;
+	virtual double getScore() = 0;
 	virtual std::string getName() = 0;
 	void setLevel(int l) { level = l; };
 	int getLevel() { return level; }
 	void setAsPackage() { packageFlag = 1; };
 	int isPackage() { return packageFlag; };
-	void setNormalizedScore(float s) { normalizedScore = s; };
-	float getNormalizedScore() { return normalizedScore; };
-	void setCoords(float *_coords);
-	float coords[4];
+	void setNormalizedScore(double s) { normalizedScore = s; };
+	double getNormalizedScore() { return normalizedScore; };
+	void setCoords(double *_coords);
+	double coords[4];
 
 private:
-	float normalizedScore = -1;
+	double normalizedScore = -1;
 	int packageFlag = 0;
 	int level = -1;
 };

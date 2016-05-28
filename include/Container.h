@@ -4,17 +4,17 @@
 #include <vector>
 #include "BaseEntity.h"
 
-using namespace std; 
+using namespace std;
 
 class Container
 {
 public:
-	Container(int _width, int _height, int _xOffset, int _yOffset);
-	Container cutArea (float area);
-	void saveCoordinates (vector<BaseEntity*> *row, float scoreSum);
+	Container(double _width, double _height, double _xOffset, double _yOffset);
+	Container cutArea (double area);
+	void saveCoordinates (vector<BaseEntity*> *row, double scoreSum);
 
 
-	int width, height, xOffset, yOffset, shortestEdge;
+	double width, height, xOffset, yOffset, shortestEdge;
 
 };
 

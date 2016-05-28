@@ -16,13 +16,15 @@ class Treemap
 {
 public:
 	Treemap(EntityTree et, int _width, int _height);
-	void treemapMultidimensional(vector<BaseEntity*> *data, float width, float height, float xOffset, float yOffset);
-	void treemapSingledimensional(vector<BaseEntity*> *data, float width, float height, float xOffset, float yOffset);
+	void treemapMultidimensional(vector<BaseEntity*> *data, double width, double height, double xOffset, double yOffset);
+	void treemapSingledimensional(vector<BaseEntity*> *data, double width, double height, double xOffset, double yOffset);
 	void squarify(vector<BaseEntity*> *data, vector<BaseEntity*> *currentRow, Container container);
 	void normalize(vector<BaseEntity*> *data, int area);
 	int sumScores(vector<BaseEntity*> *data);
-	float sumNormalizedScores(vector<BaseEntity*> *data);
-	int improvesRatio(vector<BaseEntity*> *currentRow, float nextEntity, int length);
+	double sumNormalizedScores(vector<BaseEntity*> *data);
+	int improvesRatio(vector<BaseEntity*> *currentRow, double nextEntity, int length);
+	void updateSize(int _width, int _height);
+	EntityTree* getTree() { return &entityTree; };
 
 	EntityTree entityTree;
 	int width, height;

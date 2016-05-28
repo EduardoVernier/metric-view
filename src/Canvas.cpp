@@ -1,11 +1,5 @@
 #include "../include/Canvas.h"
 
-Canvas::Canvas(Point tl, Point br)
-{
-    top_left = tl;
-    bottom_right = br;
-}
-
 void Canvas::setSize(Point tl, Point br)
 {
     top_left = tl;

@@ -4,7 +4,9 @@
 #include <stdio.h>
 #include <GL/glut.h>
 #include <GL/glui.h>
-#include "Canvas.h"
+
+#include "Treemap.h"
+#include "TreemapCanvas.h"
 #include "Mouse.h"
 
 void display();

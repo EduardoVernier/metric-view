@@ -1,7 +1,7 @@
 #include "../include/Container.h"
 
 
-Container::Container(int _width, int _height, int _xOffset, int _yOffset)
+Container::Container(double _width, double _height, double _xOffset, double _yOffset)
 {
 	width = _width;
 	height = _height;
@@ -13,35 +13,35 @@ Container::Container(int _width, int _height, int _xOffset, int _yOffset)
 
 
 
-Container Container::cutArea(float area)
+Container Container::cutArea(double area)
 {
 	Container *newContainer;
 
-	if (width >= height) 
+	if (width >= height)
 	{
-		float areaWidth = area / height;
-		float newWidth = width - areaWidth;
+		double areaWidth = area / height;
+		double newWidth = width - areaWidth;
 		newContainer = new Container(newWidth, height, xOffset + areaWidth, yOffset);
-	} 
-	else 
+	}
+	else
 	{
-		float areaHeight = area / width;
-		float newHeight = height - areaHeight;
+		double areaHeight = area / width;
+		double newHeight = height - areaHeight;
 		newContainer = new Container(width, newHeight, xOffset, yOffset + areaHeight);
 	}
-	return *newContainer;	
+	return *newContainer;
 }
 
-void Container::saveCoordinates (vector<BaseEntity*> *row, float scoreSum) 
+void Container::saveCoordinates (vector<BaseEntity*> *row, double scoreSum)
 {
-	float subxOffset = xOffset, subyOffset = yOffset; // Offset within the container
-	float areaWidth = scoreSum / height;
-	float areaHeight = scoreSum / width;
-	float coordinates [4];
+	double subxOffset = xOffset, subyOffset = yOffset; // Offset within the container
+	double areaWidth = scoreSum / height;
+	double areaHeight = scoreSum / width;
+	double coordinates [4];
 
-	if (width >= height) 
+	if (width >= height)
 	{
-		for (unsigned i = 0; i < row->size(); i++) 
+		for (unsigned i = 0; i < row->size(); i++)
 		{
 			coordinates[0] = subxOffset;
 			coordinates[1] = subyOffset;
@@ -50,10 +50,10 @@ void Container::saveCoordinates (vector<BaseEntity*> *row, float scoreSum)
 			(*row)[i]->setCoords(coordinates);
 			subyOffset = subyOffset + (*row)[i]->getNormalizedScore() / areaWidth;
 		}
-	} 
-	else 
+	}
+	else
 	{
-		for (unsigned i = 0; i < row->size(); i++) 
+		for (unsigned i = 0; i < row->size(); i++)
 		{
 			coordinates[0] = subxOffset;
 			coordinates[1] = subyOffset;

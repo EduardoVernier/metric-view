@@ -1,3 +1,4 @@
 # Ignore the build and lib dirs
 build/*
 bin/*
+*~

@@ -14,13 +14,13 @@ class Entity : public BaseEntity
 public:
 	Entity (string csvLine);
 	// Overriding baseclass virtual methods
-	float getScore(){ return value; };
+	double getScore(){ return value; };
 	string getName(){ return id; };
 
 	string prefix;
 	string id;
 	vector <string> data;
-	float value	;
+	double value;
 };
 
 #endif

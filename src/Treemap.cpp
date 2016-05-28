@@ -4,7 +4,6 @@ using namespace std;
 
 Treemap::Treemap(EntityTree et, int _width, int _height)
 {
-
 	entityTree = et;
 	width = _width;
 	height = _height;
@@ -15,10 +14,10 @@ Treemap::Treemap(EntityTree et, int _width, int _height)
 		{
 			data.push_back(*b);
 		}
-	treemapMultidimensional(&data, (float)_width, (float)_height, 0, 0);
+	treemapMultidimensional(&data, (double)_width, (double)_height, 0, 0);
 }
 
-void Treemap::treemapMultidimensional(vector<BaseEntity*> *data, float width, float height, float xOffset, float yOffset)
+void Treemap::treemapMultidimensional(vector<BaseEntity*> *data, double width, double height, double xOffset, double yOffset)
 {
 	vector<BaseEntity*> dataCopy;
 	for (vector<BaseEntity*>::iterator b = data->begin() ; b != data->end(); ++b)
@@ -37,26 +36,23 @@ void Treemap::treemapMultidimensional(vector<BaseEntity*> *data, float width, fl
 				newData.push_back(*child);
 			}
 
-			float newWidth = (*b)->coords[2] - (*b)->coords[0];
-			float newHeight = (*b)->coords[3] - (*b)->coords[1];
-			float newxOff = (*b)->coords[0];
-			float newyOff = (*b)->coords[1]; 
+			double newWidth = (*b)->coords[2] - (*b)->coords[0];
+			double newHeight = (*b)->coords[3] - (*b)->coords[1];
+			double newxOff = (*b)->coords[0];
+			double newyOff = (*b)->coords[1];
 			treemapMultidimensional(&newData, newWidth, newHeight, newxOff, newyOff);
 		}
-		
 	}
-
 }
 
 
-void Treemap::treemapSingledimensional(vector<BaseEntity*> *data, float width, float height, float xOffset, float yOffset)
+void Treemap::treemapSingledimensional(vector<BaseEntity*> *data, double width, double height, double xOffset, double yOffset)
 {
 	normalize(data, width * height);
 	vector<BaseEntity*> *currentRow = new vector<BaseEntity*>;
 	Container container (width, height, xOffset, yOffset);
 
 	squarify(data, currentRow, container);
-
 }
 
 
@@ -88,15 +84,15 @@ void Treemap::squarify(vector<BaseEntity*> *data, vector<BaseEntity*> *currentRo
 	}
 }
 
-int Treemap::improvesRatio(vector<BaseEntity*> *currentRow, float nextEntity, int length)
+int Treemap::improvesRatio(vector<BaseEntity*> *currentRow, double nextEntity, int length)
 {
 	if (currentRow->size() == 0)
 	{
 		return 1;
 	}
 
-	float minCurrent = FLT_MAX, maxCurrent = FLT_MIN;
-	float minNew = FLT_MAX, maxNew = FLT_MIN;
+	double minCurrent = FLT_MAX, maxCurrent = FLT_MIN;
+	double minNew = FLT_MAX, maxNew = FLT_MIN;
 
 	for (unsigned i = 0; i < currentRow->size(); ++i)
 	{
@@ -106,12 +102,12 @@ int Treemap::improvesRatio(vector<BaseEntity*> *currentRow, float nextEntity, in
 		if((*currentRow)[i]->getNormalizedScore() < minCurrent)
 			minCurrent = (*currentRow)[i]->getNormalizedScore();
 	}
-	
+
 	minNew = (nextEntity < minCurrent)? nextEntity : minCurrent;
 	maxNew = (nextEntity > maxCurrent)? nextEntity : maxCurrent;
 
-	float sumCurrent = sumNormalizedScores(currentRow);
-	float sumNew = sumCurrent + nextEntity;
+	double sumCurrent = sumNormalizedScores(currentRow);
+	double sumNew = sumCurrent + nextEntity;
 
 	double currentRatio = fmax(pow(length, 2) * maxCurrent / pow(sumCurrent, 2), pow(sumCurrent, 2) / (pow(length, 2) * minCurrent));
 	double newRatio = fmax(pow(length, 2) * maxNew / pow(sumNew, 2), pow(sumNew, 2) / (pow(length, 2) * minNew));
@@ -126,7 +122,7 @@ void Treemap::normalize(vector<BaseEntity*> *data, int area)
 
 	for (vector<BaseEntity*>::iterator b = data->begin() ; b != data->end(); ++b)
 	{
-		float newScore = (*b)->getScore() * ((float)area / sum);
+		double newScore = (*b)->getScore() * ((double)area / sum);
 		(*b)->setNormalizedScore(newScore);
 		// cout << (*b)->getNormalizedScore() << endl;
 	}
@@ -140,10 +136,24 @@ int Treemap::sumScores(vector<BaseEntity*> *data)
 	return sum;
 }
 
-float Treemap::sumNormalizedScores(vector<BaseEntity*> *data)
+double Treemap::sumNormalizedScores(vector<BaseEntity*> *data)
 {
 	int sum = 0;
 	for (vector<BaseEntity*>::iterator b = data->begin() ; b != data->end(); ++b)
 		sum += (*b)->getNormalizedScore();
 	return sum;
+}
+
+void Treemap::updateSize (int _width, int _height)
+{
+	width = _width;
+	height = _height;
+
+	vector<BaseEntity*> data;
+	for (vector<BaseEntity*>::iterator b = entityTree.sortedEntities.begin() ; b != entityTree.sortedEntities.end(); ++b)
+		if((*b)->getLevel() == 1 && (*b)->getScore() != 0)
+		{
+			data.push_back(*b);
+		}
+	treemapMultidimensional(&data, (double)_width, (double)_height, 0, 0);
 }
