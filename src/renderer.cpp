@@ -6,7 +6,7 @@ extern int main_window;
 Mouse  *mouse = new Mouse();
 Canvas *pCanvas = NULL;
 Canvas *tCanvas = NULL;
-extern Treemap treemap;
+extern Treemap *treemap;
 
 // Glut/GLui argument functions
 void display()
@@ -52,9 +52,6 @@ void setCanvassesSizes(int W, int H)
 	// Let mouse object know that window has changed size
 	mouse->setWindowSize(W, H);
 
-	// Update treemap given new width and height
-	treemap.updateSize(W, H);
-
 	// Vertices Top-Left and Bottom-Right of Projection canvas
 	//Point pTL, pBR;
 	//pTL.x = 10; pTL.y = 10;
@@ -62,15 +59,18 @@ void setCanvassesSizes(int W, int H)
 
 	// Vertices of Treemap canvas
 	Point tTL, tBR;
-	tTL.x = 20 + (W-30)/2; tTL.y = 10;
+	tTL.x = 20 + (W-30)/2.0; tTL.y = 10;
 	tBR.x = W-10; tBR.y = H-10;
+
+	// Update treemap given new width and height
+	//treemap->updateSize((W-30)/2.0, H-20);
 
 	// Instantiate if it's the first call, else just update size
 	//if (pCanvas == NULL && tCanvas == NULL)
 	if (tCanvas == NULL)
 	{
 		//pCanvas = new Canvas(pTL, pBR);
-		tCanvas = new TreemapCanvas(tTL, tBR, treemap.getTree());
+		tCanvas = new TreemapCanvas(tTL, tBR, treemap->getTree());
 	}
 	else
 	{

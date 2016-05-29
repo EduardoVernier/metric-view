@@ -2,8 +2,10 @@
 #include "../include/EntityTree.h"
 #include "../include/Package.h" // Remove after testing
 
-CsvParser::CsvParser(string dataDirName)
+CsvParser::CsvParser(EntityTree *et, string dataDirName)
 {
+	entityTree = et;
+
 	struct dirent *dDirent;
 	DIR *dataDir;
 	string lastRev;

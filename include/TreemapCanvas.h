@@ -14,13 +14,14 @@ using namespace std;
 class TreemapCanvas : public Canvas
 {
 public:
-  TreemapCanvas (Point tl, Point br, EntityTree et);
+  TreemapCanvas (Point tl, Point br, EntityTree *et);
   void drawCanvas();
 
 private:
-  void drawEntity(BaseEntity* e);
+  void drawEntity(BaseEntity *e);
+  void drawPackage(BaseEntity *e);
 
-  EntityTree entityTree;
+  EntityTree *entityTree;
 };
 
 

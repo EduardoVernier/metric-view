@@ -15,9 +15,9 @@ using namespace std;
 class Treemap
 {
 public:
-	Treemap(EntityTree et, int _width, int _height);
-	void updateSize(int _width, int _height);
-	EntityTree getTree() { return entityTree; };
+	Treemap(EntityTree *et, double _width, double _height);
+	void updateSize(double _width, double _height);
+	EntityTree* getTree() { return entityTree; };
 
 private:
 	void treemapMultidimensional(vector<BaseEntity*> *data, double width, double height, double xOffset, double yOffset);
@@ -28,7 +28,7 @@ private:
 	double sumNormalizedScores(vector<BaseEntity*> *data);
 	int improvesRatio(vector<BaseEntity*> *currentRow, double nextEntity, int length);
 
-	EntityTree entityTree;
+	EntityTree *entityTree;
 	int width, height;
 };
 

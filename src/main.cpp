@@ -12,20 +12,21 @@
 using namespace std;
 
 void initilizeVisualization(int argc, char **argv);
-EntityTree buildEntityTree(int argc, char **argv);
+void buildEntityTree(int argc, char **argv, EntityTree *et);
 
 int main_window;
-Treemap *treemap; // Global singleton
+Treemap *treemap; // Global singletons
 
 int main(int argc, char **argv)
 {
 	initilizeVisualization(argc, argv);
 
 	// Build entity tree from csv metric files
-	EntityTree entityTree = buildEntityTree(argc, argv);
+	EntityTree *entityTree = new EntityTree();
+	buildEntityTree(argc, argv, entityTree);
 	// Use entity tree to generate a squarified treemap
-	treemap = new Treemap (entityTree, 600, 450);
-	treemap->getTree().printTree();
+	treemap = new Treemap (entityTree, (double)500, (double)450);
+	//treemap->getTree()->printTree();
 
 	glutIdleFunc(idle);
 	glutMainLoop();
@@ -37,16 +38,17 @@ void initilizeVisualization(int argc, char **argv)
 {
 	// Initialize Glut/Glui
 	glutInit(&argc, argv);
- 	glutInitWindowSize(1200,700);
+ 	glutInitWindowSize(1200,500);
 	main_window = glutCreateWindow("MetricView");
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouseClick);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 
-EntityTree buildEntityTree(int argc, char **argv)
+void buildEntityTree(int argc, char **argv, EntityTree *et)
 {
 	// Check if a string was inputed
 	if (argc < 2)
@@ -55,6 +57,5 @@ EntityTree buildEntityTree(int argc, char **argv)
 		exit(1);
 	}
 
-	CsvParser parser (argv[1]);
-	return parser.getEntityTree();
+	CsvParser parser (et, argv[1]);
 }

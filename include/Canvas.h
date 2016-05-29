@@ -8,8 +8,9 @@
 
 class Canvas
 {
-private:
+protected:
     Point top_left, bottom_right;
+    double xOff, yOff;
 public:
     void setSize(Point tl, Point br);
     virtual void drawCanvas() = 0;

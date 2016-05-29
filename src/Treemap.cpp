@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Treemap::Treemap(EntityTree et, int _width, int _height)
+Treemap::Treemap(EntityTree *et, double _width, double _height)
 {
 	entityTree = et;
 	width = _width;
@@ -10,7 +10,7 @@ Treemap::Treemap(EntityTree et, int _width, int _height)
 
 	// Take all first level BaseEntities and start treemapping algorithm
 	vector<BaseEntity*> data;
-	for (vector<BaseEntity*>::iterator b = entityTree.sortedEntities.begin() ; b != entityTree.sortedEntities.end(); ++b)
+	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin() ; b != entityTree->sortedEntities.end(); ++b)
 		if((*b)->getLevel() == 1 && (*b)->getScore() != 0)
 		{
 			data.push_back(*b);
@@ -133,8 +133,9 @@ void Treemap::normalize(vector<BaseEntity*> *data, int area)
 	{
 		double newScore = (*b)->getScore() * ((double)area / sum);
 		(*b)->setNormalizedScore(newScore);
-		// cout << (*b)->getNormalizedScore() << endl;
+		//cout << (*b)->getName() << " " << (*b)->getScore() << " " << (*b)->getNormalizedScore() << endl;
 	}
+	//cout << endl;
 }
 
 // Sum score of a list of BaseEntities
@@ -156,16 +157,18 @@ double Treemap::sumNormalizedScores(vector<BaseEntity*> *data)
 }
 
 // When the canvas changes size, all must be recomputed
-void Treemap::updateSize (int _width, int _height)
+void Treemap::updateSize (double _width, double _height)
 {
 	width = _width;
 	height = _height;
 
 	vector<BaseEntity*> data;
-	for (vector<BaseEntity*>::iterator b = entityTree.sortedEntities.begin() ; b != entityTree.sortedEntities.end(); ++b)
+	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
+	{
 		if((*b)->getLevel() == 1 && (*b)->getScore() != 0)
 		{
 			data.push_back(*b);
 		}
+	}
 	treemapMultidimensional(&data, (double)_width, (double)_height, 0, 0);
 }
