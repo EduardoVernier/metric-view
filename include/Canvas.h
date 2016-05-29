@@ -11,8 +11,7 @@ class Canvas
 private:
     Point top_left, bottom_right;
 public:
-    //Canvas(Point tl, Point br);
     void setSize(Point tl, Point br);
-    void drawCanvas();
+    virtual void drawCanvas() = 0;
 };
 #endif

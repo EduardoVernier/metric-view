@@ -17,7 +17,7 @@ class Treemap
 public:
 	Treemap(EntityTree et, int _width, int _height);
 	void updateSize(int _width, int _height);
-	EntityTree* getTree() { return &entityTree; };
+	EntityTree getTree() { return entityTree; };
 
 private:
 	void treemapMultidimensional(vector<BaseEntity*> *data, double width, double height, double xOffset, double yOffset);

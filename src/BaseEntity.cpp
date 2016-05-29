@@ -8,7 +8,7 @@ void BaseEntity::setCoords(double *_coords)
 	}
 }
 
-double* BaseEntity::getCoords()
+double BaseEntity::getCoord(int i)
 {
-		return coords;
+		return coords[i];
 }

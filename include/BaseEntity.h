@@ -16,7 +16,7 @@ public:
 	void setNormalizedScore(double s) { normalizedScore = s; };
 	double getNormalizedScore() { return normalizedScore; };
 	void setCoords(double *_coords);
-	double* getCoords();
+	double getCoord(int i);
 
 private:
 	double coords[4];

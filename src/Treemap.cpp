@@ -41,11 +41,10 @@ void Treemap::treemapMultidimensional(vector<BaseEntity*> *data, double width, d
 				newData.push_back(*child);
 			}
 			// Calculate new containers dimentions
-			double *coords = (*b)->getCoords();
-			double newWidth = coords[2] - coords[0];
-			double newHeight = coords[3] - coords[1];
-			double newxOff = coords[0];
-			double newyOff = coords[1];
+			double newWidth = (*b)->getCoord(2) - (*b)->getCoord(0);
+			double newHeight = (*b)->getCoord(3) - (*b)->getCoord(1);
+			double newxOff = (*b)->getCoord(0);
+			double newyOff = (*b)->getCoord(1);
 			// Recursive call
 			treemapMultidimensional(&newData, newWidth, newHeight, newxOff, newyOff);
 		}

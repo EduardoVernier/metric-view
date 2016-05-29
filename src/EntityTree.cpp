@@ -141,7 +141,7 @@ void EntityTree::printTree()
 
 
 		for (int i = 0; i < 4; ++i)
-			cout << (*b)->getCoords()[i] << " ";
+			cout << (*b)->getCoord(i) << " ";
 		cout << endl;
 	}
 }

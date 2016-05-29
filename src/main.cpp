@@ -25,8 +25,8 @@ int main(int argc, char **argv)
 	EntityTree entityTree = buildEntityTree(argc, argv);
 	// Use entity tree to generate a squarified treemap
 	treemap = new Treemap (entityTree, 600, 450);
-	treemap->getTree()->printTree();
-	
+	treemap->getTree().printTree();
+
 	glutIdleFunc(idle);
 	glutMainLoop();
 	return 0;
