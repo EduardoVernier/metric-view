@@ -2,44 +2,73 @@
 
 Mouse::Mouse()
 {
-
+    x = 0, y = 0, canvas = 0;
+    button = 0, state = 0;
 }
 
-int Mouse::click (int button, int state, int x, int y)
+int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 {
-    button_ = button;
-    state_ = state;
+    button = _button;
+    state = _state;
 
-    if (y > 10 && y < H_-10)
+    lastX = x;
+    lastY = y;
+    lastCanvas = canvas;
+
+    if (_y > 10 && _y < H_-10)
     {
-        if (x > 10 && x < 10 + (W_-30)/2)
+        if (_x > 10 && _x < 10 + (W_-30)/2)
         {
-            canvas_ = P;
-            x_ = x-10;
-            y_ = y-10;
+            canvas = P;
+            x = _x-10;
+            y = _y-10;
         }
-        else if (x > 20 + (W_-30)/2 && x < W_-10)
+        else if (_x > 20 + (W_-30)/2 && _x < W_-10)
         {
-            canvas_ = T;
-            x_ = x - (20+(W_-30)/2);
-            y_ = y - 10;
+            canvas = T;
+            x = _x - (20+(W_-30)/2);
+            y = _y - 10;
         }
         else
         {
-            canvas_ = NONE;
-            x_ = 0;
-            y_ = 0;
+            canvas = NONE;
+            x = 0;
+            y = 0;
         }
     }
     else
     {
-        canvas_ = NONE;
-        x_ = 0;
-        y_ = 0;
+        canvas = NONE;
+        x = 0;
+        y = 0;
     }
 
-    printf("%d %d - %d\n", x_,y_, canvas_);
-    return 1;
+    if (button == 0)
+        if (state == 1 && canvas == 2)
+        {
+            if (x < lastX)
+            {
+                int temp = x;
+                x = lastX;
+                lastX = temp;
+            } 
+            if (y < lastY)
+            {
+                int temp = y;
+                y = lastY;
+                lastY = temp;
+            } 
+            pos[0] = lastX;
+            pos[1] = lastY;
+            pos[2] = x;
+            pos[3] = y;
+            //cout << pos[0] << " " << pos[1] << " " << pos[2] << " " << pos[3] << endl; 
+            return 1;
+        }
+
+    //printf("%d %d - %d\n", lastX, lastY, lastCanvas);
+    //printf("%d %d - %d  - %d %d\n", x, y, canvas, button, state);
+    return 0;
 }
 
 void Mouse::setWindowSize(int W, int H)

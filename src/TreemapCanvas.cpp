@@ -26,8 +26,6 @@ void TreemapCanvas::drawCanvas()
 			drawPackage(*it);
 		}
 	}
-
-
 }
 
 void TreemapCanvas::drawEntity(BaseEntity *e)

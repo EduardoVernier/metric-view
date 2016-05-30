@@ -146,7 +146,7 @@ void EntityTree::printTree()
 	}
 }
 
-
+// Set min and max for use on colormapping
 void EntityTree::setMinMax()
 {
 	treeMin = FLT_MAX;
@@ -159,4 +159,29 @@ void EntityTree::setMinMax()
 			treeMax = ((*b)->getScore() > treeMax) ? (*b)->getScore() : treeMax;
 		}	
 	}
+}
+
+// Return vector of pointers of the selected entities 
+vector<BaseEntity*> EntityTree::getEntitiesByPosition(int *drag)
+{
+	vector<BaseEntity*> result;
+	
+	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	{
+		if ((*b)->isPackage() == 0)
+		{
+			if ((*b)->getCoord(3) < drag[1]) 
+				continue; // b too high
+			else if ((*b)->getCoord(1) > drag[3])
+				continue; // svg too low
+			else if ((*b)->getCoord(2) < drag[0])
+				continue;  // svg too far left
+			else if ((*b)->getCoord(0) > drag[2])
+				continue;  // svg too far right
+			else
+				cout << (*b)->getName() << " " << (*b)->getScore() << endl;
+		}	
+	}
+	cout << endl;
+	return result;
 }
