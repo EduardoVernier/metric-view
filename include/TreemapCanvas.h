@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include "math.h"
 
 #include "Canvas.h"
 #include "EntityTree.h"
@@ -10,6 +11,11 @@
 #include "Package.h"
 
 using namespace std;
+
+struct Color
+{
+	float R, G, B;
+};
 
 class TreemapCanvas : public Canvas
 {
@@ -20,6 +26,7 @@ public:
 private:
   void drawEntity(BaseEntity *e);
   void drawPackage(BaseEntity *e);
+  Color rainbow(double value);
 
   EntityTree *entityTree;
 };

@@ -1,5 +1,6 @@
 #include "../include/renderer.h"
 
+extern int winWidth, winHeight;
 extern int main_window;
 
 // Singletons
@@ -13,7 +14,7 @@ void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	render();
-  glFlush();
+	glFlush();
 }
 
 // Function called when window dimentions change
@@ -48,6 +49,7 @@ void render()
 void setCanvassesSizes(int W, int H)
 {
 	cout << "Width: " << W << " Height: " << H << endl;
+	
 
 	// Let mouse object know that window has changed size
 	mouse->setWindowSize(W, H);
@@ -62,8 +64,9 @@ void setCanvassesSizes(int W, int H)
 	tTL.x = 20 + (W-30)/2.0; tTL.y = 10;
 	tBR.x = W-10; tBR.y = H-10;
 
+	// TODO: Fix update in window size
 	// Update treemap given new width and height
-	//treemap->updateSize((W-30)/2.0, H-20);
+	// treemap->updateSize((W-30)/2.0, H-20);
 
 	// Instantiate if it's the first call, else just update size
 	//if (pCanvas == NULL && tCanvas == NULL)

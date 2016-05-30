@@ -49,6 +49,7 @@ void EntityTree::buildHierarchy()
 	setHierarchicalLevel(&packageVector[0], 0);
 	sortPackages(&packageVector[0]);
 	generateSortedEntitiesVector(&packageVector[0]);
+	setMinMax();
 }
 
 // Determines every entity tree level
@@ -139,9 +140,23 @@ void EntityTree::printTree()
 		for (int j = 0; j < (*b)->getLevel(); ++j)
 			cout << " ";
 
-
 		for (int i = 0; i < 4; ++i)
 			cout << (*b)->getCoord(i) << " ";
 		cout << endl;
+	}
+}
+
+
+void EntityTree::setMinMax()
+{
+	treeMin = FLT_MAX;
+	treeMax = FLT_MIN;
+	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	{
+		if ((*b)->isPackage() == 0)
+		{
+			treeMin = ((*b)->getScore() < treeMin) ? (*b)->getScore() : treeMin;
+			treeMax = ((*b)->getScore() > treeMax) ? (*b)->getScore() : treeMax;
+		}	
 	}
 }

@@ -14,6 +14,7 @@ using namespace std;
 void initilizeVisualization(int argc, char **argv);
 void buildEntityTree(int argc, char **argv, EntityTree *et);
 
+int winWidth = 1200, winHeight = 800;
 int main_window;
 Treemap *treemap; // Global singletons
 
@@ -25,7 +26,7 @@ int main(int argc, char **argv)
 	EntityTree *entityTree = new EntityTree();
 	buildEntityTree(argc, argv, entityTree);
 	// Use entity tree to generate a squarified treemap
-	treemap = new Treemap (entityTree, (double)500, (double)450);
+	treemap = new Treemap (entityTree, (double)(winWidth-30)/2, (double)winHeight-20);
 	//treemap->getTree()->printTree();
 
 	glutIdleFunc(idle);
@@ -38,7 +39,7 @@ void initilizeVisualization(int argc, char **argv)
 {
 	// Initialize Glut/Glui
 	glutInit(&argc, argv);
- 	glutInitWindowSize(1200,500);
+ 	glutInitWindowSize(winWidth, winHeight);
 	main_window = glutCreateWindow("MetricView");
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
