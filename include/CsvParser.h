@@ -14,11 +14,13 @@ using namespace std;
 class CsvParser
 {
 public:
-	CsvParser(EntityTree *et, string dataDir);
+	CsvParser(EntityTree *et, string dataDir, string projectionDirName);
 	EntityTree* getEntityTree() { return entityTree; };
 
 private:
-	void parseMetricFile(string filename);
+	void parseMetricFile(string filename, unsigned nRevisions);
+	void parseProjectionFile(string filename, unsigned index);
+
 	EntityTree *entityTree;
 };
 

@@ -29,7 +29,7 @@ void Package::printPackage(int level)
 			for (int l = 0; l <= level+1; l++)
 				cout << "  ";
 
-			cout << entityVector[k].value << ' ' <<  entityVector[k].id << endl;
+			cout << entityVector[k].getScore() << ' ' <<  entityVector[k].getName() << endl;
 		}
 	}
 }
@@ -75,4 +75,4 @@ void Package::sortEntities()
 		if (i == childrenVector.size() && j == entityVector.size())
 			break;
 	}
-}	
+}

@@ -52,11 +52,11 @@ void initilizeVisualization(int argc, char **argv)
 void buildEntityTree(int argc, char **argv, EntityTree *et)
 {
 	// Check if a string was inputed
-	if (argc < 2)
+	if (argc < 3)
 	{
-		cout << ("Usage: runner <dirname>\n");
+		cout << ("Usage: runner <datadir> <projectiondir>\n");
 		exit(1);
 	}
 
-	CsvParser parser (et, argv[1]);
+	CsvParser parser (et, argv[1], argv[2]);
 }

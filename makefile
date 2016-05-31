@@ -32,6 +32,8 @@ clean:
 	@echo " Cleaning...";
 	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
 
+run:
+	$(TARGET) data/guice-d/ 
 
 GLUI:
 CPPFLAGS += -I./ -I./include

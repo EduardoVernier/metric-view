@@ -1,6 +1,6 @@
 #include "../include/Entity.h"
 
-Entity::Entity (string csvLine)
+Entity::Entity (string csvLine, unsigned nRevisions)
 {
   // Collect all data
   stringstream ss(csvLine);
@@ -20,4 +20,12 @@ Entity::Entity (string csvLine)
   // CountLine metric as value
   istringstream buffer(data[22]);
   buffer >> value;
+
+  // Create projection positions vector
+  projectionPoints.resize(nRevisions, {0,0});
+}
+
+void Entity::addPointAtIndex(Point p, unsigned index)
+{
+  projectionPoints[index] = p;
 }

@@ -5,7 +5,7 @@ void EntityTree::addEntity(Entity ent)
 {
 	if (packageVector.empty())
 	{
-		Package newPackage(ent.prefix);
+		Package newPackage(ent.getPrefix());
 		newPackage.addEntity(ent);
 		packageVector.push_back(newPackage);
 	}
@@ -14,7 +14,7 @@ void EntityTree::addEntity(Entity ent)
 		int found = 0;
 		for (vector<Package>::iterator pckg = packageVector.begin() ; pckg != packageVector.end(); ++pckg)
 		{
-			if(pckg->prefix == ent.prefix)
+			if(pckg->getName() == ent.getPrefix())
 			{
 				found = 1;
 				pckg->addEntity(ent);
@@ -24,7 +24,7 @@ void EntityTree::addEntity(Entity ent)
 
 		if (found == 0)
 		{
-			Package newPackage(ent.prefix);
+			Package newPackage(ent.getPrefix());
 			newPackage.addEntity(ent);
 			packageVector.push_back(newPackage);
 		}
@@ -38,7 +38,7 @@ void EntityTree::buildHierarchy()
 	{
 		for (vector<Package>::reverse_iterator j = i+1; j!= packageVector.rend(); ++j)
 		{
-			if (i->prefix.find(j->prefix) != string::npos)
+			if (i->getName().find(j->getName()) != string::npos)
 			{
 				j->addChild(*i);
 				packageVector.erase((i+1).base());
@@ -157,20 +157,20 @@ void EntityTree::setMinMax()
 		{
 			treeMin = ((*b)->getScore() < treeMin) ? (*b)->getScore() : treeMin;
 			treeMax = ((*b)->getScore() > treeMax) ? (*b)->getScore() : treeMax;
-		}	
+		}
 	}
 }
 
-// Return vector of pointers of the selected entities 
+// Return vector of pointers of the selected entities
 vector<BaseEntity*> EntityTree::getEntitiesByPosition(int *drag)
 {
 	vector<BaseEntity*> result;
-	
+
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
 	{
 		if ((*b)->isPackage() == 0)
 		{
-			if ((*b)->getCoord(3) < drag[1]) 
+			if ((*b)->getCoord(3) < drag[1])
 				continue; // b too high
 			else if ((*b)->getCoord(1) > drag[3])
 				continue; // svg too low
@@ -179,9 +179,25 @@ vector<BaseEntity*> EntityTree::getEntitiesByPosition(int *drag)
 			else if ((*b)->getCoord(0) > drag[2])
 				continue;  // svg too far right
 			else
+			{
 				cout << (*b)->getName() << " " << (*b)->getScore() << endl;
-		}	
+				for (unsigned i = 0; i < ((Entity*)*b)->projectionPoints.size();++i)
+					cout << ((Entity*)*b)->projectionPoints[i].x << ' ' << ((Entity*)*b)->projectionPoints[i].y << endl;
+
+			}
+		}
 	}
 	cout << endl;
 	return result;
+}
+
+void EntityTree::addProjection(string name, double x, double y, unsigned index)
+{
+	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	{
+		if((*b)->isPackage() == 0 && name == ((Entity*)(*b))->getPrefix()+'.'+(*b)->getName())
+		{
+			((Entity*)(*b))->addPointAtIndex({x, y}, index);
+		}
+	}
 }

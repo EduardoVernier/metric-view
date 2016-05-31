@@ -30,7 +30,8 @@ public:
 	void printTree();
 	double getMin() { return treeMin; };
 	double getMax() { return treeMax; };
-	vector<BaseEntity*> getEntitiesByPosition(int *drag);
+  vector<BaseEntity*> getEntitiesByPosition(int *drag);
+  void addProjection(string name, double x, double y, unsigned index);
 
 	vector<Package> packageVector; // Entity tree is a collection of Packages
 	vector<BaseEntity*> sortedEntities; // Contains both Packages and Entities ordered by score
@@ -40,6 +41,7 @@ private:
 	void sortPackages(Package *p);
 	void setHierarchicalLevel(Package *p, int level);
 	void setMinMax();
+
 	double treeMin, treeMax;
 };
 
