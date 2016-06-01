@@ -60,13 +60,13 @@ void TreemapCanvas::drawPackage(BaseEntity *e)
 
 }
 
-// Map normalized (0:1) scalar to a color on the rainbow colormap 
+// Map normalized (0:1) scalar to a color on the rainbow colormap
 Color TreemapCanvas::rainbow(double value)
 {
 	Color c;
 	double minT = entityTree->getMin(), maxT = entityTree->getMax();
-	value = value * (1.0/(maxT-minT)) - minT/(maxT-minT);   
-	
+	value = value * (1.0/(maxT-minT)) - minT/(maxT-minT);
+
 	const float dx=0.8;
 	if (value<0)
 			value = 0;
@@ -79,4 +79,13 @@ Color TreemapCanvas::rainbow(double value)
 	c.B = max(0.0,(3-fabs(value-1)-fabs(value-2))/2);
 
 	return c;
+}
+
+
+void TreemapCanvas::renderString(int x, int y, string str, Color c)
+{
+  glColor3f(c.R, c.G, c.B);
+  glRasterPos2i(x, y);
+	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
+	glutBitmapString(GLUT_BITMAP_9_BY_15, s);
 }

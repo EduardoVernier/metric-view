@@ -180,17 +180,15 @@ vector<BaseEntity*> EntityTree::getEntitiesByPosition(int *drag)
 				continue;  // svg too far right
 			else
 			{
-				cout << (*b)->getName() << " " << (*b)->getScore() << endl;
-				for (unsigned i = 0; i < ((Entity*)*b)->projectionPoints.size();++i)
-					cout << ((Entity*)*b)->projectionPoints[i].x << ' ' << ((Entity*)*b)->projectionPoints[i].y << endl;
-
+				//cout << (*b)->getName() << " " << (*b)->getScore() << endl;
+				result.push_back(*b);
 			}
 		}
 	}
-	cout << endl;
 	return result;
 }
 
+// Add projection point to vector of points
 void EntityTree::addProjection(string name, double x, double y, unsigned index)
 {
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)

@@ -51,23 +51,23 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
                 int temp = x;
                 x = lastX;
                 lastX = temp;
-            } 
+            }
             if (y < lastY)
             {
                 int temp = y;
                 y = lastY;
                 lastY = temp;
-            } 
+            }
             pos[0] = lastX;
             pos[1] = lastY;
             pos[2] = x;
             pos[3] = y;
-            //cout << pos[0] << " " << pos[1] << " " << pos[2] << " " << pos[3] << endl; 
+            //cout << pos[0] << " " << pos[1] << " " << pos[2] << " " << pos[3] << endl;
             return 1;
         }
 
-    //printf("%d %d - %d\n", lastX, lastY, lastCanvas);
-    //printf("%d %d - %d  - %d %d\n", x, y, canvas, button, state);
+    printf("%d %d - %d\n", lastX, lastY, lastCanvas);
+    printf("%d %d - %d  - %d %d\n", x, y, canvas, button, state);
     return 0;
 }
 

@@ -7,6 +7,7 @@
 
 #include "Treemap.h"
 #include "TreemapCanvas.h"
+#include "ProjectionCanvas.h"
 #include "Mouse.h"
 
 void display();
@@ -15,5 +16,6 @@ void mouse_click(int button, int state, int x, int y);
 void render();
 void setCanvassesSizes(int w, int h);
 void idle();
+void drawHoveringLabel();
 
 #endif

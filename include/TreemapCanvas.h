@@ -6,22 +6,19 @@
 #include "math.h"
 
 #include "Canvas.h"
-#include "EntityTree.h"
 #include "Entity.h"
 #include "Package.h"
+#include "EntityTree.h"
+#include "Color.h"
 
 using namespace std;
-
-struct Color
-{
-	float R, G, B;
-};
 
 class TreemapCanvas : public Canvas
 {
 public:
   TreemapCanvas (Point tl, Point br, EntityTree *et);
-  void drawCanvas();
+	void renderString(int x, int y, string str, Color c);
+	void drawCanvas();
 
 private:
   void drawEntity(BaseEntity *e);

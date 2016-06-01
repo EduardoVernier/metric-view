@@ -1,7 +1,8 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-#include <GL/glut.h>
+//#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <GL/glui.h>
 
 #include "Point.h"

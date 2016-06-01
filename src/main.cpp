@@ -14,7 +14,7 @@ using namespace std;
 void initilizeVisualization(int argc, char **argv);
 void buildEntityTree(int argc, char **argv, EntityTree *et);
 
-int winWidth = 1200, winHeight = 800;
+unsigned winWidth = 1630, winHeight = 800;
 int main_window;
 Treemap *treemap; // Global singletons
 
@@ -45,6 +45,7 @@ void initilizeVisualization(int argc, char **argv)
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouseClick);
+	glutPassiveMotionFunc(mousePassive);
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
