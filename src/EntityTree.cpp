@@ -191,11 +191,34 @@ vector<BaseEntity*> EntityTree::getEntitiesByPosition(int *drag)
 // Add projection point to vector of points
 void EntityTree::addProjection(string name, double x, double y, unsigned index)
 {
+	// Keep mins and maxs updated for normalizing the projection
+	if(x < minX) minX = x;
+	if(x > maxX) maxX = x;
+	if(y < minY) minY = y;
+	if(y > maxY) maxY = y;
+
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
 	{
 		if((*b)->isPackage() == 0 && name == ((Entity*)(*b))->getPrefix()+'.'+(*b)->getName())
 		{
 			((Entity*)(*b))->addPointAtIndex({x, y}, index);
+		}
+	}
+}
+
+void EntityTree::normalizeProjection(int shortEdge)
+{
+	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	{
+		if((*b)->isPackage() == 0)
+		{
+			for(unsigned i = 0; i < ((Entity*)(*b))->projectionPoints.size() ; ++i)
+			{
+				double normX = (((Entity*)(*b))->projectionPoints[i].x - minX)*((double)shortEdge)/(maxX - minX);
+				double normY = (((Entity*)(*b))->projectionPoints[i].y - minY)*((double)shortEdge)/(maxY - minY);
+				cout << normX << " " << normY << endl;
+				((Entity*)(*b))->normalizedProjectionPoints.push_back({normX,normY});
+			}
 		}
 	}
 }

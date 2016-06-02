@@ -32,6 +32,8 @@ public:
 	double getMax() { return treeMax; };
   vector<BaseEntity*> getEntitiesByPosition(int *drag);
   void addProjection(string name, double x, double y, unsigned index);
+  void normalizeProjection(int shortEdge);
+
 
 	vector<Package> packageVector; // Entity tree is a collection of Packages
 	vector<BaseEntity*> sortedEntities; // Contains both Packages and Entities ordered by score
@@ -43,6 +45,7 @@ private:
 	void setMinMax();
 
 	double treeMin, treeMax;
+  double minX = FLT_MAX, maxX = FLT_MIN, minY = FLT_MAX, maxY = FLT_MIN;
 };
 
 #endif

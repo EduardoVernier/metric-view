@@ -21,6 +21,8 @@ public:
 	void addPointAtIndex(Point p, unsigned index);
 
 	vector <Point> projectionPoints;
+	vector <Point> normalizedProjectionPoints;
+
 	double value; // too much trouble to make private because of custom comparator
 
 private:

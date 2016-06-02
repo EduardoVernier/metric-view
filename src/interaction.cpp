@@ -7,6 +7,7 @@ extern BaseEntity *hover;
 extern int mx, my;
 void mouseClick(int button, int state, int x, int y)
 {
+	mx = x; my = y;
 	int drag[4] = {0,0,0,0};
   if(mouse->click(button, state, x, y, drag))
   	treemap->getTree()->getEntitiesByPosition(drag);

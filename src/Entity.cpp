@@ -23,6 +23,7 @@ Entity::Entity (string csvLine, unsigned nRevisions)
 
   // Create projection positions vector
   projectionPoints.resize(nRevisions, {0,0});
+  normalizedProjectionPoints.resize(nRevisions, {0,0});
 }
 
 void Entity::addPointAtIndex(Point p, unsigned index)

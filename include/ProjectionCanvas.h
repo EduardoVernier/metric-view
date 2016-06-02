@@ -18,6 +18,7 @@ public:
   void drawCanvas();
 
 private:
+  void normalizeProjection();
   EntityTree *entityTree;
 };
 
