@@ -7,7 +7,7 @@ TreemapCanvas::TreemapCanvas (Point tl, Point br, EntityTree *et)
 }
 
 // First draw elements and then package borders
-void TreemapCanvas::drawCanvas()
+void TreemapCanvas::drawCanvas(unsigned Rt)
 {
 	vector<BaseEntity*> items = entityTree->sortedEntities;
 

@@ -8,6 +8,7 @@ Mouse  *mouse = new Mouse();
 Canvas *pCanvas = NULL;
 Canvas *tCanvas = NULL;
 extern Treemap *treemap;
+extern unsigned Rt;
 
 BaseEntity* hover = NULL; // Drawing of hovering label
 int mx, my; // Mouse coordinates
@@ -44,8 +45,8 @@ void idle()
 // Drawing
 void render()
 {
-	pCanvas->drawCanvas();
-	tCanvas->drawCanvas();
+	pCanvas->drawCanvas(Rt);
+	tCanvas->drawCanvas(0);
 	drawHoveringLabel();
 }
 
@@ -86,8 +87,8 @@ void setCanvassesSizes(int W, int H)
 		tCanvas->setSize(tTL, tBR);
 	}
 
-	pCanvas->drawCanvas();
-	tCanvas->drawCanvas();
+	pCanvas->drawCanvas(Rt);
+	tCanvas->drawCanvas(0);
 }
 
 void drawHoveringLabel()

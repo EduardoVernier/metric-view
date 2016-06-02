@@ -14,6 +14,6 @@ protected:
     double xOff, yOff;
 public:
     void setSize(Point tl, Point br);
-    virtual void drawCanvas() = 0;
+    virtual void drawCanvas(unsigned Rt) = 0;
 };
 #endif

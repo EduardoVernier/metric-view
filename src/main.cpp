@@ -16,6 +16,7 @@ void buildEntityTree(int argc, char **argv, EntityTree *et);
 
 unsigned winWidth = 1630, winHeight = 800;
 int main_window;
+unsigned Rt = 0; // Current revision
 Treemap *treemap; // Global singletons
 
 int main(int argc, char **argv)

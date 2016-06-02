@@ -18,7 +18,7 @@ class TreemapCanvas : public Canvas
 public:
   TreemapCanvas (Point tl, Point br, EntityTree *et);
 	void renderString(int x, int y, string str, Color c);
-	void drawCanvas();
+	void drawCanvas(unsigned Rt);
 
 private:
   void drawEntity(BaseEntity *e);

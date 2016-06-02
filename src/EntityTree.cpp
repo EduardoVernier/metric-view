@@ -162,11 +162,12 @@ void EntityTree::setMinMax()
 }
 
 // Return vector of pointers of the selected entities
-vector<BaseEntity*> EntityTree::getEntitiesByPosition(int *drag)
+void EntityTree::getEntitiesByPositionOnTreemap(int *drag, unsigned click)
 {
-	vector<BaseEntity*> result;
+	if (click)
+		selected.clear();
 
-	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	for (vector<BaseEntity*>::iterator b = sortedEntities.begin(); b != sortedEntities.end(); ++b)
 	{
 		if ((*b)->isPackage() == 0)
 		{
@@ -180,13 +181,47 @@ vector<BaseEntity*> EntityTree::getEntitiesByPosition(int *drag)
 				continue;  // svg too far right
 			else
 			{
-				//cout << (*b)->getName() << " " << (*b)->getScore() << endl;
-				result.push_back(*b);
+				if (click)
+					selected.push_back((Entity*)*b);
+				else
+					hovered = (Entity*)*b;
 			}
 		}
 	}
-	return result;
 }
+
+//
+void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt)
+{
+	Entity *closest = NULL;
+	double smallerDist = FLT_MAX;
+
+	for (vector<BaseEntity*>::iterator b = sortedEntities.begin(); b != sortedEntities.end(); ++b)
+	{
+		if ((*b)->isPackage() == 0)
+		{
+			if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case click
+			{
+				double distX = drag[0] - ((Entity*)(*b))->normalizedProjectionPoints[Rt].x;
+				double distY = drag[1] - ((Entity*)(*b))->normalizedProjectionPoints[Rt].y;
+				double dist = sqrt(pow(distX,2) + pow(distY,2));
+				if (dist < 100 && dist < smallerDist)
+				{
+					smallerDist = dist;
+					closest = (Entity*)(*b);
+				}
+			}
+		}
+	}
+	if(closest != NULL)
+	{
+		cout << drag[0] << " " << drag[1] << " " << drag[2] << " " << drag[3] << endl;
+		cout << closest->getName() << closest->normalizedProjectionPoints[Rt].x << " " << closest->normalizedProjectionPoints[Rt].x << endl;
+		selected.clear();
+		selected.push_back(closest);
+	}
+}
+
 
 // Add projection point to vector of points
 void EntityTree::addProjection(string name, double x, double y, unsigned index)
@@ -216,8 +251,7 @@ void EntityTree::normalizeProjection(int shortEdge)
 			{
 				double normX = (((Entity*)(*b))->projectionPoints[i].x - minX)*((double)shortEdge)/(maxX - minX);
 				double normY = (((Entity*)(*b))->projectionPoints[i].y - minY)*((double)shortEdge)/(maxY - minY);
-				cout << normX << " " << normY << endl;
-				((Entity*)(*b))->normalizedProjectionPoints.push_back({normX,normY});
+				((Entity*)(*b))->normalizedProjectionPoints[i] = {normX,normY};
 			}
 		}
 	}

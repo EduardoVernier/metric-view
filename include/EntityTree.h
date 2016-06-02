@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <cfloat>
+#include <cmath>
 
 #include "BaseEntity.h"
 #include "Entity.h"
@@ -30,11 +31,13 @@ public:
 	void printTree();
 	double getMin() { return treeMin; };
 	double getMax() { return treeMax; };
-  vector<BaseEntity*> getEntitiesByPosition(int *drag);
+  void getEntitiesByPositionOnTreemap(int *drag, unsigned click);
+  void getEntitiesByPositionOnProjection(int *drag, unsigned Rt);
   void addProjection(string name, double x, double y, unsigned index);
   void normalizeProjection(int shortEdge);
 
-
+  vector<Entity*> selected;
+  Entity* hovered;
 	vector<Package> packageVector; // Entity tree is a collection of Packages
 	vector<BaseEntity*> sortedEntities; // Contains both Packages and Entities ordered by score
 	int depth = 0;

@@ -19,6 +19,9 @@ public:
 	string getName(){ return id; };
 	string getPrefix() { return prefix; };
 	void addPointAtIndex(Point p, unsigned index);
+	unsigned isSelected() { return selected; };
+	void setSelected(unsigned s) { selected = s; };
+
 
 	vector <Point> projectionPoints;
 	vector <Point> normalizedProjectionPoints;
@@ -29,6 +32,7 @@ private:
 	string prefix;
 	string id;
 	vector <string> data;
+	unsigned selected = 0;
 };
 
 #endif
