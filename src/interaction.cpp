@@ -4,11 +4,11 @@ extern Mouse *mouse;
 extern Treemap *treemap;
 extern unsigned winWidth, winHeight;
 extern BaseEntity *hover;
-extern int mx, my;
+extern int mxdown, mydown, mx, my, mclicked;
 extern unsigned Rt;
 void mouseClick(int button, int state, int x, int y)
 {
-	mx = x; my = y;
+
 	int drag[4] = {0,0,0,0};
   switch (mouse->click(button, state, x, y, drag))
 	{
@@ -19,12 +19,12 @@ void mouseClick(int button, int state, int x, int y)
 			treemap->getTree()->getEntitiesByPositionOnTreemap(drag, 1);
 			break;
 	}
-
+	mouse->updateMouse(x, y);
 }
 
 void mousePassive (int x, int y)
 {
-	mx = x; my = y;
+	mouse->updateMouse(x, y);
 	if (x >= 20 + (winWidth-30)/2.0 && y >= 10)
 	{
 		int nx = x -(20 + (winWidth-30)/2.0);
@@ -37,6 +37,11 @@ void mousePassive (int x, int y)
 	{
 		hover = NULL;
 	}
+}
+
+void mouseUpdate(int x, int y)
+{
+	mouse->updateMouse(x, y);
 }
 
 void keyboard(unsigned char key, int x, int y)

@@ -8,6 +8,7 @@
 
 void mouseClick(int button, int state, int x, int y);
 void mousePassive(int x, int y);
+void mouseUpdate(int x, int y);
 void keyboard(unsigned char key, int x, int y);
 
 #endif

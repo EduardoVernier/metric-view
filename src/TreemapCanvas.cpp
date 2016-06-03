@@ -26,6 +26,12 @@ void TreemapCanvas::drawCanvas(unsigned Rt)
 			drawPackage(*it);
 		}
 	}
+
+	for (vector<Entity*>::iterator it = entityTree->selected.begin(); it != entityTree->selected.end(); ++it)
+	{
+
+			drawSelected(*it);
+	}
 }
 
 void TreemapCanvas::drawEntity(BaseEntity *e)
@@ -57,7 +63,23 @@ void TreemapCanvas::drawPackage(BaseEntity *e)
 	glVertex2d(x1,y0);
 	glVertex2d(x0,y0);
 	glEnd();
+}
 
+void TreemapCanvas::drawSelected(Entity *e)
+{
+	double padding = 0.0;
+	double x0 = e->getCoord(0)+ padding + xOff;
+	double y0 = e->getCoord(1)+ padding + yOff;
+	double x1 = e->getCoord(2)- padding + xOff;
+	double y1 = e->getCoord(3)- padding + yOff;
+
+	Color c = rainbow(e->getScore());
+	glColor3f(c.R*0.7, c.G*0.7, c.B*0.7);
+	glBegin(GL_TRIANGLES);
+	glVertex2d(x0,y0);
+	glVertex2d(x0,y1);
+	glVertex2d(x1,y1);
+	glEnd();
 }
 
 // Map normalized (0:1) scalar to a color on the rainbow colormap

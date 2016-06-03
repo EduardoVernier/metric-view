@@ -15,13 +15,15 @@ public:
     Mouse();
     int click (int button, int state, int _x, int _y, int *pos);
     void setWindowSize(int W, int H);
+    void updateMouse(int _x, int _y);
 
-private:
+    int rawLastX, rawLastY;
+    int rawX, rawY;
     int W_, H_;
     int x, y, canvas;
+    int button, state=1;
     int lastX, lastY, lastCanvas;
     int lastButton, lastState;
-    int button, state;
 };
 
 #endif

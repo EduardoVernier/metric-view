@@ -195,29 +195,34 @@ void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt)
 {
 	Entity *closest = NULL;
 	double smallerDist = FLT_MAX;
+	selected.clear();
 
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin(); b != sortedEntities.end(); ++b)
 	{
 		if ((*b)->isPackage() == 0)
 		{
+			double bx = ((Entity*)(*b))->normalizedProjectionPoints[Rt].x;
+			double by = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y;
 			if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case click
 			{
-				double distX = drag[0] - ((Entity*)(*b))->normalizedProjectionPoints[Rt].x;
-				double distY = drag[1] - ((Entity*)(*b))->normalizedProjectionPoints[Rt].y;
+				double distX = drag[0] - bx;
+				double distY = drag[1] - by;
 				double dist = sqrt(pow(distX,2) + pow(distY,2));
-				if (dist < 100 && dist < smallerDist)
+				if (dist < 100 && dist < smallerDist) // If click is close enough
 				{
 					smallerDist = dist;
 					closest = (Entity*)(*b);
 				}
 			}
+			else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) // If inside selection box
+			{
+				selected.push_back((Entity*)*b);
+			}
 		}
 	}
 	if(closest != NULL)
 	{
-		cout << drag[0] << " " << drag[1] << " " << drag[2] << " " << drag[3] << endl;
-		cout << closest->getName() << closest->normalizedProjectionPoints[Rt].x << " " << closest->normalizedProjectionPoints[Rt].x << endl;
-		selected.clear();
+		cout << closest->getName() <<endl << endl;
 		selected.push_back(closest);
 	}
 }

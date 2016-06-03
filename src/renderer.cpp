@@ -11,7 +11,7 @@ extern Treemap *treemap;
 extern unsigned Rt;
 
 BaseEntity* hover = NULL; // Drawing of hovering label
-int mx, my; // Mouse coordinates
+int mxdown, mydown, mx, my, mclicked; // Mouse coordinates
 
 // Glut/GLui argument functions
 void display()
@@ -48,6 +48,8 @@ void render()
 	pCanvas->drawCanvas(Rt);
 	tCanvas->drawCanvas(0);
 	drawHoveringLabel();
+	if(mouse->state == 0) // If mouse is being clicked
+		drawSelectionBox();
 }
 
 // Update objects when window size changes
@@ -99,10 +101,18 @@ void drawHoveringLabel()
 			glEnable (GL_BLEND);
 			glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glColor4f(0, 0, 0, 0.6);
-			glRecti(mx, my-10, mx - 9*(s.length()), my+2);
+			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX - 9*(s.length()), mouse->rawY+2);
 			glDisable (GL_BLEND);
 
-			((TreemapCanvas*)tCanvas)->renderString(mx - 9*(s.length()), my, s, {1.0f,1.0f,1.0f});
+			((TreemapCanvas*)tCanvas)->renderString(mouse->rawX - 9*(s.length()), mouse->rawY, s, {1.0f,1.0f,1.0f});
 		}
+}
 
+void drawSelectionBox()
+{
+	glEnable (GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glColor4f(0, 0, 0, 0.3);
+	glRecti(mouse->rawLastX, mouse->rawLastY, mouse->rawX, mouse->rawY);
+	glDisable (GL_BLEND);
 }

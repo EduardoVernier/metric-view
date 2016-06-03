@@ -17,5 +17,6 @@ void render();
 void setCanvassesSizes(int w, int h);
 void idle();
 void drawHoveringLabel();
+void drawSelectionBox();
 
 #endif

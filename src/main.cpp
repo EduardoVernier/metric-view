@@ -47,7 +47,8 @@ void initilizeVisualization(int argc, char **argv)
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouseClick);
 	glutPassiveMotionFunc(mousePassive);
-	glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
+	glutMotionFunc(mouseUpdate);
+	glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
 }
 
 

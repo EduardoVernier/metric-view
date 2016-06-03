@@ -3,13 +3,15 @@
 Mouse::Mouse()
 {
     x = 0, y = 0, canvas = 0;
-    button = 0, state = 0;
+    button = 0, state = 1;
 }
 
 int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 {
     button = _button;
     state = _state;
+    rawX = _x;
+    rawY = _y;
 
     lastX = x;
     lastY = y;
@@ -43,6 +45,12 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
         y = 0;
     }
 
+    if (button == 0 && state == 0)
+    {
+      rawLastX = _x;
+      rawLastY = _y;
+    }
+
     if (button == 0 && state == 1)
     {
         if (x < lastX)
@@ -72,4 +80,10 @@ void Mouse::setWindowSize(int W, int H)
 {
     W_ = W;
     H_ = H;
+}
+
+void Mouse::updateMouse(int _x, int _y)
+{
+  rawX = _x;
+  rawY = _y;
 }

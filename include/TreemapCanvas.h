@@ -21,6 +21,7 @@ public:
 	void drawCanvas(unsigned Rt);
 
 private:
+  void drawSelected(Entity *e);
   void drawEntity(BaseEntity *e);
   void drawPackage(BaseEntity *e);
   Color rainbow(double value);

@@ -14,9 +14,9 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
   glColor3f(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
-  for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin() ; b != entityTree->sortedEntities.end(); ++b)
+  for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
   {
-    if((*b)->isPackage() == 0)
+    if((*b)->isPackage() == 0 && (*b)->getName() != "")
     {
       double x = ((Entity*)(*b))->normalizedProjectionPoints[Rt].x;
       double y = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y;
@@ -24,7 +24,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
       drawFilledCircle(x, y, 5.0, c);
     }
   }
-  for (vector<Entity*>::iterator b = entityTree->selected.begin() ; b != entityTree->selected.end(); ++b)
+  for (vector<Entity*>::iterator b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
   {
     if((*b)->isPackage() == 0)
     {
