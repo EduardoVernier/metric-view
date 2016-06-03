@@ -34,6 +34,14 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
       drawFilledCircle(x, y, 8.0, c);
     }
   }
+
+  if (entityTree->hovered)
+  {
+    double x = entityTree->hovered->normalizedProjectionPoints[Rt].x;
+    double y = entityTree->hovered->normalizedProjectionPoints[Rt].y;
+    Color c = {0.0f,0.7f,0.0f};
+    drawFilledCircle(x, y, 8.0, c);
+  }
 }
 
 //
