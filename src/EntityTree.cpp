@@ -191,11 +191,13 @@ void EntityTree::getEntitiesByPositionOnTreemap(int *drag, unsigned click)
 }
 
 //
-void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt)
+void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click)
 {
 	Entity *closest = NULL;
+	hovered = NULL;
 	double smallerDist = FLT_MAX;
-	selected.clear();
+	if (click)
+		selected.clear();
 
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin(); b != sortedEntities.end(); ++b)
 	{
@@ -203,15 +205,23 @@ void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt)
 		{
 			double bx = ((Entity*)(*b))->normalizedProjectionPoints[Rt].x;
 			double by = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y;
-			if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case click
+			if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case point click (or hover of click = 0)
 			{
 				double distX = drag[0] - bx;
 				double distY = drag[1] - by;
 				double dist = sqrt(pow(distX,2) + pow(distY,2));
-				if (dist < 100 && dist < smallerDist) // If click is close enough
+				if (dist < 10 && dist < smallerDist) // If click is close enough
 				{
-					smallerDist = dist;
-					closest = (Entity*)(*b);
+					if (click)
+					{
+						smallerDist = dist;
+						closest = (Entity*)(*b);
+					}
+					else
+					{
+						smallerDist = dist;
+						hovered = (Entity*)(*b);
+					}
 				}
 			}
 			else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) // If inside selection box
@@ -220,9 +230,8 @@ void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt)
 			}
 		}
 	}
-	if(closest != NULL)
+	if(click == 1 && closest != NULL)
 	{
-		cout << closest->getName() <<endl << endl;
 		selected.push_back(closest);
 	}
 }

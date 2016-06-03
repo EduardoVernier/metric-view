@@ -32,7 +32,7 @@ public:
 	double getMin() { return treeMin; };
 	double getMax() { return treeMax; };
   void getEntitiesByPositionOnTreemap(int *drag, unsigned click);
-  void getEntitiesByPositionOnProjection(int *drag, unsigned Rt);
+  void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click);
   void addProjection(string name, double x, double y, unsigned index);
   void normalizeProjection(int shortEdge);
 

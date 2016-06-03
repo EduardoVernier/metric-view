@@ -6,14 +6,14 @@ extern unsigned winWidth, winHeight;
 extern BaseEntity *hover;
 extern int mxdown, mydown, mx, my, mclicked;
 extern unsigned Rt;
+
 void mouseClick(int button, int state, int x, int y)
 {
-
 	int drag[4] = {0,0,0,0};
   switch (mouse->click(button, state, x, y, drag))
 	{
 		case 1:
-			treemap->getTree()->getEntitiesByPositionOnProjection(drag, Rt);
+			treemap->getTree()->getEntitiesByPositionOnProjection(drag, Rt, 1);
 			break;
 		case 2:
 			treemap->getTree()->getEntitiesByPositionOnTreemap(drag, 1);
@@ -25,12 +25,16 @@ void mouseClick(int button, int state, int x, int y)
 void mousePassive (int x, int y)
 {
 	mouse->updateMouse(x, y);
-	if (x >= 20 + (winWidth-30)/2.0 && y >= 10)
+	if (mouse->canvas == 2) // Hovering treemap
 	{
-		int nx = x -(20 + (winWidth-30)/2.0);
-		int ny = y - 10;
-		int drag[4] = {nx,ny,nx,ny};
+		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
 		treemap->getTree()->getEntitiesByPositionOnTreemap(drag, 0);
+		hover = treemap->getTree()->hovered;
+	}
+	else if (mouse->canvas == 1) // Hovering projection
+	{
+		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
+		treemap->getTree()->getEntitiesByPositionOnProjection(drag, Rt, 0);
 		hover = treemap->getTree()->hovered;
 	}
 	else

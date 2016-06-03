@@ -101,10 +101,18 @@ void drawHoveringLabel()
 			glEnable (GL_BLEND);
 			glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glColor4f(0, 0, 0, 0.6);
-			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX - 9*(s.length()), mouse->rawY+2);
-			glDisable (GL_BLEND);
-
-			((TreemapCanvas*)tCanvas)->renderString(mouse->rawX - 9*(s.length()), mouse->rawY, s, {1.0f,1.0f,1.0f});
+			if (mouse->canvas == 2)
+			{
+				glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX - 9*(s.length()), mouse->rawY+2);
+				glDisable (GL_BLEND);
+				((TreemapCanvas*)tCanvas)->renderString(mouse->rawX - 9*(s.length()), mouse->rawY, s, {1.0f,1.0f,1.0f});
+			}
+			else if (mouse->canvas == 1)
+			{
+				glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX + 9*(s.length()), mouse->rawY+2);
+				glDisable (GL_BLEND);
+				((TreemapCanvas*)tCanvas)->renderString(mouse->rawX, mouse->rawY, s, {1.0f,1.0f,1.0f});
+			}
 		}
 }
 

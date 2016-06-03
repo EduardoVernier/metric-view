@@ -12,9 +12,6 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
     state = _state;
     rawX = _x;
     rawY = _y;
-
-    lastX = x;
-    lastY = y;
     lastCanvas = canvas;
 
     if (_y > 10 && _y < H_-10)
@@ -49,6 +46,8 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
     {
       rawLastX = _x;
       rawLastY = _y;
+      lastX = x;
+      lastY = y;
     }
 
     if (button == 0 && state == 1)
@@ -72,7 +71,6 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
         return canvas;
     }
 
-    //printf("%d %d - %d\n", lastX, lastY, lastCanvas);
     return 0;
 }
 
@@ -86,4 +84,32 @@ void Mouse::updateMouse(int _x, int _y)
 {
   rawX = _x;
   rawY = _y;
+
+  if (_y > 10 && _y < H_-10)
+  {
+      if (_x > 10 && _x < 10 + (W_-30)/2)
+      {
+          canvas = P;
+          x = _x-10;
+          y = _y-10;
+      }
+      else if (_x > 20 + (W_-30)/2 && _x < W_-10)
+      {
+          canvas = T;
+          x = _x - (20+(W_-30)/2);
+          y = _y - 10;
+      }
+      else
+      {
+          canvas = NONE;
+          x = 0;
+          y = 0;
+      }
+  }
+  else
+  {
+      canvas = NONE;
+      x = 0;
+      y = 0;
+  }
 }
