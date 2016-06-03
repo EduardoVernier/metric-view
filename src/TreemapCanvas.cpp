@@ -29,9 +29,10 @@ void TreemapCanvas::drawCanvas(unsigned Rt)
 
 	for (vector<Entity*>::iterator it = entityTree->selected.begin(); it != entityTree->selected.end(); ++it)
 	{
-
 			drawSelected(*it);
 	}
+
+	drawHovered(entityTree->hovered);
 }
 
 void TreemapCanvas::drawEntity(BaseEntity *e)
@@ -63,6 +64,22 @@ void TreemapCanvas::drawPackage(BaseEntity *e)
 	glVertex2d(x1,y0);
 	glVertex2d(x0,y0);
 	glEnd();
+}
+
+void TreemapCanvas::drawHovered(Entity *e)
+{
+	if (e == NULL) return;
+
+	double padding = 0.0;
+	double x0 = e->getCoord(0)+ padding + xOff;
+	double y0 = e->getCoord(1)+ padding + yOff;
+	double x1 = e->getCoord(2)- padding + xOff;
+	double y1 = e->getCoord(3)- padding + yOff;
+
+	glEnable(GL_BLEND);
+	glColor4f(0.0, 0.0, 0.0, 0.5);
+	glRectd(x0,y0,x1,y1);
+	glDisable(GL_BLEND);
 }
 
 void TreemapCanvas::drawSelected(Entity *e)

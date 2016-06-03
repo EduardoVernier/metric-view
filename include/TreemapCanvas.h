@@ -21,6 +21,7 @@ public:
 	void drawCanvas(unsigned Rt);
 
 private:
+  void drawHovered(Entity *e);
   void drawSelected(Entity *e);
   void drawEntity(BaseEntity *e);
   void drawPackage(BaseEntity *e);
