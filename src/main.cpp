@@ -45,6 +45,8 @@ void initilizeVisualization(int argc, char **argv)
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
+	glutSpecialFunc(keyboardMod);
+	glutSpecialUpFunc(keyboardMod);
 	glutMouseFunc(mouseClick);
 	glutPassiveMotionFunc(mousePassive);
 	glutMotionFunc(mouseUpdate);

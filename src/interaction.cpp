@@ -6,6 +6,7 @@ extern unsigned winWidth, winHeight;
 extern BaseEntity *hover;
 extern int mxdown, mydown, mx, my, mclicked;
 extern unsigned Rt;
+unsigned ctrlDown = 0;
 
 void mouseClick(int button, int state, int x, int y)
 {
@@ -13,10 +14,10 @@ void mouseClick(int button, int state, int x, int y)
   switch (mouse->click(button, state, x, y, drag))
 	{
 		case 1:
-			treemap->getTree()->getEntitiesByPositionOnProjection(drag, Rt, 1);
+			treemap->getTree()->getEntitiesByPositionOnProjection(drag, Rt, 1, ctrlDown);
 			break;
 		case 2:
-			treemap->getTree()->getEntitiesByPositionOnTreemap(drag, 1);
+			treemap->getTree()->getEntitiesByPositionOnTreemap(drag, 1, ctrlDown);
 			break;
 	}
 	mouse->updateMouse(x, y);
@@ -28,13 +29,13 @@ void mousePassive (int x, int y)
 	if (mouse->canvas == 2) // Hovering treemap
 	{
 		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
-		treemap->getTree()->getEntitiesByPositionOnTreemap(drag, 0);
+		treemap->getTree()->getEntitiesByPositionOnTreemap(drag, 0, ctrlDown);
 		hover = treemap->getTree()->hovered;
 	}
 	else if (mouse->canvas == 1) // Hovering projection
 	{
 		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
-		treemap->getTree()->getEntitiesByPositionOnProjection(drag, Rt, 0);
+		treemap->getTree()->getEntitiesByPositionOnProjection(drag, Rt, 0, ctrlDown);
 		hover = treemap->getTree()->hovered;
 	}
 	else
@@ -56,4 +57,10 @@ void keyboard(unsigned char key, int x, int y)
 		case 'z': if (Rt > 0) --Rt; break;
 		case 'x': if (1) ++Rt; break; // TODO: Fix this
 	}
+}
+
+void keyboardMod(int key, int x, int y)
+{
+	if (key == (int)114) // Check for ctrl
+		ctrlDown = (ctrlDown == 0)? 1 : 0;
 }

@@ -162,9 +162,9 @@ void EntityTree::setMinMax()
 }
 
 // Return vector of pointers of the selected entities
-void EntityTree::getEntitiesByPositionOnTreemap(int *drag, unsigned click)
+void EntityTree::getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsigned ctrlDown)
 {
-	if (click)
+	if (click && !ctrlDown)
 		selected.clear();
 
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin(); b != sortedEntities.end(); ++b)
@@ -191,12 +191,12 @@ void EntityTree::getEntitiesByPositionOnTreemap(int *drag, unsigned click)
 }
 
 //
-void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click)
+void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown)
 {
 	Entity *closest = NULL;
 	hovered = NULL;
 	double smallerDist = FLT_MAX;
-	if (click)
+	if (click && !ctrlDown)
 		selected.clear();
 
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin(); b != sortedEntities.end(); ++b)
