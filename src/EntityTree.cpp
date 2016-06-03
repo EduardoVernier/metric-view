@@ -182,7 +182,12 @@ void EntityTree::getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsig
 			else
 			{
 				if (click)
-					selected.push_back((Entity*)*b);
+				{
+					if ((std::find(selected.begin(), selected.end(),(Entity*)*b))!=selected.end())
+						selected.erase(std::find(selected.begin(), selected.end(),(Entity*)*b));
+					else
+						selected.push_back((Entity*)*b);
+				}
 				else
 					hovered = (Entity*)*b;
 			}
@@ -226,13 +231,19 @@ void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsig
 			}
 			else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) // If inside selection box
 			{
-				selected.push_back((Entity*)*b);
+				if ((std::find(selected.begin(), selected.end(),(Entity*)*b))!=selected.end())
+					selected.erase(std::find(selected.begin(), selected.end(),(Entity*)*b));
+				else
+					selected.push_back((Entity*)*b);
 			}
 		}
 	}
 	if(click == 1 && closest != NULL)
 	{
-		selected.push_back(closest);
+		if ((std::find(selected.begin(), selected.end(),closest))!=selected.end())
+			selected.erase(std::find(selected.begin(), selected.end(),closest));
+		else
+			selected.push_back(closest);
 	}
 }
 
