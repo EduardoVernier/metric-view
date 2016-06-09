@@ -9,7 +9,7 @@
 #include "Entity.h"
 #include "Package.h"
 #include "EntityTree.h"
-#include "Color.h"
+#include "Colormap.h"
 
 using namespace std;
 

@@ -43,7 +43,9 @@ void TreemapCanvas::drawEntity(BaseEntity *e)
 	double x1 = e->getCoord(2)- padding + xOff;
 	double y1 = e->getCoord(3)- padding + yOff;
 
-	Color c = rainbow(e->getScore());
+	double minT = entityTree->getMin(), maxT = entityTree->getMax();
+	double value = e->getScore() * (1.0/(maxT-minT)) - minT/(maxT-minT);
+	Color c = sequentialColormap(value);
 	glColor3f(c.R, c.G, c.B);
 	glRectd(x0,y0,x1,y1);
 }
@@ -102,7 +104,6 @@ void TreemapCanvas::drawSelected(Entity *e)
 // Map normalized (0:1) scalar to a color on the rainbow colormap
 Color TreemapCanvas::rainbow(double value)
 {
-	Color c;
 	double minT = entityTree->getMin(), maxT = entityTree->getMax();
 	value = value * (1.0/(maxT-minT)) - minT/(maxT-minT);
 
@@ -113,9 +114,9 @@ Color TreemapCanvas::rainbow(double value)
 			value = 1;
 
 	value = (6-2*dx)*value+dx;
-	c.R = max(0.0,(3-fabs(value-4)-fabs(value-5))/2);
-	c.G = max(0.0,(4-fabs(value-2)-fabs(value-4))/2);
-	c.B = max(0.0,(3-fabs(value-1)-fabs(value-2))/2);
+	Color c (max(0.0,(3-fabs(value-4)-fabs(value-5))/2),
+	c.G = max(0.0,(4-fabs(value-2)-fabs(value-4))/2),
+	c.B = max(0.0,(3-fabs(value-1)-fabs(value-2))/2));
 
 	return c;
 }
