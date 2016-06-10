@@ -26,6 +26,7 @@ Color sequential[5] =
 */
 
 /*
+Yellow to Red
 Color sequential[5] = {Color(1,1,0.698),
     Color(0.996078, 0.8, 0.360784),
     Color(0.992157, 0.552941, 0.235294),

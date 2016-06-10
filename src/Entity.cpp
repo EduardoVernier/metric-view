@@ -4,12 +4,10 @@ Entity::Entity (string csvLine, unsigned nRevisions)
 {
   // Collect all data
   stringstream ss(csvLine);
+
   string item;
-  while (getline(ss, item, ';'))
-  {
-      data.push_back(item);
-  }
-  string name = data[0];
+  getline(ss, item, ';');
+  string name = item;
   size_t separator = name.rfind(".");
   id = name.substr(separator+1, name.length());
   if (separator == string::npos)
@@ -17,9 +15,15 @@ Entity::Entity (string csvLine, unsigned nRevisions)
   else
     prefix = name.substr(0,separator);
 
+  while (getline(ss, item, ';'))
+  {
+    istringstream buffer(item);
+    buffer >> value;
+    data.push_back(value);
+  }
+
   // CountLine metric as value
-  istringstream buffer(data[22]);
-  buffer >> value;
+  value = data[21];
 
   // Create projection positions vector
   projectionPoints.resize(nRevisions, {0,0});

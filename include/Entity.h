@@ -31,7 +31,7 @@ public:
 private:
 	string prefix;
 	string id;
-	vector <string> data;
+	vector <double> data;
 	unsigned selected = 0;
 };
 

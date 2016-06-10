@@ -17,18 +17,17 @@ void buildEntityTree(int argc, char **argv, EntityTree *et);
 unsigned winWidth = 1630, winHeight = 800;
 int main_window;
 unsigned Rt = 0; // Current revision
-Treemap *treemap; // Global singletons
+//Treemap *treemap; // Global singletons
+EntityTree *entityTree = new EntityTree();
 
 int main(int argc, char **argv)
 {
 	initilizeVisualization(argc, argv);
 
 	// Build entity tree from csv metric files
-	EntityTree *entityTree = new EntityTree();
 	buildEntityTree(argc, argv, entityTree);
 	// Use entity tree to generate a squarified treemap
-	treemap = new Treemap (entityTree, (double)(winWidth-30)/2, (double)winHeight-20);
-	//treemap->getTree()->printTree();
+	Treemap treemap (entityTree, (double)(winWidth-30)/2, (double)winHeight-20);
 
 	glutIdleFunc(idle);
 	glutMainLoop();

@@ -11,7 +11,7 @@ ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityTree *et)
 //
 void ProjectionCanvas::drawCanvas(unsigned Rt)
 {
-  glColor3f(1.0f, 1.0f, 1.0f);
+  glColor3f(0.0f, 0.0f, 0.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
   for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
@@ -20,7 +20,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
     {
       double x = ((Entity*)(*b))->normalizedProjectionPoints[Rt].x;
       double y = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y;
-      Color c = {0.0f,0.0f,0.0f};
+      Color c = sequentialColormap(0.3);
       drawFilledCircle(x, y, 5.0, c);
     }
   }

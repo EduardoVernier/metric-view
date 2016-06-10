@@ -7,7 +7,7 @@ extern int main_window;
 Mouse  *mouse = new Mouse();
 Canvas *pCanvas = NULL;
 Canvas *tCanvas = NULL;
-extern Treemap *treemap;
+extern EntityTree *entityTree;
 extern unsigned Rt;
 
 BaseEntity* hover = NULL; // Drawing of hovering label
@@ -80,8 +80,8 @@ void setCanvassesSizes(int W, int H)
 	// Instantiate if it's the first call, else just update size
 	if (pCanvas == NULL && tCanvas == NULL)
 	{
-		pCanvas = new ProjectionCanvas(pTL, pBR, treemap->getTree());
-		tCanvas = new TreemapCanvas(tTL, tBR, treemap->getTree());
+		pCanvas = new ProjectionCanvas(pTL, pBR, entityTree);
+		tCanvas = new TreemapCanvas(tTL, tBR, entityTree);
 	}
 	else
 	{

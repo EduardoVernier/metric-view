@@ -10,7 +10,7 @@
 #include "Canvas.h"
 #include "Entity.h"
 #include "EntityTree.h"
-#include "Color.h"
+#include "Colormap.h"
 
 
 using namespace std;
