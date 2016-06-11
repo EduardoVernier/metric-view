@@ -39,7 +39,7 @@ void controlCB(int control)
 void mouseClick(int button, int state, int x, int y)
 {
 	int drag[4] = {0,0,0,0};
-  switch (mouse->click(button, state, x, y, drag))
+	switch (mouse->click(button, state, x, y, drag))
 	{
 		case 1:
 			entityTree->getEntitiesByPositionOnProjection(drag, Rt, 1, ctrlDown);

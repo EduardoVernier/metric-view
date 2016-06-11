@@ -19,7 +19,7 @@ extern int mainWindow;
 enum UI_IDs
 {
 	COLORMETRIC_LB = 0,
-  RADIUSMETRIC_LB
+	RADIUSMETRIC_LB
 };
 
 void initializeUI();

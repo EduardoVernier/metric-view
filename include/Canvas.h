@@ -10,10 +10,10 @@
 class Canvas
 {
 protected:
-    Point top_left, bottom_right;
-    double xOff, yOff;
+	Point top_left, bottom_right;
+	double xOff, yOff;
 public:
-    void setSize(Point tl, Point br);
-    virtual void drawCanvas(unsigned Rt) = 0;
+	void setSize(Point tl, Point br);
+	virtual void drawCanvas(unsigned Rt) = 0;
 };
 #endif

@@ -124,8 +124,8 @@ Color TreemapCanvas::rainbow(double value)
 
 void TreemapCanvas::renderString(int x, int y, string str, Color c)
 {
-  glColor3f(c.R, c.G, c.B);
-  glRasterPos2i(x, y);
+	glColor3f(c.R, c.G, c.B);
+	glRasterPos2i(x, y);
 	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
 	glutBitmapString(GLUT_BITMAP_9_BY_15, s);
 }

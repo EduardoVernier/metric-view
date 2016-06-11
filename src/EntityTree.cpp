@@ -135,7 +135,7 @@ void EntityTree::printTree()
 		if ((*b)->getName() == "") continue; // Ignore root
 		for (int j = 0; j < (*b)->getLevel(); ++j)
 			cout << " ";
-		cout  << (*b)->getLevel() << " - " << (*b)->getScore() << " " << (*b)->getName() << endl;
+		cout << (*b)->getLevel() << " - " << (*b)->getScore() << " " << (*b)->getName() << endl;
 
 		for (int j = 0; j < (*b)->getLevel(); ++j)
 			cout << " ";
@@ -176,9 +176,9 @@ void EntityTree::getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsig
 			else if ((*b)->getCoord(1) > drag[3])
 				continue; // svg too low
 			else if ((*b)->getCoord(2) < drag[0])
-				continue;  // svg too far left
+				continue; // svg too far left
 			else if ((*b)->getCoord(0) > drag[2])
-				continue;  // svg too far right
+				continue; // svg too far right
 			else
 			{
 				if (click)

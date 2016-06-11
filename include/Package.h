@@ -12,10 +12,10 @@ using namespace std;
 
 struct compEntities
 {
-    bool operator() (const Entity& e1, const Entity& e2) const
-    {
-    	return (e1.value > e2.value);
-    }
+	bool operator() (const Entity& e1, const Entity& e2) const
+	{
+		return (e1.value > e2.value);
+	}
 };
 
 class Package : public BaseEntity

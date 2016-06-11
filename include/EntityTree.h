@@ -15,10 +15,10 @@ using namespace std;
 
 struct compPackages
 {
-    bool operator() (const Package& p1, const Package& p2) const
-    {
-    	return (p1.sum > p2.sum);
-    }
+	bool operator() (const Package& p1, const Package& p2) const
+	{
+		return (p1.sum > p2.sum);
+	}
 };
 
 class EntityTree
@@ -32,22 +32,22 @@ public:
 	double getMin() { return treeMin; };
 	double getMax() { return treeMax; };
 	Entity* getEntityByName(string prefix, string id);
-  void getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsigned ctrlDown);
-  void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown);
-  void addProjection(string name, double x, double y, unsigned index);
-  void normalizeProjection(int shortEdge);
-  void setColorMetric(int mIndex);
-  int getColorMetric() { return colorMetricIndex; };
-  float getCMMin() { return colorMetricMin; };
-  float getCMMax() { return colorMetricMax; };
+	void getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsigned ctrlDown);
+	void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown);
+	void addProjection(string name, double x, double y, unsigned index);
+	void normalizeProjection(int shortEdge);
+	void setColorMetric(int mIndex);
+	int getColorMetric() { return colorMetricIndex; };
+	float getCMMin() { return colorMetricMin; };
+	float getCMMax() { return colorMetricMax; };
 	void setRadiusMetric(int mIndex);
 	int getRadiusMetric() { return radiusMetricIndex; };
 	float getRMMin() { return radiusMetricMin; };
 	float getRMMax() { return radiusMetricMax; };
 
-  vector<string> metricVector;
-  vector<Entity*> selected;
-  Entity* hovered;
+	vector<string> metricVector;
+	vector<Entity*> selected;
+	Entity* hovered;
 	vector<Package> packageVector; // Entity tree is a collection of Packages
 	vector<BaseEntity*> sortedEntities; // Contains both Packages and Entities ordered by score
 	int depth = 0;
@@ -58,16 +58,16 @@ private:
 	void setHierarchicalLevel(Package *p, int level);
 	void setMinMax();
 
-  int radiusMetricIndex = 21;
+	int radiusMetricIndex = 21;
 	float radiusMetricMin;
 	float radiusMetricMax;
 
-  int colorMetricIndex = 21;
+	int colorMetricIndex = 21;
 	float colorMetricMin;
 	float colorMetricMax;
 
-  double treeMin, treeMax; // Initial LOC score
-  double minX = FLT_MAX, maxX = FLT_MIN, minY = FLT_MAX, maxY = FLT_MIN;
+	double treeMin, treeMax; // Initial LOC score
+	double minX = FLT_MAX, maxX = FLT_MIN, minY = FLT_MAX, maxY = FLT_MIN;
 };
 
 #endif

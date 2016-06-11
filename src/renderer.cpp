@@ -4,7 +4,7 @@ extern int winWidth, winHeight;
 extern int mainWindow;
 
 // Singletons
-Mouse  *mouse = new Mouse();
+Mouse *mouse = new Mouse();
 Canvas *pCanvas = NULL;
 Canvas *tCanvas = NULL;
 extern EntityTree *entityTree;

@@ -16,7 +16,7 @@ void Package::addChild(Package child)
 
 void Package::printPackage(int level)
 {
-	cout << sum << " "<<   prefix << endl;
+	cout << sum << " "<< prefix << endl;
 
 	for (unsigned i = 0; i < childrenVector.size(); ++i)
 	{
@@ -29,7 +29,7 @@ void Package::printPackage(int level)
 			for (int l = 0; l <= level+1; l++)
 				cout << "  ";
 
-			cout << entityVector[k].getScore() << ' ' <<  entityVector[k].getName() << endl;
+			cout << entityVector[k].getScore() << ' ' << entityVector[k].getName() << endl;
 		}
 	}
 }

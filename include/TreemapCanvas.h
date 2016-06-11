@@ -16,18 +16,18 @@ using namespace std;
 class TreemapCanvas : public Canvas
 {
 public:
-  TreemapCanvas (Point tl, Point br, EntityTree *et);
+	TreemapCanvas (Point tl, Point br, EntityTree *et);
 	void renderString(int x, int y, string str, Color c);
 	void drawCanvas(unsigned Rt);
 
 private:
-  void drawHovered(Entity *e);
-  void drawSelected(Entity *e);
-  void drawEntity(BaseEntity *e);
-  void drawPackage(BaseEntity *e);
-  Color rainbow(double value);
+	void drawHovered(Entity *e);
+	void drawSelected(Entity *e);
+	void drawEntity(BaseEntity *e);
+	void drawPackage(BaseEntity *e);
+	Color rainbow(double value);
 
-  EntityTree *entityTree;
+	EntityTree *entityTree;
 };
 
 

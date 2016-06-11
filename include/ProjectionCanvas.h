@@ -18,14 +18,14 @@ using namespace std;
 class ProjectionCanvas : public Canvas
 {
 public:
-  ProjectionCanvas(Point tl, Point br, EntityTree *et);
-  void drawCanvas(unsigned Rt);
+	ProjectionCanvas(Point tl, Point br, EntityTree *et);
+	void drawCanvas(unsigned Rt);
 
 private:
-  void drawFilledCircle(double x, double y, float radius, Color c);
-  void normalizeProjection();
+	void drawFilledCircle(double x, double y, float radius, Color c);
+	void normalizeProjection();
 
-  EntityTree *entityTree;
+	EntityTree *entityTree;
 };
 
 #endif
