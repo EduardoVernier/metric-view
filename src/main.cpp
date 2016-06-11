@@ -22,13 +22,13 @@ EntityTree *entityTree = new EntityTree();
 int main(int argc, char **argv)
 {
 	initializeVisualization(argc, argv);
-	initializeUI();
 
 	// Build entity tree from csv metric files
 	buildEntityTree(argc, argv, entityTree);
 	// Use entity tree to generate a squarified treemap
 	Treemap treemap (entityTree, (double)(winWidth-30)/2, (double)winHeight-20);
 
+	initializeUI();
 	glutIdleFunc(idle);
 	glutMainLoop();
 	return 0;

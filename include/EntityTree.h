@@ -29,8 +29,8 @@ public:
  	void buildHierarchy();
 	void generateSortedEntitiesVector(Package *p);
 	void printTree();
-	double getPMin() { return treeMin; };
-	double getPMax() { return treeMax; };
+	double getMin() { return treeMin; };
+	double getMax() { return treeMax; };
 	Entity* getEntityByName(string prefix, string id);
   void getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsigned ctrlDown);
   void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown);
