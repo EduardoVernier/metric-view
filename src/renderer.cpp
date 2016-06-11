@@ -1,7 +1,7 @@
 #include "../include/renderer.h"
 
 extern int winWidth, winHeight;
-extern int main_window;
+extern int mainWindow;
 
 // Singletons
 Mouse  *mouse = new Mouse();
@@ -37,8 +37,8 @@ void reshape(int W, int H)
 
 void idle()
 {
-	if ( glutGetWindow() != main_window )
-		glutSetWindow(main_window);
+	if ( glutGetWindow() != mainWindow )
+		glutSetWindow(mainWindow);
 	glutPostRedisplay();
 }
 

@@ -100,6 +100,14 @@ void CsvParser::parseLastMetricFile(string filename, unsigned nRevisions)
 	istringstream(line) >> nAttributes;
 	getline(file,line); // name of attributes - flush
 
+	stringstream ss(line);
+	for (int i = 0; i < nAttributes; ++i)
+	{
+		string metricName;
+		getline(ss, metricName, ';');
+		entityTree->metricVector.push_back(metricName);
+	}
+
 	// Add tree root
 	entityTree->addEntity(Entity(";0;0;0;0;0;0;0;0.0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.0;0;0;0;0;0;0", nAttributes, nRevisions));
 

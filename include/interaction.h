@@ -8,6 +8,21 @@
 #include "Mouse.h"
 #include "Treemap.h"
 
+extern Mouse *mouse;
+extern EntityTree *entityTree;
+extern unsigned winWidth, winHeight;
+extern BaseEntity *hover;
+extern unsigned Rt;
+extern int mainWindow;
+
+// Button/checkbox/listbox ids
+enum UI_IDs
+{
+  hi
+};
+
+void initializeUI();
+void controlCB(int control);
 void mouseClick(int button, int state, int x, int y);
 void mousePassive(int x, int y);
 void mouseUpdate(int x, int y);

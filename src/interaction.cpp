@@ -1,12 +1,19 @@
 #include "../include/interaction.h"
 
-extern Mouse *mouse;
-extern EntityTree *entityTree;
-extern unsigned winWidth, winHeight;
-extern BaseEntity *hover;
-extern int mxdown, mydown, mx, my, mclicked;
-extern unsigned Rt;
 unsigned ctrlDown = 0;
+GLUI *glui;
+
+void initializeUI()
+{
+	glui = GLUI_Master.create_glui( "GLUI" );
+	glui->add_statictext("Dataset Selection");
+}
+
+// Callback handling
+void controlCB(int control)
+{
+
+}
 
 void mouseClick(int button, int state, int x, int y)
 {

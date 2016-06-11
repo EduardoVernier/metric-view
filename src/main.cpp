@@ -11,18 +11,18 @@
 
 using namespace std;
 
-void initilizeVisualization(int argc, char **argv);
+void initializeVisualization(int argc, char **argv);
 void buildEntityTree(int argc, char **argv, EntityTree *et);
 
 unsigned winWidth = 1630, winHeight = 800;
-int main_window;
+int mainWindow;
 unsigned Rt = 0; // Current revision
-//Treemap *treemap; // Global singletons
 EntityTree *entityTree = new EntityTree();
 
 int main(int argc, char **argv)
 {
-	initilizeVisualization(argc, argv);
+	initializeVisualization(argc, argv);
+	initializeUI();
 
 	// Build entity tree from csv metric files
 	buildEntityTree(argc, argv, entityTree);
@@ -35,12 +35,12 @@ int main(int argc, char **argv)
 }
 
 
-void initilizeVisualization(int argc, char **argv)
+void initializeVisualization(int argc, char **argv)
 {
 	// Initialize Glut/Glui
 	glutInit(&argc, argv);
  	glutInitWindowSize(winWidth, winHeight);
-	main_window = glutCreateWindow("MetricView");
+	mainWindow = glutCreateWindow("MetricView");
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);

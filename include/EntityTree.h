@@ -37,6 +37,7 @@ public:
   void addProjection(string name, double x, double y, unsigned index);
   void normalizeProjection(int shortEdge);
 
+  vector<string> metricVector;
   vector<Entity*> selected;
   Entity* hovered;
 	vector<Package> packageVector; // Entity tree is a collection of Packages

@@ -12,10 +12,8 @@ CFLAGS += -I/usr/X11R6/include
 
 SRCEXT = cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
-#SOURCES := src/main.cpp src/renderer.cpp src/interaction.cpp src/Mouse.cpp src/Canvas.cpp
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-#OBJECTS := build/main.o build/renderer.o build/interaction.o build/Mouse.o build/Canvas.o
-LIB    = -lXmu -lXext -lX11 -lXi -lm -lglut -lGLU -lGL $(LIBGLUT) $(LIBGLUI)
+LIB = -lXmu -lXext -lX11 -lXi -lm -lGLU -lGL $(LIBGLUT) $(LIBGLUI) -lGLU
 INC = -I include
 
 
@@ -33,15 +31,14 @@ clean:
 	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
 
 run:
-	$(TARGET) data/guice-d/ 
+	$(TARGET) data/guice-d/
 
 GLUI:
 CPPFLAGS += -I./ -I./include
 
+GLUI_OBJS = /lib/glui_add_controls.o lib/glui_string.o lib/glui.o lib/glui_bitmap_img_data.o lib/glui_bitmaps.o lib/glui_button.o lib/glui_edittext.o lib/glui_commandline.o lib/glui_checkbox.o lib/glui_node.o lib/glui_radio.o lib/glui_statictext.o lib/glui_panel.o lib/glui_separator.o lib/glui_spinner.o lib/glui_control.o lib/glui_column.o lib/glui_translation.o lib/glui_rotation.o lib/glui_mouse_iaction.o lib/glui_listbox.o lib/glui_rollout.o lib/glui_window.o lib/arcball.o lib/algebra3.o lib/quaternion.o lib/viewmodel.o lib/glui_treepanel.o lib/glui_tree.o lib/glui_textbox.o lib/glui_scrollbar.o lib/glui_list.o lib/glui_filebrowser.o
 
-GLUI_OBJS = lib/glui_add_controls.o lib/glui_string.o lib/glui.o lib/glui_bitmap_img_data.o lib/glui_bitmaps.o lib/glui_button.o lib/glui_edittext.o lib/glui_commandline.o lib/glui_checkbox.o lib/glui_node.o lib/glui_radio.o lib/glui_statictext.o lib/glui_panel.o lib/glui_separator.o lib/glui_spinner.o lib/glui_control.o lib/glui_column.o lib/glui_translation.o lib/glui_rotation.o lib/glui_mouse_iaction.o lib/glui_listbox.o lib/glui_rollout.o lib/glui_window.o lib/arcball.o lib/algebra3.o lib/quaternion.o lib/viewmodel.o lib/glui_treepanel.o lib/glui_tree.o lib/glui_textbox.o lib/glui_scrollbar.o lib/glui_list.o lib/glui_filebrowser.o
-
-GLUI_LIB = lib/libglui.a
+GLUI_LIB = /lib/libglui.a
 
 #GLUI_TOOLS = bin/ppm2array
 
