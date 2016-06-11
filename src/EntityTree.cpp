@@ -195,7 +195,7 @@ void EntityTree::getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsig
 	}
 }
 
-//
+// Mark entities as selected from projection pane interaction
 void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown)
 {
 	Entity *closest = NULL;
@@ -266,6 +266,7 @@ void EntityTree::addProjection(string name, double x, double y, unsigned index)
 	}
 }
 
+// Normalize projection points to fit on canvas nicely
 void EntityTree::normalizeProjection(int shortEdge)
 {
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
@@ -282,6 +283,7 @@ void EntityTree::normalizeProjection(int shortEdge)
 	}
 }
 
+// Given a name and prefix, return corresponding entity pointer
 Entity* EntityTree::getEntityByName(string prefix, string id)
 {
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
@@ -292,4 +294,42 @@ Entity* EntityTree::getEntityByName(string prefix, string id)
 		}
 	}
 	return NULL;
+}
+
+void EntityTree::setColorMetric(int mIndex)
+{
+	colorMetricIndex = mIndex;
+	colorMetricMin = FLT_MAX;
+	colorMetricMax = FLT_MIN;
+	for (unsigned i = 0; i < sortedEntities.size() ; ++i)
+	{
+		if (sortedEntities[i]->isPackage() == 0)
+		{
+			for (unsigned time = 0; time < ((Entity*)sortedEntities[i])->data.size() ; ++time)
+			{
+				float mValue = ((Entity*)sortedEntities[i])->data[time][mIndex];
+				colorMetricMax = (mValue > colorMetricMax)? mValue : colorMetricMax;
+				colorMetricMin = (mValue < colorMetricMin)? mValue : colorMetricMin;
+			}
+		}
+	}
+}
+
+void EntityTree::setRadiusMetric(int mIndex)
+{
+	radiusMetricIndex = mIndex;
+	radiusMetricMin = FLT_MAX;
+	radiusMetricMax = FLT_MIN;
+	for (unsigned i = 0; i < sortedEntities.size() ; ++i)
+	{
+		if (sortedEntities[i]->isPackage() == 0)
+		{
+			for (unsigned time = 0; time < ((Entity*)sortedEntities[i])->data.size() ; ++time)
+			{
+				float mValue = ((Entity*)sortedEntities[i])->data[time][mIndex];
+				radiusMetricMax = (mValue > radiusMetricMax)? mValue : radiusMetricMax;
+				radiusMetricMin = (mValue < radiusMetricMin)? mValue : radiusMetricMin;
+			}
+		}
+	}
 }

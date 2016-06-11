@@ -29,13 +29,21 @@ public:
  	void buildHierarchy();
 	void generateSortedEntitiesVector(Package *p);
 	void printTree();
-	double getMin() { return treeMin; };
-	double getMax() { return treeMax; };
+	double getPMin() { return treeMin; };
+	double getPMax() { return treeMax; };
 	Entity* getEntityByName(string prefix, string id);
   void getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsigned ctrlDown);
   void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown);
   void addProjection(string name, double x, double y, unsigned index);
   void normalizeProjection(int shortEdge);
+  void setColorMetric(int mIndex);
+  int getColorMetric() { return colorMetricIndex; };
+  float getCMMin() { return colorMetricMin; };
+  float getCMMax() { return colorMetricMax; };
+	void setRadiusMetric(int mIndex);
+	int getRadiusMetric() { return radiusMetricIndex; };
+	float getRMMin() { return radiusMetricMin; };
+	float getRMMax() { return radiusMetricMax; };
 
   vector<string> metricVector;
   vector<Entity*> selected;
@@ -43,13 +51,22 @@ public:
 	vector<Package> packageVector; // Entity tree is a collection of Packages
 	vector<BaseEntity*> sortedEntities; // Contains both Packages and Entities ordered by score
 	int depth = 0;
+	unsigned nRevisions = 0;
 
 private:
 	void sortPackages(Package *p);
 	void setHierarchicalLevel(Package *p, int level);
 	void setMinMax();
 
-	double treeMin, treeMax;
+  int radiusMetricIndex = 21;
+	float radiusMetricMin;
+	float radiusMetricMax;
+
+  int colorMetricIndex = 21;
+	float colorMetricMin;
+	float colorMetricMax;
+
+  double treeMin, treeMax; // Initial LOC score
   double minX = FLT_MAX, maxX = FLT_MIN, minY = FLT_MAX, maxY = FLT_MIN;
 };
 

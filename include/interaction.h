@@ -18,7 +18,8 @@ extern int mainWindow;
 // Button/checkbox/listbox ids
 enum UI_IDs
 {
-  hi
+  COLORMETRIC_LB,
+  RADIUSMETRIC_LB
 };
 
 void initializeUI();

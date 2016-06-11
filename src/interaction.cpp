@@ -2,16 +2,37 @@
 
 unsigned ctrlDown = 0;
 GLUI *glui;
+int radiusMetricIndex=21;
+int colorMetricIndex=21;
 
 void initializeUI()
 {
 	glui = GLUI_Master.create_glui( "GLUI" );
-	glui->add_statictext("Dataset Selection");
+	glui->add_statictext("Color Metric");
+	GLUI_Listbox *colorLB = glui->add_listbox("", &colorMetricIndex, COLORMETRIC_LB, controlCB);
+	glui->add_statictext("Radius Metric");
+	GLUI_Listbox *radiusLB = glui->add_listbox("", &radiusMetricIndex, RADIUSMETRIC_LB, controlCB);
+
+	for (unsigned i = 0; i < entityTree->metricVector.size(); ++i)
+	{
+		colorLB->add_item(i, entityTree->metricVector[i].c_str());
+		radiusLB->add_item(i, entityTree->metricVector[i].c_str());
+	}
+	entityTree->setColorMetric(21);
+	entityTree->setRadiusMetric(21);
 }
 
 // Callback handling
 void controlCB(int control)
 {
+	switch (control) {
+		case COLORMETRIC_LB:
+			entityTree->setColorMetric(colorMetricIndex);
+		 	break;
+		case RADIUSMETRIC_LB:
+			entityTree->setRadiusMetric(radiusMetricIndex);
+			break;
+	}
 
 }
 
@@ -62,7 +83,8 @@ void keyboard(unsigned char key, int x, int y)
 	{
 		case 'q': exit(0); break;
 		case 'z': if (Rt > 0) --Rt; break;
-		case 'x': if (1) ++Rt; break; // TODO: Fix this
+		case 'x': if (Rt < entityTree->nRevisions-1) ++Rt;
+			cout<<Rt<<endl; break;
 	}
 }
 

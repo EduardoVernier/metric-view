@@ -38,6 +38,7 @@ CsvParser::CsvParser(EntityTree *et, string dataDirName, string projectionDirNam
 			nRevisions++;
 		}
 	}
+	entityTree->nRevisions = nRevisions;
 	closedir (dataDir);
 
 
