@@ -31,6 +31,7 @@ public:
 	void printTree();
 	double getMin() { return treeMin; };
 	double getMax() { return treeMax; };
+	Entity* getEntityByName(string prefix, string id);
   void getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsigned ctrlDown);
   void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown);
   void addProjection(string name, double x, double y, unsigned index);

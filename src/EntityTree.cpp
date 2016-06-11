@@ -281,3 +281,15 @@ void EntityTree::normalizeProjection(int shortEdge)
 		}
 	}
 }
+
+Entity* EntityTree::getEntityByName(string prefix, string id)
+{
+	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	{
+		if((*b)->isPackage() == 0 && ((Entity*)(*b))->getName() == id && ((Entity*)(*b))->getPrefix() == prefix)
+		{
+			return (Entity*)*b;
+		}
+	}
+	return NULL;
+}

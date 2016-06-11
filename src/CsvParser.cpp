@@ -39,8 +39,24 @@ CsvParser::CsvParser(EntityTree *et, string dataDirName, string projectionDirNam
 		}
 	}
 	closedir (dataDir);
-	parseMetricFile(dataDirName + "/" + lastRev, nRevisions);
+
+
+	// Build empty entities
+	parseLastMetricFile(dataDirName + "/" + lastRev, nRevisions);
 	entityTree->buildHierarchy();
+
+	// Fill entities with metric data
+	dataDir = opendir(dataDirName.c_str());
+	nRevisions = 0;
+	while ((dDirent = readdir(dataDir)) != NULL)
+	{
+		string filename (dDirent->d_name);
+		if (filename.find(".data") != string::npos && filename != lastRev)
+		{
+			parseMetricFile(dataDirName, filename);
+		}
+	}
+	closedir (dataDir);
 
 	// Parse projection data
 	DIR *projDir;
@@ -65,7 +81,8 @@ CsvParser::CsvParser(EntityTree *et, string dataDirName, string projectionDirNam
 	}
 }
 
-void CsvParser::parseMetricFile(string filename, unsigned nRevisions)
+// Use newest metric file to construct entities
+void CsvParser::parseLastMetricFile(string filename, unsigned nRevisions)
 {
 	int nEntities, nAttributes;
 	ifstream file(filename.c_str());
@@ -84,15 +101,58 @@ void CsvParser::parseMetricFile(string filename, unsigned nRevisions)
 	getline(file,line); // name of attributes - flush
 
 	// Add tree root
-	entityTree->addEntity(Entity(";0;0;0;0;0;0;0;0.0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.0;0;0;0;0;0;0", nRevisions));
+	entityTree->addEntity(Entity(";0;0;0;0;0;0;0;0.0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.0;0;0;0;0;0;0", nAttributes, nRevisions));
 
-	// Add all elements (classes) to the entityTree
+	// Add all elements (classes) from last metric file to the entityTree
 	while(getline(file,line))
-  {
-  	entityTree->addEntity(Entity(line, nRevisions));
-  }
+	{
+		entityTree->addEntity(Entity(line, nAttributes, nRevisions));
+	}
 }
 
+// Fill entities with time dependent metrics
+void CsvParser::parseMetricFile(string address, string filename)
+{
+	unsigned rev;
+	size_t f = filename.find_first_of('.');
+	size_t l = filename.find_last_of('.');
+
+	rev = stoi(filename.substr(f+1, l-f-1));
+
+	ifstream file((address+'/'+filename).c_str());
+	string line;
+
+	if (!getline(file,line) && line != "DY/n") // 'DY' - flush
+	{
+		cout << filename << " - path not compatible" << endl;
+		return;
+	}
+
+	getline(file,line); // number of classes in file
+	getline(file,line); // number of attributes
+	getline(file,line); // name of attributes - flush
+
+	// Add all elements (classes) from a given revision to the entityTree
+	while(getline(file,line))
+	{
+		// Collect name
+		stringstream ss(line);
+		string item, id, prefix;
+		getline(ss, item, ';');
+		string name = item;
+		size_t separator = name.rfind(".");
+		id = name.substr(separator+1, name.length());
+		if (separator == string::npos)
+			prefix = "";
+		else
+			prefix = name.substr(0,separator);
+
+		Entity *ent = entityTree->getEntityByName(prefix, id);
+		ent->addRevisionData(line, rev);
+	}
+}
+
+// Extract projection data from .2d files
 void CsvParser::parseProjectionFile(string filename, unsigned index)
 {
 	int nEntities, nAttributes;
@@ -124,5 +184,4 @@ void CsvParser::parseProjectionFile(string filename, unsigned index)
 		// cout << name << " " << x << " " << y << endl;
 		entityTree->addProjection(name, x, y, index);
 	}
-
 }

@@ -18,7 +18,8 @@ public:
 	EntityTree* getEntityTree() { return entityTree; };
 
 private:
-	void parseMetricFile(string filename, unsigned nRevisions);
+	void parseLastMetricFile(string filename, unsigned nRevisions);
+	void parseMetricFile(string address, string filename);
 	void parseProjectionFile(string filename, unsigned index);
 
 	EntityTree *entityTree;
