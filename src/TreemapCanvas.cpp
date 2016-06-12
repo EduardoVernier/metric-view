@@ -11,14 +11,16 @@ void TreemapCanvas::drawCanvas(unsigned Rt)
 {
 	vector<BaseEntity*> items = entityTree->sortedEntities;
 
+	// Draw treemap squares
 	for (vector<BaseEntity*>::iterator it = entityTree->sortedEntities.begin(); it != entityTree->sortedEntities.end(); ++it)
 	{
 		if ((*it)->isPackage() == 0)
 		{
-			drawEntity(*it);
+			drawEntity(*it, Rt);
 		}
 	}
 
+	// Draw Package borders
 	for (vector<BaseEntity*>::iterator it = entityTree->sortedEntities.begin(); it != entityTree->sortedEntities.end(); ++it)
 	{
 		if ((*it)->isPackage())
@@ -35,7 +37,7 @@ void TreemapCanvas::drawCanvas(unsigned Rt)
 	drawHovered(entityTree->hovered);
 }
 
-void TreemapCanvas::drawEntity(BaseEntity *e)
+void TreemapCanvas::drawEntity(BaseEntity *e, unsigned Rt)
 {
 	double padding = 0.5;
 	double x0 = e->getCoord(0)+ padding + xOff;
@@ -43,9 +45,17 @@ void TreemapCanvas::drawEntity(BaseEntity *e)
 	double x1 = e->getCoord(2)- padding + xOff;
 	double y1 = e->getCoord(3)- padding + yOff;
 
-	double minT = entityTree->getMin(), maxT = entityTree->getMax();
-	double value = e->getScore() * (1.0/(maxT-minT)) - minT/(maxT-minT);
-	Color c = sequentialColormap(value);
+	int cMetric = entityTree->getColorMetric();
+	float cMin = entityTree->getCMMin();
+	float cMax = entityTree->getCMMax();
+
+	float value = ((Entity*)e)->data[Rt][cMetric];
+	float normCValue = (value - cMin) / (cMax - cMin);
+	Color c = sequentialColormap(normCValue);
+
+	// double minT = entityTree->getMin(), maxT = entityTree->getMax();
+	// double value = e->getScore() * (1.0/(maxT-minT)) - minT/(maxT-minT);
+	// Color c = sequentialColormap(value);
 	glColor3f(c.R, c.G, c.B);
 	glRectd(x0,y0,x1,y1);
 }
@@ -57,8 +67,8 @@ void TreemapCanvas::drawPackage(BaseEntity *e)
 	double x1 = e->getCoord(2) + xOff;
 	double y1 = e->getCoord(3) + yOff;
 
-	glLineWidth(2.0f);
-	glColor3f(0.0f, 0.0f, 0.0f);
+	glLineWidth(4.0f);
+	glColor3f(1.0f, 1.0f, 1.0f);
 	glBegin(GL_LINE_STRIP);
 	glVertex2d(x0,y0);
 	glVertex2d(x0,y1);
@@ -86,19 +96,45 @@ void TreemapCanvas::drawHovered(Entity *e)
 
 void TreemapCanvas::drawSelected(Entity *e)
 {
-	double padding = 0.0;
+	double padding = 1.0;
 	double x0 = e->getCoord(0)+ padding + xOff;
 	double y0 = e->getCoord(1)+ padding + yOff;
 	double x1 = e->getCoord(2)- padding + xOff;
 	double y1 = e->getCoord(3)- padding + yOff;
 
-	Color c = rainbow(e->getScore());
-	glColor3f(c.R*0.7, c.G*0.7, c.B*0.7);
-	glBegin(GL_TRIANGLES);
+	glLineWidth(2.0f);
+	glColor3f(colorSelection.R, colorSelection.G, colorSelection.B);
+	glBegin(GL_LINE_STRIP);
 	glVertex2d(x0,y0);
 	glVertex2d(x0,y1);
 	glVertex2d(x1,y1);
+	glVertex2d(x1,y0);
+	glVertex2d(x0,y0);
 	glEnd();
+
+	padding = 2.0;
+	x0 = e->getCoord(0)+ padding + xOff;
+	y0 = e->getCoord(1)+ padding + yOff;
+	x1 = e->getCoord(2)- padding + xOff;
+	y1 = e->getCoord(3)- padding + yOff;
+	glLineWidth(1.0f);
+	glColor3f(0,0,0);
+	glBegin(GL_LINE_STRIP);
+	glVertex2d(x0,y0);
+	glVertex2d(x0,y1);
+	glVertex2d(x1,y1);
+	glVertex2d(x1,y0);
+	glVertex2d(x0,y0);
+	glEnd();
+
+	//
+	// Color c = rainbow(e->getScore());
+	// glColor3f(c.R*0.7, c.G*0.7, c.B*0.7);
+	// glBegin(GL_TRIANGLES);
+	// glVertex2d(x0,y0);
+	// glVertex2d(x0,y1);
+	// glVertex2d(x1,y1);
+	// glEnd();
 }
 
 // Map normalized (0:1) scalar to a color on the rainbow colormap

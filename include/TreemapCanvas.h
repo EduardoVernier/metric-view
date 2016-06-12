@@ -23,7 +23,7 @@ public:
 private:
 	void drawHovered(Entity *e);
 	void drawSelected(Entity *e);
-	void drawEntity(BaseEntity *e);
+	void drawEntity(BaseEntity *e, unsigned Rt);
 	void drawPackage(BaseEntity *e);
 	Color rainbow(double value);
 

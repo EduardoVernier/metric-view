@@ -46,7 +46,7 @@ void idle()
 void render()
 {
 	pCanvas->drawCanvas(Rt);
-	tCanvas->drawCanvas(0);
+	tCanvas->drawCanvas(Rt);
 	drawHoveringLabel();
 	if(mouse->state == 0) // If mouse is being clicked
 		drawSelectionBox();
@@ -90,7 +90,7 @@ void setCanvassesSizes(int W, int H)
 	}
 
 	pCanvas->drawCanvas(Rt);
-	tCanvas->drawCanvas(0);
+	tCanvas->drawCanvas(Rt);
 }
 
 void drawHoveringLabel()

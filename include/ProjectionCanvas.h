@@ -12,7 +12,6 @@
 #include "EntityTree.h"
 #include "Colormap.h"
 
-
 using namespace std;
 
 class ProjectionCanvas : public Canvas
@@ -22,7 +21,7 @@ public:
 	void drawCanvas(unsigned Rt);
 
 private:
-	void drawFilledCircle(double x, double y, float radius, Color c);
+	void drawFilledCircle(double x, double y, float radius, Color c, int action);
 	void normalizeProjection();
 
 	EntityTree *entityTree;
