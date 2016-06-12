@@ -277,7 +277,7 @@ void EntityTree::normalizeProjection(int shortEdge)
 			{
 				double normX = (((Entity*)(*b))->projectionPoints[i].x - minX)*((double)shortEdge)/(maxX - minX);
 				double normY = (((Entity*)(*b))->projectionPoints[i].y - minY)*((double)shortEdge)/(maxY - minY);
-				((Entity*)(*b))->normalizedProjectionPoints[i] = {normX,normY};
+				((Entity*)(*b))->normalizedProjectionPoints[i] = {normX, normY};
 			}
 		}
 	}

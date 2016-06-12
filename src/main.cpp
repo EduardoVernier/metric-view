@@ -14,7 +14,7 @@ using namespace std;
 void initializeVisualization(int argc, char **argv);
 void buildEntityTree(int argc, char **argv, EntityTree *et);
 
-unsigned winWidth = 1630, winHeight = 800;
+unsigned winWidth = 1920, winHeight = 1056;
 int mainWindow;
 unsigned Rt = 0; // Current revision
 EntityTree *entityTree = new EntityTree();

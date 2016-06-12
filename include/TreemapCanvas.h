@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include "math.h"
+#include <GL/glut.h>
 
 #include "Canvas.h"
 #include "Entity.h"
@@ -17,7 +18,6 @@ class TreemapCanvas : public Canvas
 {
 public:
 	TreemapCanvas (Point tl, Point br, EntityTree *et);
-	void renderString(int x, int y, string str, Color c);
 	void drawCanvas(unsigned Rt);
 
 private:
@@ -25,6 +25,7 @@ private:
 	void drawSelected(Entity *e);
 	void drawEntity(BaseEntity *e, unsigned Rt);
 	void drawPackage(BaseEntity *e);
+	void labelCells();
 	Color rainbow(double value);
 
 	EntityTree *entityTree;

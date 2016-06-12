@@ -13,7 +13,7 @@ class Canvas
 protected:
 	Point top_left, bottom_right;
 	double xOff, yOff;
-	Color colorHover     = {0.8f,0.8f,0.8f};
+	Color colorHover     = {0.0f,0.8f,0.8f};
 	Color colorSelection = {0.0f,0.7f,0.3f};
 
 public:

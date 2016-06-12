@@ -33,8 +33,8 @@ void TreemapCanvas::drawCanvas(unsigned Rt)
 	{
 			drawSelected(*it);
 	}
-
 	drawHovered(entityTree->hovered);
+	labelCells();
 }
 
 void TreemapCanvas::drawEntity(BaseEntity *e, unsigned Rt)
@@ -53,9 +53,6 @@ void TreemapCanvas::drawEntity(BaseEntity *e, unsigned Rt)
 	float normCValue = (value - cMin) / (cMax - cMin);
 	Color c = sequentialColormap(normCValue);
 
-	// double minT = entityTree->getMin(), maxT = entityTree->getMax();
-	// double value = e->getScore() * (1.0/(maxT-minT)) - minT/(maxT-minT);
-	// Color c = sequentialColormap(value);
 	glColor3f(c.R, c.G, c.B);
 	glRectd(x0,y0,x1,y1);
 }
@@ -67,12 +64,16 @@ void TreemapCanvas::drawPackage(BaseEntity *e)
 	double x1 = e->getCoord(2) + xOff;
 	double y1 = e->getCoord(3) + yOff;
 
-	glLineWidth(4.0f);
+	glLineWidth(3.0f);
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glBegin(GL_LINE_STRIP);
+	glVertex2d(x0,y0-1);
 	glVertex2d(x0,y0);
+	glVertex2d(x0,y1+1);
 	glVertex2d(x0,y1);
+	glVertex2d(x1+1,y1);
 	glVertex2d(x1,y1);
+	glVertex2d(x1,y0-1);
 	glVertex2d(x1,y0);
 	glVertex2d(x0,y0);
 	glEnd();
@@ -82,43 +83,73 @@ void TreemapCanvas::drawHovered(Entity *e)
 {
 	if (e == NULL) return;
 
-	double padding = 0.0;
+	double padding = 3.0;
 	double x0 = e->getCoord(0)+ padding + xOff;
 	double y0 = e->getCoord(1)+ padding + yOff;
 	double x1 = e->getCoord(2)- padding + xOff;
 	double y1 = e->getCoord(3)- padding + yOff;
 
-	glEnable(GL_BLEND);
-	glColor4f(0.0, 0.0, 0.0, 0.5);
-	glRectd(x0,y0,x1,y1);
-	glDisable(GL_BLEND);
-}
-
-void TreemapCanvas::drawSelected(Entity *e)
-{
-	double padding = 1.0;
-	double x0 = e->getCoord(0)+ padding + xOff;
-	double y0 = e->getCoord(1)+ padding + yOff;
-	double x1 = e->getCoord(2)- padding + xOff;
-	double y1 = e->getCoord(3)- padding + yOff;
-
-	glLineWidth(2.0f);
-	glColor3f(colorSelection.R, colorSelection.G, colorSelection.B);
+	glLineWidth(6.0f);
+	glColor3f(colorHover.R, colorHover.G, colorHover.B);
 	glBegin(GL_LINE_STRIP);
+	glVertex2d(x0,y0-padding);
 	glVertex2d(x0,y0);
+	glVertex2d(x0,y1+padding);
 	glVertex2d(x0,y1);
+	glVertex2d(x1+padding,y1);
 	glVertex2d(x1,y1);
+	glVertex2d(x1,y0-padding);
 	glVertex2d(x1,y0);
 	glVertex2d(x0,y0);
 	glEnd();
 
-	padding = 2.0;
+	padding = 0.0;
 	x0 = e->getCoord(0)+ padding + xOff;
 	y0 = e->getCoord(1)+ padding + yOff;
 	x1 = e->getCoord(2)- padding + xOff;
 	y1 = e->getCoord(3)- padding + yOff;
+
 	glLineWidth(1.0f);
-	glColor3f(0,0,0);
+	glColor3f(1,1,1);
+	glBegin(GL_LINE_STRIP);
+	glVertex2d(x0,y0);
+	glVertex2d(x0,y1);
+	glVertex2d(x1,y1);
+	glVertex2d(x1,y0);
+	glVertex2d(x0,y0);
+	glEnd();
+}
+
+void TreemapCanvas::drawSelected(Entity *e)
+{
+	double padding = 2.0;
+	double x0 = e->getCoord(0)+ padding + xOff;
+	double y0 = e->getCoord(1)+ padding + yOff;
+	double x1 = e->getCoord(2)- padding + xOff;
+	double y1 = e->getCoord(3)- padding + yOff;
+
+	glLineWidth(4.0f);
+	glColor3f(colorSelection.R, colorSelection.G, colorSelection.B);
+	glBegin(GL_LINE_STRIP);
+	glVertex2d(x0,y0-padding);
+	glVertex2d(x0,y0);
+	glVertex2d(x0,y1+padding);
+	glVertex2d(x0,y1);
+	glVertex2d(x1+padding,y1);
+	glVertex2d(x1,y1);
+	glVertex2d(x1,y0-padding);
+	glVertex2d(x1,y0);
+	glVertex2d(x0,y0);
+	glEnd();
+
+	padding = 0.0;
+	x0 = e->getCoord(0)+ padding + xOff;
+	y0 = e->getCoord(1)+ padding + yOff;
+	x1 = e->getCoord(2)- padding + xOff;
+	y1 = e->getCoord(3)- padding + yOff;
+
+	glLineWidth(1.0f);
+	glColor3f(1,1,1);
 	glBegin(GL_LINE_STRIP);
 	glVertex2d(x0,y0);
 	glVertex2d(x0,y1);
@@ -127,14 +158,6 @@ void TreemapCanvas::drawSelected(Entity *e)
 	glVertex2d(x0,y0);
 	glEnd();
 
-	//
-	// Color c = rainbow(e->getScore());
-	// glColor3f(c.R*0.7, c.G*0.7, c.B*0.7);
-	// glBegin(GL_TRIANGLES);
-	// glVertex2d(x0,y0);
-	// glVertex2d(x0,y1);
-	// glVertex2d(x1,y1);
-	// glEnd();
 }
 
 // Map normalized (0:1) scalar to a color on the rainbow colormap
@@ -158,10 +181,146 @@ Color TreemapCanvas::rainbow(double value)
 }
 
 
-void TreemapCanvas::renderString(int x, int y, string str, Color c)
+void TreemapCanvas::labelCells()
 {
-	glColor3f(c.R, c.G, c.B);
-	glRasterPos2i(x, y);
-	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
-	glutBitmapString(GLUT_BITMAP_9_BY_15, s);
+	for (vector<BaseEntity*>::iterator it = entityTree->sortedEntities.begin(); it != entityTree->sortedEntities.end(); ++it)
+	{
+		if ((*it)->isPackage() == 0)
+		{
+			double x0 = (*it)->getCoord(0) + xOff;
+			double y0 = (*it)->getCoord(1) + yOff;
+			double x1 = (*it)->getCoord(2) + xOff;
+			double y1 = (*it)->getCoord(3) + yOff;
+
+			// Disregard very small cells
+			if ((x1-x0 > y1-y0 && x1-x0 < 50) || y1-y0 < 15)
+				continue;
+			if ((y1-y0 > x1-x0 && y1-y0 < 50) || x1-x0 < 15)
+				continue;
+
+
+			// Initialize transformation matrix
+			glPushMatrix();
+			glColor3f(0, 0, 0);
+
+			// Extract name and cast it to a glut accepted type
+			string str = (*it)->getName();
+			const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
+			unsigned width = 0;
+
+			// Measure the width of text
+			for (unsigned i = 0; i < str.size(); ++i)
+			{
+				width += glutStrokeWidth(GLUT_STROKE_ROMAN , s[i]);
+			}
+
+			// Test for horizontal fit
+			if (x1-x0 > width*0.12 + 200*0.12)
+			{
+				glTranslatef(x0+3, y0+15, 0);
+				glScalef(0.12f,-0.1f,0);
+
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glEnable(GL_BLEND);
+				glEnable(GL_LINE_SMOOTH);
+				glLineWidth(1.0);
+
+				glutStrokeString(GLUT_STROKE_ROMAN , s);
+
+				glDisable(GL_BLEND);
+				glDisable(GL_LINE_SMOOTH);
+				glPopMatrix();
+			}
+			else if (y1-y0 > width*0.12 + 200*0.12) // Test for vertical fit
+			{
+				glTranslatef(x0+13, y1-3, 0);
+				glScalef(0.1f,-0.12f,0);
+				glRotated(90, 0, 0, 1);
+
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glEnable(GL_BLEND);
+				glEnable(GL_LINE_SMOOTH);
+				glLineWidth(1.0);
+
+				glutStrokeString(GLUT_STROKE_ROMAN , s);
+
+				glDisable(GL_BLEND);
+				glDisable(GL_LINE_SMOOTH);
+				glPopMatrix();
+			}
+			else if (x1-x0 > y1-y0) // Fit all that's possible on horizontal plane
+			{
+				glTranslatef(x0+3, y0+15, 0);
+				glScalef(0.12f,-0.1f,0);
+
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glEnable(GL_BLEND);
+				glEnable(GL_LINE_SMOOTH);
+				glLineWidth(1.0);
+
+				int sub_width = 0, sub_index = 0;
+				while (sub_width*0.12 + 160*0.12 < x1-x0)
+				{
+					sub_width += glutStrokeWidth(GLUT_STROKE_ROMAN , s[sub_index]);
+					glutStrokeCharacter(GLUT_STROKE_ROMAN , s[sub_index]);
+					sub_index++;
+				}
+				glutStrokeCharacter(GLUT_STROKE_ROMAN , '.');
+				glutStrokeCharacter(GLUT_STROKE_ROMAN , '.');
+
+				glDisable(GL_BLEND);
+				glDisable(GL_LINE_SMOOTH);
+				glPopMatrix();
+			}
+			else if (y1-y0 > x1-x0) // Fit all that's possible on vertical plane
+			{
+				glTranslatef(x0+13, y1-3, 0);
+				glScalef(0.1f,-0.12f,0);
+				glRotated(90, 0, 0, 1);
+
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glEnable(GL_BLEND);
+				glEnable(GL_LINE_SMOOTH);
+				glLineWidth(1.0);
+
+				int sub_width = 0, sub_index = 0;
+				while (sub_width*0.12 + 160*0.12 < y1-y0)
+				{
+					sub_width += glutStrokeWidth(GLUT_STROKE_ROMAN , s[sub_index]);
+					glutStrokeCharacter(GLUT_STROKE_ROMAN , s[sub_index]);
+					sub_index++;
+				}
+				glutStrokeCharacter(GLUT_STROKE_ROMAN , '.');
+				glutStrokeCharacter(GLUT_STROKE_ROMAN , '.');
+
+				glDisable(GL_BLEND);
+				glDisable(GL_LINE_SMOOTH);
+				glPopMatrix();
+			}
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

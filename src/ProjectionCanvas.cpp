@@ -62,13 +62,14 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 	}
 }
 
-//
+// Draw circles
 void ProjectionCanvas::drawFilledCircle(double x, double y, float radius, Color c, int action)
 {
 	x+=10; y+=10; // Compensate for border
 	int triangleAmount = 100; //# of triangles used to draw circle
 	GLfloat twicePi = 2.0f * PI;
 	radius = radius*20 + 3 + action*4; // Scaling
+	if (c == colorHover) radius += 2;
 
 	glColor3f(c.R,c.G,c.B);
 	glBegin(GL_TRIANGLE_FAN);

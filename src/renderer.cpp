@@ -24,6 +24,7 @@ void display()
 // Function called when window dimentions change
 void reshape(int W, int H)
 {
+	glShadeModel(GL_SMOOTH);
 	glViewport(0, 0, W, H);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -95,32 +96,40 @@ void setCanvassesSizes(int W, int H)
 
 void drawHoveringLabel()
 {
-		if (hover!=NULL)
+	if (hover!=NULL)
+	{
+		string s = ((Entity*)hover)->getPrefix() + "." + hover->getName();
+		glEnable (GL_BLEND);
+		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glColor4f(0, 0, 0, 0.6);
+		if (mouse->canvas == 2)
 		{
-			string s = ((Entity*)hover)->getPrefix() + "." + hover->getName();
-			glEnable (GL_BLEND);
-			glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glColor4f(0, 0, 0, 0.6);
-			if (mouse->canvas == 2)
-			{
-				glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX - 9*(s.length()), mouse->rawY+2);
-				glDisable (GL_BLEND);
-				((TreemapCanvas*)tCanvas)->renderString(mouse->rawX - 9*(s.length()), mouse->rawY, s, {1.0f,1.0f,1.0f});
-			}
-			else if (mouse->canvas == 1)
-			{
-				glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX + 9*(s.length()), mouse->rawY+2);
-				glDisable (GL_BLEND);
-				((TreemapCanvas*)tCanvas)->renderString(mouse->rawX, mouse->rawY, s, {1.0f,1.0f,1.0f});
-			}
+			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX - 9*(s.length()), mouse->rawY+2);
+			glDisable (GL_BLEND);
+			renderHoverString(mouse->rawX - 9*(s.length()), mouse->rawY, s);
 		}
+		else if (mouse->canvas == 1)
+		{
+			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX + 9*(s.length()), mouse->rawY+2);
+			glDisable (GL_BLEND);
+			renderHoverString(mouse->rawX, mouse->rawY, s);
+		}
+	}
+}
+
+void renderHoverString(int x, int y, string str)
+{
+	glColor3f(1, 1, 1);
+	glRasterPos2i(x, y);
+	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
+	glutBitmapString(GLUT_BITMAP_9_BY_15, s);
 }
 
 void drawSelectionBox()
 {
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4f(0, 0, 0, 0.3);
+	glColor4f(1, 1, 1, 0.4);
 	glRecti(mouse->rawLastX, mouse->rawLastY, mouse->rawX, mouse->rawY);
 	glDisable (GL_BLEND);
 }
