@@ -51,6 +51,7 @@ void render()
 	drawHoveringLabel();
 	if(mouse->state == 0) // If mouse is being clicked
 		drawSelectionBox();
+	drawRt();
 }
 
 // Update objects when window size changes
@@ -133,3 +134,15 @@ void drawSelectionBox()
 	glRecti(mouse->rawLastX, mouse->rawLastY, mouse->rawX, mouse->rawY);
 	glDisable (GL_BLEND);
 }
+
+void drawRt()
+{
+	string str = to_string(Rt);
+	glColor3f(1, 1, 1);
+	int x = winWidth/2 - 30;
+	glRasterPos2i(x, 35);
+	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
+	glutBitmapString(GLUT_BITMAP_HELVETICA_18, s);
+}
+
+
