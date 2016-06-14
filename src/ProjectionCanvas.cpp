@@ -54,6 +54,10 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 			float normCValue = (value - cMin) / (cMax - cMin);
 			Color c = sequentialColormap(normCValue);
 
+			// Use qualitative colormap if ui checkbox is checked
+			if (hierarchicalColoring)
+				c = qualitativeColormap((*b)->firstLevelId);
+
 			value = ((Entity*)(*b))->data[Rt][rMetric];
 			float radius = (value - rMin) / (rMax - rMin);
 

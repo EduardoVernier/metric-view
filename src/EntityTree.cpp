@@ -47,6 +47,7 @@ void EntityTree::buildHierarchy()
 		}
 	}
 	setHierarchicalLevel(&packageVector[0], 0);
+	setFirstLevelId(&packageVector[0], 0);
 	sortPackages(&packageVector[0]);
 	generateSortedEntitiesVector(&packageVector[0]);
 	setMinMax();
@@ -67,6 +68,25 @@ void EntityTree::setHierarchicalLevel(Package *p, int level)
 	for (unsigned i = 0; i < p->childrenVector.size(); ++i)
 	{
 		setHierarchicalLevel(&p->childrenVector[i], level+1);
+	}
+}
+
+// Determines every entity tree level
+void EntityTree::setFirstLevelId(Package *p, int id)
+{
+	if (p->isPackage() == 1 && p->getLevel() <= 2)
+		p->firstLevelId = ++firstLevelGlobalCounter;
+	else
+		p->firstLevelId = firstLevelGlobalCounter;
+
+	for (unsigned i = 0; i < p->entityVector.size(); ++i)
+	{
+		p->entityVector[i].firstLevelId = firstLevelGlobalCounter;
+	}
+
+	for (unsigned i = 0; i < p->childrenVector.size(); ++i)
+	{
+		setFirstLevelId(&p->childrenVector[i], firstLevelGlobalCounter);
 	}
 }
 

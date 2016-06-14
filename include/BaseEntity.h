@@ -18,6 +18,8 @@ public:
 	void setCoords(double *_coords);
 	double getCoord(int i);
 
+	int firstLevelId = -1;
+
 private:
 	double coords[4];
 	double normalizedScore = -1;

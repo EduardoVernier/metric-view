@@ -4,6 +4,7 @@ unsigned ctrlDown = 0;
 GLUI *glui;
 int radiusMetricIndex=21;
 int colorMetricIndex=21;
+int hierarchicalColoring = 0;
 
 void initializeUI()
 {
@@ -12,7 +13,7 @@ void initializeUI()
 	GLUI_Listbox *colorLB = glui->add_listbox("", &colorMetricIndex, COLORMETRIC_LB, controlCB);
 	glui->add_statictext("Radius Metric");
 	GLUI_Listbox *radiusLB = glui->add_listbox("", &radiusMetricIndex, RADIUSMETRIC_LB, controlCB);
-
+	glui->add_checkbox("Show hierarchy in color", &hierarchicalColoring);
 	for (unsigned i = 0; i < entityTree->metricVector.size(); ++i)
 	{
 		colorLB->add_item(i, entityTree->metricVector[i].c_str());
@@ -25,7 +26,8 @@ void initializeUI()
 // Callback handling
 void controlCB(int control)
 {
-	switch (control) {
+	switch (control)
+	{
 		case COLORMETRIC_LB:
 			entityTree->setColorMetric(colorMetricIndex);
 		 	break;
@@ -33,7 +35,6 @@ void controlCB(int control)
 			entityTree->setRadiusMetric(radiusMetricIndex);
 			break;
 	}
-
 }
 
 void mouseClick(int button, int state, int x, int y)

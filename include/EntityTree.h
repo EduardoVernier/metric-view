@@ -56,6 +56,7 @@ public:
 private:
 	void sortPackages(Package *p);
 	void setHierarchicalLevel(Package *p, int level);
+	void setFirstLevelId(Package *p, int level);
 	void setMinMax();
 
 	int radiusMetricIndex = 21;
@@ -68,6 +69,8 @@ private:
 
 	double treeMin, treeMax; // Initial LOC score
 	double minX = FLT_MAX, maxX = FLT_MIN, minY = FLT_MAX, maxY = FLT_MIN;
+
+	int firstLevelGlobalCounter = 0;
 };
 
 #endif

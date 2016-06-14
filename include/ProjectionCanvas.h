@@ -12,6 +12,8 @@
 #include "EntityTree.h"
 #include "Colormap.h"
 
+extern int hierarchicalColoring;
+
 using namespace std;
 
 class ProjectionCanvas : public Canvas

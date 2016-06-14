@@ -53,6 +53,10 @@ void TreemapCanvas::drawEntity(BaseEntity *e, unsigned Rt)
 	float normCValue = (value - cMin) / (cMax - cMin);
 	Color c = sequentialColormap(normCValue);
 
+	// Use qualitative colormap if ui checkbox is checked
+	if (hierarchicalColoring)
+		c = qualitativeColormap(e->firstLevelId);
+
 	glColor3f(c.R, c.G, c.B);
 	glRectd(x0,y0,x1,y1);
 }
@@ -122,41 +126,49 @@ void TreemapCanvas::drawHovered(Entity *e)
 
 void TreemapCanvas::drawSelected(Entity *e)
 {
-	double padding = 2.0;
-	double x0 = e->getCoord(0)+ padding + xOff;
-	double y0 = e->getCoord(1)+ padding + yOff;
-	double x1 = e->getCoord(2)- padding + xOff;
-	double y1 = e->getCoord(3)- padding + yOff;
+	int showHierarchy = 0;
+	if (showHierarchy)
+	{
+		;
+	}
+	else
+	{
+		double padding = 2.0;
+		double x0 = e->getCoord(0)+ padding + xOff;
+		double y0 = e->getCoord(1)+ padding + yOff;
+		double x1 = e->getCoord(2)- padding + xOff;
+		double y1 = e->getCoord(3)- padding + yOff;
 
-	glLineWidth(4.0f);
-	glColor3f(colorSelection.R, colorSelection.G, colorSelection.B);
-	glBegin(GL_LINE_STRIP);
-	glVertex2d(x0,y0-padding);
-	glVertex2d(x0,y0);
-	glVertex2d(x0,y1+padding);
-	glVertex2d(x0,y1);
-	glVertex2d(x1+padding,y1);
-	glVertex2d(x1,y1);
-	glVertex2d(x1,y0-padding);
-	glVertex2d(x1,y0);
-	glVertex2d(x0,y0);
-	glEnd();
+		glLineWidth(4.0f);
+		glColor3f(colorSelection.R, colorSelection.G, colorSelection.B);
+		glBegin(GL_LINE_STRIP);
+		glVertex2d(x0,y0-padding);
+		glVertex2d(x0,y0);
+		glVertex2d(x0,y1+padding);
+		glVertex2d(x0,y1);
+		glVertex2d(x1+padding,y1);
+		glVertex2d(x1,y1);
+		glVertex2d(x1,y0-padding);
+		glVertex2d(x1,y0);
+		glVertex2d(x0,y0);
+		glEnd();
 
-	padding = 0.0;
-	x0 = e->getCoord(0)+ padding + xOff;
-	y0 = e->getCoord(1)+ padding + yOff;
-	x1 = e->getCoord(2)- padding + xOff;
-	y1 = e->getCoord(3)- padding + yOff;
+		padding = 0.0;
+		x0 = e->getCoord(0)+ padding + xOff;
+		y0 = e->getCoord(1)+ padding + yOff;
+		x1 = e->getCoord(2)- padding + xOff;
+		y1 = e->getCoord(3)- padding + yOff;
 
-	glLineWidth(1.0f);
-	glColor3f(1,1,1);
-	glBegin(GL_LINE_STRIP);
-	glVertex2d(x0,y0);
-	glVertex2d(x0,y1);
-	glVertex2d(x1,y1);
-	glVertex2d(x1,y0);
-	glVertex2d(x0,y0);
-	glEnd();
+		glLineWidth(1.0f);
+		glColor3f(1,1,1);
+		glBegin(GL_LINE_STRIP);
+		glVertex2d(x0,y0);
+		glVertex2d(x0,y1);
+		glVertex2d(x1,y1);
+		glVertex2d(x1,y0);
+		glVertex2d(x0,y0);
+		glEnd();
+	}
 
 }
 
