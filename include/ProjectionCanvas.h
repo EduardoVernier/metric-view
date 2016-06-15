@@ -23,7 +23,7 @@ public:
 	void drawCanvas(unsigned Rt);
 
 private:
-	void drawFilledCircle(double x, double y, float radius, Color c, int action);
+	void drawEntity(double x, double y, float radius, Color c, int action);
 	void normalizeProjection();
 
 	EntityTree *entityTree;

@@ -30,7 +30,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 			double y = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y;
 			float value = ((Entity*)(*b))->data[Rt][rMetric];
 			float radius = ((value) - rMin) / (rMax - rMin);
-			drawFilledCircle(x, y, radius, colorSelection, 1);
+			drawEntity(x, y, radius, colorSelection, 1);
 		}
 	}
 
@@ -40,7 +40,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 		double y = entityTree->hovered->normalizedProjectionPoints[Rt].y;
 		float value = entityTree->hovered->data[Rt][rMetric];
 		float radius = ((value) - rMin) / (rMax - rMin);
-		drawFilledCircle(x, y, radius, colorHover, 1);
+		drawEntity(x, y, radius, colorHover, 1);
 	}
 
 	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
@@ -61,29 +61,88 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 			value = ((Entity*)(*b))->data[Rt][rMetric];
 			float radius = (value - rMin) / (rMax - rMin);
 
-			drawFilledCircle(x, y, radius, c, 0);
+			drawEntity(x, y, radius, c, 0);
 		}
 	}
 }
 
 // Draw circles
-void ProjectionCanvas::drawFilledCircle(double x, double y, float radius, Color c, int action)
+void ProjectionCanvas::drawEntity(double x, double y, float radius, Color c, int action)
 {
-	x+=10; y+=10; // Compensate for border
-	int triangleAmount = 100; //# of triangles used to draw circle
-	GLfloat twicePi = 2.0f * PI;
-	radius = radius*20 + 3 + action*4; // Scaling
-	if (c == colorHover) radius += 2;
+	float delta = 0.2;
+	int deltaPie = 1;
 
+	x+=10; y+=10; // Compensate for border
+	int triangleAmount = 360; //# of triangles/degrees used to draw circle
+
+	radius = radius*20 + 3 + action*4; // Scaling
+	if (c == colorHover)
+		radius += 2;
+
+	GLfloat radians = 2.0f * PI;
+	if (deltaPie)
+		radians *= (1 - fabs(delta)); // Take only a fraction of the 360 degrees
+
+
+	// Old indian trick to rotate a circle around it's center
+	glPushMatrix();
 	glColor3f(c.R,c.G,c.B);
+	float rotation = 0;
+	glTranslatef(x, y ,0); // Translate vector to the object's position
+
+	// Define removed slice accordingly to delta value
+	if (delta > 0)
+		rotation = -90 + delta*180;
+	else
+		rotation = 90 - delta*180;
+
+	glRotatef(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
+
+	glTranslatef(-x, -y ,0); // Translate to normal origin
+
+	// Draw circle with missing slice
 	glBegin(GL_TRIANGLE_FAN);
-	glVertex2d(x, y); // center of circle
-	for(int i = 0; i <= triangleAmount;i++)
+	glVertex3f(x, y, 0);
+	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
-		glVertex2f(x + (radius * cos(i * twicePi / triangleAmount)),
-							 y + (radius * sin(i * twicePi / triangleAmount)));
+		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
+							 y + (radius * sin(i * radians / triangleAmount)), 0);
 	}
 	glEnd();
+	glPopMatrix();
+
+	// Draw missing slice
+	if (delta > 0)
+		radius *= 1.2;
+	else
+		radius *= 0.9;
+
+	radians = 2*PI - radians;
+
+	glPushMatrix();
+	glColor3f(c.R,c.G,c.B);
+	glTranslatef(x, y ,0); // Translate vector to the object's position
+
+	// Define removed slice accordingly to delta value
+	if (delta > 0)
+		rotation = -90 - delta*180;
+	else
+		rotation = 90 + delta*180;
+
+	glRotatef(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
+
+	glTranslatef(-x, -y ,0); // Translate to normal origin
+
+	// Draw missing slice
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex3f(x, y, 0);
+	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
+	{
+		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
+							 y + (radius * sin(i * radians / triangleAmount)), 0);
+	}
+	glEnd();
+	glPopMatrix();
 
 
 	if (action) // Hover or selection
@@ -93,9 +152,10 @@ void ProjectionCanvas::drawFilledCircle(double x, double y, float radius, Color 
 		glVertex2d(x, y); // center of circle
 		for(int i = 0; i <= triangleAmount;i++)
 		{
-			glVertex2f(x + ((radius-2) * cos(i * twicePi / triangleAmount)),
-								 y + ((radius-2) * sin(i * twicePi / triangleAmount)));
+			glVertex2f(x + ((radius-2) * cos(i * radians / triangleAmount)),
+								 y + ((radius-2) * sin(i * radians / triangleAmount)));
 		}
 		glEnd();
 	}
+	glPopMatrix();
 }
