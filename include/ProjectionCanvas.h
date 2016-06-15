@@ -13,7 +13,7 @@
 #include "Colormap.h"
 
 extern int hierarchicalColoring;
-
+extern int deltaPie;
 using namespace std;
 
 class ProjectionCanvas : public Canvas
@@ -23,8 +23,10 @@ public:
 	void drawCanvas(unsigned Rt);
 
 private:
-	void drawEntity(double x, double y, float radius, Color c, int action);
+	void drawEntity(double x, double y, float radius, float delta, Color c, int action);
 	void normalizeProjection();
+	void drawSolidEntity(double x, double y, float radius, Color c, int action);
+	void drawPieEntity(double x, double y, float radius, float delta, Color c, int action);
 
 	EntityTree *entityTree;
 };
