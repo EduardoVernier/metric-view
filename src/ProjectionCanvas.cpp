@@ -13,7 +13,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 {
 	glEnable(GL_LINE_SMOOTH);
 	glColor3f(0.0f, 0.0f, 0.0f);
-	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
+	//glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
 	int cMetric = entityTree->getColorMetric();
 	float cMin = entityTree->getCMMin();
@@ -31,8 +31,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 			double y = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y;
 			float value = ((Entity*)(*b))->data[Rt][rMetric];
 			float radius = ((value) - rMin) / (rMax - rMin);
-			float delta = (Rt > 1) ? (value - ((Entity*)(*b))->data[Rt-1][rMetric])/value: 0;
-			drawEntity(x, y, radius, delta, colorSelection, 1);
+			drawHighlight(x, y, radius, colorSelection);
 		}
 	}
 
@@ -42,9 +41,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 		double y = entityTree->hovered->normalizedProjectionPoints[Rt].y;
 		float value = entityTree->hovered->data[Rt][rMetric];
 		float radius = ((value) - rMin) / (rMax - rMin);
-		float delta = (Rt > 1) ? (value - ((Entity*)(entityTree->hovered))->data[Rt-1][rMetric])/value: 0;
-		cout << delta << endl;
-		drawEntity(x, y, radius, delta, colorHover, 1);
+		drawHighlight(x, y, radius, colorHover);
 	}
 
 	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
@@ -83,17 +80,12 @@ void ProjectionCanvas::drawEntity(double x, double y, float radius, float delta,
 void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c, int action)
 {
 	int triangleAmount = 360; //# of triangles/degrees used to draw circle
-
-	radius = radius*20 + 3 + action*4; // Scaling
-	if (c == colorHover)
-		radius += 2;
-
+	radius = radius*30 + 3 + action*4; // Scaling
 	GLfloat radians = 2.0f * PI;
 
 	// Draw circle with missing slice
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3f(c.R,c.G,c.B);
-
 	glVertex3f(x, y, 0);
 	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
@@ -102,30 +94,22 @@ void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c
 	}
 	glEnd();
 
-
-	if (action) // Hover or selection highlight
+	// 'Stroke' circle
+	glBegin(GL_LINE_STRIP);
+	glColor3f(c.R*0.5,c.G*0.5,c.B*0.5);
+	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
-		glBegin(GL_TRIANGLE_FAN);
-		glColor3f(0,0,0);
-		glVertex2d(x, y); // center of circle
-		for(int i = 0; i <= triangleAmount;i++)
-		{
-			glVertex2f(x + ((radius-2) * cos(i * radians / triangleAmount)),
-								 y + ((radius-2) * sin(i * radians / triangleAmount)));
-		}
-		glEnd();
+		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
+							 y + (radius * sin(i * radians / triangleAmount)), 0);
 	}
+	glEnd();
 }
 
 
 void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float delta, Color c, int action)
 {
 	int triangleAmount = 360; //# of triangles/degrees used to draw circle
-
-	radius = radius*20 + 3 + action*4; // Scaling
-	if (c == colorHover)
-		radius += 2;
-
+	radius = radius*30 + 3; // Scaling
 	GLfloat radians = 2.0f * PI;
 	if (deltaPie)
 		radians *= (1 - fabs(delta)); // Take only a fraction of the 360 degrees
@@ -160,75 +144,81 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 
 	// Draw missing slice
 	if (delta > 0)
+	{
 		radius *= 1.2;
-	else
-		radius *= 0.9;
+		radians = 2*PI - radians;
 
-	radians = 2*PI - radians;
+		glPushMatrix();
+		glColor3f(c.R,c.G,c.B);
+		glTranslatef(x, y ,0); // Translate vector to the object's position
 
-	glPushMatrix();
-	glColor3f(c.R,c.G,c.B);
-	glTranslatef(x, y ,0); // Translate vector to the object's position
+		// Define removed slice accordingly to delta value
+		if (delta > 0)
+			rotation = -90 - delta*180;
+		else
+			rotation = 90 + delta*180;
 
-	// Define removed slice accordingly to delta value
-	if (delta > 0)
-		rotation = -90 - delta*180;
-	else
-		rotation = 90 + delta*180;
+		glRotatef(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
 
-	glRotatef(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
+		glTranslatef(-x, -y ,0); // Translate to normal origin
 
-	glTranslatef(-x, -y ,0); // Translate to normal origin
-
-	// Draw missing slice
-	glBegin(GL_TRIANGLE_FAN);
-	glVertex3f(x, y, 0);
-	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
-	{
-		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
-							 y + (radius * sin(i * radians / triangleAmount)), 0);
-	}
-	glEnd();
-	glPopMatrix();
-
-	glPushMatrix();
-	glColor3f(0, 0, 0);
-	glTranslatef(x, y ,0); // Translate vector to the object's position
-
-	// Define removed slice accordingly to delta value
-	if (delta > 0)
-		rotation = -90 - delta*180;
-	else
-		rotation = 90 + delta*180;
-
-	glRotatef(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
-
-	glTranslatef(-x, -y ,0); // Translate to normal origin
-
-	// Draw missing slice
-	glBegin(GL_LINE_STRIP);
-	glLineWidth(2.0);
-	glVertex3f(x, y, 0);
-	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
-	{
-		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
-							 y + (radius * sin(i * radians / triangleAmount)), 0);
-	}
-	glVertex3f(x, y, 0);
-	glEnd();
-
-	if (action) // Hover or selection highlight
-	{
+		// Draw missing slice
 		glBegin(GL_TRIANGLE_FAN);
-		glColor3f(0,0,0);
-		glVertex2d(x, y); // center of circle
-		for(int i = 0; i <= triangleAmount;i++)
+		glVertex3f(x, y, 0);
+		for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 		{
-			glVertex2f(x + ((radius-2) * cos(i * radians / triangleAmount)),
-								 y + ((radius-2) * sin(i * radians / triangleAmount)));
+			glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
+								 y + (radius * sin(i * radians / triangleAmount)), 0);
 		}
+		glEnd();
+		glPopMatrix();
+
+		// Missing slice contour
+		glPushMatrix();
+		glColor3f(0, 0, 0);
+		glTranslatef(x, y ,0); // Translate vector to the object's position
+
+		// Define removed slice accordingly to delta value
+		if (delta > 0)
+			rotation = -90 - delta*180;
+		else
+			rotation = 90 + delta*180;
+
+		glRotatef(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
+
+		glTranslatef(-x, -y ,0); // Translate to normal origin
+
+		// Draw missing slice
+
+		glBegin(GL_LINE_STRIP);
+		glLineWidth(2.0);
+		glVertex3f(x, y, 0);
+		for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
+		{
+			glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
+								 y + (radius * sin(i * radians / triangleAmount)), 0);
+		}
+		glVertex3f(x, y, 0);
 		glEnd();
 	}
 	glPopMatrix();
+}
 
+void ProjectionCanvas::drawHighlight(double x, double y, float radius, Color c)
+{
+	float radians = 2*PI; // Full circle
+	radius = radius*30 + 3; // Scaling
+	if (c == colorHover) radius+=2;
+	int triangleAmount = 360;
+	x += 10;
+	y += 10;
+
+	glBegin(GL_LINE_STRIP);
+	glColor3f(c.R, c.G, c.B);
+	for(int i = 0; i <= triangleAmount;i++)
+	{
+		glVertex3f(x + ((radius-2) * cos(i * radians / triangleAmount)),
+							 y + ((radius-2) * sin(i * radians / triangleAmount)), 1);
+	}
+	glEnd();
 }

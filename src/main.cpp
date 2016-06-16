@@ -50,7 +50,8 @@ void initializeVisualization(int argc, char **argv)
 	glutPassiveMotionFunc(mousePassive);
 	glutMotionFunc(mouseUpdate);
 	glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
-}
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);}
 
 
 void buildEntityTree(int argc, char **argv, EntityTree *et)

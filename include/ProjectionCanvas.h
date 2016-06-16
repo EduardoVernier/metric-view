@@ -27,6 +27,7 @@ private:
 	void normalizeProjection();
 	void drawSolidEntity(double x, double y, float radius, Color c, int action);
 	void drawPieEntity(double x, double y, float radius, float delta, Color c, int action);
+	void drawHighlight(double x, double y, float radius, Color c);
 
 	EntityTree *entityTree;
 };
