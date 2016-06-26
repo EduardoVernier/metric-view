@@ -86,11 +86,11 @@ void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c
 	// Draw circle with missing slice
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3f(c.R,c.G,c.B);
-	glVertex3f(x, y, 0);
+	glVertex3f(x, y, 1.0);
 	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
 		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
-							 y + (radius * sin(i * radians / triangleAmount)), 0);
+							 y + (radius * sin(i * radians / triangleAmount)), 1.0);
 	}
 	glEnd();
 
@@ -100,7 +100,7 @@ void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c
 	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
 		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
-							 y + (radius * sin(i * radians / triangleAmount)), 0);
+							 y + (radius * sin(i * radians / triangleAmount)), 1.0);
 	}
 	glEnd();
 }
@@ -133,11 +133,11 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 
 	// Draw circle with missing slice
 	glBegin(GL_TRIANGLE_FAN);
-	glVertex3f(x, y, 0);
+	glVertex3f(x, y, 0.0);
 	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
 		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
-							 y + (radius * sin(i * radians / triangleAmount)), 0);
+							 y + (radius * sin(i * radians / triangleAmount)), 0.0);
 	}
 	glEnd();
 	glPopMatrix();
@@ -164,11 +164,11 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 
 		// Draw missing slice
 		glBegin(GL_TRIANGLE_FAN);
-		glVertex3f(x, y, 0);
+		glVertex3f(x, y, 1.0);
 		for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 		{
 			glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
-								 y + (radius * sin(i * radians / triangleAmount)), 0);
+								 y + (radius * sin(i * radians / triangleAmount)), 1.0);
 		}
 		glEnd();
 		glPopMatrix();
@@ -188,17 +188,16 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 
 		glTranslatef(-x, -y ,0); // Translate to normal origin
 
-		// Draw missing slice
-
+		// Draw missing slice contour
 		glBegin(GL_LINE_STRIP);
 		glLineWidth(2.0);
-		glVertex3f(x, y, 0);
+		glVertex3f(x, y, 1.0);
 		for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 		{
 			glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
-								 y + (radius * sin(i * radians / triangleAmount)), 0);
+								 y + (radius * sin(i * radians / triangleAmount)), 1.0);
 		}
-		glVertex3f(x, y, 0);
+		glVertex3f(x, y, 1.0);
 		glEnd();
 	}
 	glPopMatrix();

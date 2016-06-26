@@ -7,6 +7,7 @@
 extern Color divergent[5];
 extern Color sequential[5];
 
+Color divergentColormap(double v);
 Color sequentialColormap(double v);
 Color qualitativeColormap(int v);
 

@@ -34,6 +34,18 @@ Color sequential[5] = {Color(1,1,0.698),
 		Color(0.741176, 0, 0.14902)};
 */
 
+Color divergentColormap(double v)
+{
+	double d = v;
+	while (d > 0.25) d-=0.25;
+	d*=4;
+
+	int f = int(floor(v*4));
+	int c = int(ceil(v*4));
+	return (divergent[f]*(1-d)) + (divergent[c]*(d));
+}
+
+
 Color sequentialColormap(double v)
 {
 	double d = v;
@@ -75,9 +87,3 @@ Color qualitativeColormap(int v)
 
 	return Color(cm[v%24][0]/255.0, cm[v%24][1]/255.0, cm[v%24][2]/255.0);
 }
-
-
-
-
-
-
