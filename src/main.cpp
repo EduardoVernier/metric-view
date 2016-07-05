@@ -50,10 +50,6 @@ void initializeVisualization(int argc, char **argv)
 	glutPassiveMotionFunc(mousePassive);
 	glutMotionFunc(mouseUpdate);
 	glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
-	glEnable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
-	glDepthFunc(GL_LESS);
-	glDepthRange(0.0f, 1.0f);
 }
 
 

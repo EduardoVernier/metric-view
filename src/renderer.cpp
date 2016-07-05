@@ -16,8 +16,6 @@ int mxdown, mydown, mx, my, mclicked; // Mouse coordinates
 // Glut/GLui argument functions
 void display()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	render();
 	glFlush();
@@ -107,14 +105,7 @@ void drawHoveringLabel()
 		glColor4f(0, 0, 0, 0.6);
 		if (mouse->canvas == 2)
 		{
-			//glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX - 9*(s.length()), mouse->rawY+2);
-
-			glBegin(GL_QUADS);
-			glVertex3f(mouse->rawX, mouse->rawY - 10, 0.1);
-			glVertex3f(mouse->rawX - 9*(s.length()), mouse->rawY - 10, 0.1);
-			glVertex3f(mouse->rawX - 9*(s.length()), mouse->rawY+2, 0.1);
-			glVertex3f(mouse->rawX, mouse->rawY+2, 0.1);
-			glEnd();
+			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX - 9*(s.length()), mouse->rawY+2);
 			glDisable (GL_BLEND);
 			renderHoverString(mouse->rawX - 9*(s.length()), mouse->rawY, s);
 		}
@@ -130,7 +121,7 @@ void drawHoveringLabel()
 void renderHoverString(int x, int y, string str)
 {
 	glColor3f(1, 1, 1);
-	glRasterPos3i(x, y, 0.1);
+	glRasterPos2i(x, y);
 	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
 	glutBitmapString(GLUT_BITMAP_9_BY_15, s);
 }
@@ -153,3 +144,5 @@ void drawRt()
 	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
 	glutBitmapString(GLUT_BITMAP_HELVETICA_18, s);
 }
+
+
