@@ -51,11 +51,26 @@ void TreemapCanvas::drawEntity(BaseEntity *e, unsigned Rt)
 
 	float value = ((Entity*)e)->data[Rt][cMetric];
 	float normCValue = (value - cMin) / (cMax - cMin);
-	Color c = sequentialColormap(normCValue);
 
-	// Use qualitative colormap if ui checkbox is checked
-	if (hierarchicalColoring)
-		c = qualitativeColormap(e->firstLevelId);
+	// Generate color based on colormap index value
+	Color c (1,1,1);
+	switch (colormapIndex)
+	{
+		case 0:
+			c = sequentialColormap(normCValue);
+			break;
+		case 1:
+			c = qualitativeColormap(((Entity*)e)->firstLevelId);
+			break;
+		case 2:
+			if (Rt > 0)
+			{
+				float pValue = ((Entity*)e)->data[Rt-1][cMetric];
+				float pNormCValue = ((pValue - cMin) / (cMax - cMin));
+				c = divergentColormap(normCValue-pNormCValue);
+			}
+			break;
+	}
 
 	glColor3f(c.R, c.G, c.B);
 	glRectd(x0,y0,x1,y1);
@@ -312,27 +327,3 @@ void TreemapCanvas::labelCells()
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

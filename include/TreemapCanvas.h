@@ -12,7 +12,7 @@
 #include "EntityTree.h"
 #include "Colormap.h"
 
-extern int hierarchicalColoring;
+extern int colormapIndex;
 
 using namespace std;
 

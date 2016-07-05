@@ -56,13 +56,27 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 
 			float value = ((Entity*)(*b))->data[Rt][cMetric];
 			float normCValue = (value - cMin) / (cMax - cMin);
-			Color c = sequentialColormap(normCValue);
 
-			// Use qualitative colormap if ui checkbox is checked
-			if (hierarchicalColoring)
-				c = qualitativeColormap((*b)->firstLevelId);
+			// Generate color based on colormap index value
+			Color c (1,1,1);
+			switch (colormapIndex)
+			{
+				case 0:
+					c = sequentialColormap(normCValue);
+					break;
+				case 1:
+					c = qualitativeColormap((*b)->firstLevelId);
+					break;
+				case 2:
+					if (Rt > 0)
+					{
+						float pValue = ((Entity*)(*b))->data[Rt-1][cMetric];
+						float pNormCValue = ((pValue - cMin) / (cMax - cMin));
+						c = divergentColormap(normCValue-pNormCValue);
+					}
+					break;
+			}
 
-			value = ((Entity*)(*b))->data[Rt][rMetric];
 			float radius = (value - rMin) / (rMax - rMin);
 			float delta = (Rt > 1) ? (value - ((Entity*)(*b))->data[Rt-1][rMetric])/value: 0;
 			drawEntity(x, y, radius, delta, c, 0);
@@ -162,7 +176,7 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 	if (delta > 0)
 		radius *= 1.2;
 	else
-		radius *= 0.9;
+		radius = 0;
 
 	radians = 2*PI - radians;
 

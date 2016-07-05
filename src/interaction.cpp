@@ -4,26 +4,33 @@ unsigned ctrlDown = 0;
 GLUI *glui;
 int radiusMetricIndex=21;
 int colorMetricIndex=21;
-int hierarchicalColoring = 0;
+int colormapIndex=0;
 int deltaPie = 0;
 
 void initializeUI()
 {
 	glui = GLUI_Master.create_glui( "GLUI" );
+	// Metric listboxes
 	glui->add_statictext("Color Metric");
 	GLUI_Listbox *colorLB = glui->add_listbox("", &colorMetricIndex, COLORMETRIC_LB, controlCB);
 	glui->add_statictext("Radius Metric");
 	GLUI_Listbox *radiusLB = glui->add_listbox("", &radiusMetricIndex, RADIUSMETRIC_LB, controlCB);
-	glui->add_checkbox("Show hierarchy in color", &hierarchicalColoring);
-	glui->add_checkbox("Display delta pie slice", &deltaPie);
-
+	glui->add_statictext("Colormap");
 	for (unsigned i = 0; i < entityTree->metricVector.size(); ++i)
 	{
 		colorLB->add_item(i, entityTree->metricVector[i].c_str());
 		radiusLB->add_item(i, entityTree->metricVector[i].c_str());
 	}
-	entityTree->setColorMetric(21);
-	entityTree->setRadiusMetric(21);
+
+	// Colormap listbox
+	GLUI_Listbox *colormapLB = glui->add_listbox("", &colormapIndex, COLORMAP_LB, controlCB);
+	colormapLB->add_item(0, "Sequential Colormap");
+	colormapLB->add_item(1, "Qualitative Colormap (Hierarchy)");
+	colormapLB->add_item(2, "Divergent Colormap");
+	glui->add_checkbox("Display delta pie slice", &deltaPie);
+
+	entityTree->setColorMetric(colorMetricIndex);
+	entityTree->setRadiusMetric(radiusMetricIndex);
 }
 
 // Callback handling

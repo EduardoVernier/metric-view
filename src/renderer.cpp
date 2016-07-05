@@ -144,5 +144,3 @@ void drawRt()
 	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
 	glutBitmapString(GLUT_BITMAP_HELVETICA_18, s);
 }
-
-
