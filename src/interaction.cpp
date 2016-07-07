@@ -94,8 +94,7 @@ void keyboard(unsigned char key, int x, int y)
 	{
 		case 'q': exit(0); break;
 		case 'z': if (Rt > 0) --Rt; cout<<Rt<<endl; break;
-		case 'x': if (Rt < entityTree->nRevisions-1) ++Rt;
-			cout<<Rt<<endl; break;
+		case 'x': if (Rt < entityTree->nRevisions-1) ++Rt; break;
 	}
 }
 

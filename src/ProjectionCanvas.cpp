@@ -12,7 +12,7 @@ ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityTree *et)
 void ProjectionCanvas::drawCanvas(unsigned Rt)
 {
 	glEnable(GL_LINE_SMOOTH);
-	glColor3f(0.0f, 0.0f, 0.0f);
+	glColor3f(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
 	int cMetric = entityTree->getColorMetric();
@@ -43,7 +43,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 		float value = entityTree->hovered->data[Rt][rMetric];
 		float radius = ((value) - rMin) / (rMax - rMin);
 		float delta = (Rt > 1) ? (value - ((Entity*)(entityTree->hovered))->data[Rt-1][rMetric])/value: 0;
-		cout << delta << endl;
+		//cout << delta << endl;
 		drawEntity(x, y, radius, delta, colorHover, 1);
 	}
 
@@ -88,7 +88,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 // Draw circles
 void ProjectionCanvas::drawEntity(double x, double y, float radius, float delta, Color c, int action)
 {
-	if (deltaPie == 0 || fabs(delta) < 0.01)
+	if (deltaPie == 0 || fabs(delta) < 0.01) // 1% tolerance
 		drawSolidEntity(x+10, y+10, radius, c, action);
 	else
 		drawPieEntity(x+10, y+10, radius, delta, c, action);
@@ -104,10 +104,8 @@ void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c
 
 	GLfloat radians = 2.0f * PI;
 
-	// Draw circle with missing slice
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3f(c.R,c.G,c.B);
-
 	glVertex3f(x, y, 0);
 	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
@@ -116,19 +114,14 @@ void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c
 	}
 	glEnd();
 
-
-	if (action) // Hover or selection highlight
+	glBegin(GL_LINE_STRIP);
+	glColor3f(0,0,0);
+	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
-		glBegin(GL_TRIANGLE_FAN);
-		glColor3f(0,0,0);
-		glVertex2d(x, y); // center of circle
-		for(int i = 0; i <= triangleAmount;i++)
-		{
-			glVertex2f(x + ((radius-2) * cos(i * radians / triangleAmount)),
-								 y + ((radius-2) * sin(i * radians / triangleAmount)));
-		}
-		glEnd();
+		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
+							 y + (radius * sin(i * radians / triangleAmount)), 0);
 	}
+	glEnd();
 }
 
 
@@ -143,7 +136,6 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 	GLfloat radians = 2.0f * PI;
 	if (deltaPie)
 		radians *= (1 - fabs(delta)); // Take only a fraction of the 360 degrees
-
 
 	// Old indian trick to rotate a circle around it's center
 	glPushMatrix();
@@ -170,6 +162,19 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 							 y + (radius * sin(i * radians / triangleAmount)), 0);
 	}
 	glEnd();
+
+	// Draw stroke
+	glBegin(GL_LINE_STRIP);
+	glColor3f(0,0,0);
+	glVertex3f(x, y, 0);
+	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
+	{
+		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
+							 y + (radius * sin(i * radians / triangleAmount)), 0);
+	}
+	glVertex3f(x, y, 0);
+	glEnd();
+
 	glPopMatrix();
 
 	// Draw missing slice
@@ -230,19 +235,5 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 	}
 	glVertex3f(x, y, 0);
 	glEnd();
-
-	if (action) // Hover or selection highlight
-	{
-		glBegin(GL_TRIANGLE_FAN);
-		glColor3f(0,0,0);
-		glVertex2d(x, y); // center of circle
-		for(int i = 0; i <= triangleAmount;i++)
-		{
-			glVertex2f(x + ((radius-2) * cos(i * radians / triangleAmount)),
-								 y + ((radius-2) * sin(i * radians / triangleAmount)));
-		}
-		glEnd();
-	}
 	glPopMatrix();
-
 }
