@@ -6,4 +6,6 @@ void Canvas::setSize(Point tl, Point br)
 	bottom_right = br;
 	xOff = tl.x;
 	yOff = tl.y;
+	currentWidth  = br.x - tl.x;
+	currentHeight = br.y - tl.y;
 }

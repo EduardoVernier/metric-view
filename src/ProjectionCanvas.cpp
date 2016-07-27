@@ -6,11 +6,19 @@ ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityTree *et)
 	entityTree = et;
 	int shortEdge = ((br.x-tl.x) < (br.y-tl.y))? (br.x-tl.x) : (br.y-tl.y);
 	entityTree->normalizeProjection(shortEdge);
+	initialWidth  = br.x - tl.x;
+	initialHeight = br.y - tl.y;
 }
 
 //
 void ProjectionCanvas::drawCanvas(unsigned Rt)
 {
+	// Scale initial aspect ratio by new
+	glPushMatrix();
+	double xRatio = double(currentWidth)/double(initialWidth);
+	double yRatio = double(currentHeight)/double(initialHeight);
+	glScaled(xRatio, yRatio, 1);
+
 	glEnable(GL_LINE_SMOOTH);
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
@@ -83,6 +91,8 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 		}
 	}
 	glDisable(GL_LINE_SMOOTH);
+
+	glPopMatrix();
 }
 
 // Draw circles

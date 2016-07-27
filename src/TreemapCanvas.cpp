@@ -4,12 +4,20 @@ TreemapCanvas::TreemapCanvas (Point tl, Point br, EntityTree *et)
 {
 	setSize(tl, br);
 	entityTree = et;
+	initialWidth  = br.x - tl.x;
+	initialHeight = br.y - tl.y;
 }
 
 // First draw elements and then package borders
 void TreemapCanvas::drawCanvas(unsigned Rt)
 {
 	vector<BaseEntity*> items = entityTree->sortedEntities;
+
+	// Scale initial aspect ratio by new
+	glPushMatrix();
+	double xRatio = double(currentWidth)/double(initialWidth);
+	double yRatio = double(currentHeight)/double(initialHeight);
+	glScaled(xRatio, yRatio, 1);
 
 	// Draw treemap squares
 	for (vector<BaseEntity*>::iterator it = entityTree->sortedEntities.begin(); it != entityTree->sortedEntities.end(); ++it)
@@ -35,6 +43,8 @@ void TreemapCanvas::drawCanvas(unsigned Rt)
 	}
 	drawHovered(entityTree->hovered);
 	labelCells();
+
+	glPopMatrix();
 }
 
 void TreemapCanvas::drawEntity(BaseEntity *e, unsigned Rt)
