@@ -5,7 +5,7 @@ ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityTree *et)
 	setSize(tl, br);
 	entityTree = et;
 	int shortEdge = ((br.x-tl.x) < (br.y-tl.y))? (br.x-tl.x) : (br.y-tl.y);
-	entityTree->normalizeProjection(shortEdge);
+	entityTree->normalizeProjection(shortEdge-50);
 	initialWidth  = br.x - tl.x;
 	initialHeight = br.y - tl.y;
 }
@@ -91,7 +91,6 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 		}
 	}
 	glDisable(GL_LINE_SMOOTH);
-
 	glPopMatrix();
 }
 
