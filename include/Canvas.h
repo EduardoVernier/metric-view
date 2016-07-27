@@ -16,6 +16,7 @@ protected:
 	Color colorSelection = {0.0f,0.7f,0.3f};
 	int initialWidth, initialHeight;
 	int currentWidth, currentHeight;
+	int firstMeasurement = 1;
 
 public:
 	Point top_left, bottom_right;

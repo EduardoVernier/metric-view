@@ -13,6 +13,9 @@ ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityTree *et)
 //
 void ProjectionCanvas::drawCanvas(unsigned Rt)
 {
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
+
 	// Scale initial aspect ratio by new
 	glPushMatrix();
 	double xRatio = double(currentWidth)/double(initialWidth);
@@ -20,8 +23,6 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 	glScaled(xRatio, yRatio, 1);
 
 	glEnable(GL_LINE_SMOOTH);
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
 	int cMetric = entityTree->getColorMetric();
 	float cMin = entityTree->getCMMin();

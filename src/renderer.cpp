@@ -61,7 +61,6 @@ void setCanvassesSizes(int W, int H)
 	winWidth = W;
 	winHeight = H;
 
-
 	// Let mouse object know that window has changed size
 	mouse->setWindowSize(W, H);
 
@@ -74,10 +73,6 @@ void setCanvassesSizes(int W, int H)
 	Point tTL, tBR;
 	tTL.x = 20 + (W-30)/2.0; tTL.y = 10;
 	tBR.x = W-10; tBR.y = H-10;
-
-	// TODO: Fix update in window size
-	// Update treemap given new width and height
-	// treemap->updateSize((W-30)/2.0, H-20);
 
 	// Instantiate if it's the first call, else just update size
 	if (pCanvas == NULL && tCanvas == NULL)
