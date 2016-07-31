@@ -32,7 +32,6 @@ public:
 	double getMin() { return treeMin; };
 	double getMax() { return treeMax; };
 	Entity* getEntityByName(string prefix, string id);
-	void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown);
 	void addProjection(string name, double x, double y, unsigned index);
 	void normalizeProjection(int shortEdge);
 	void setColorMetric(int mIndex);

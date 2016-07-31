@@ -20,6 +20,7 @@ class ProjectionCanvas : public Canvas
 {
 public:
 	ProjectionCanvas(Point tl, Point br, EntityTree *et);
+	void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown);
 	void drawCanvas(unsigned Rt);
 
 private:

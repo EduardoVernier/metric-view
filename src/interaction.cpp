@@ -55,7 +55,7 @@ void mouseClick(int button, int state, int x, int y)
 	switch (mouse->click(button, state, x, y, drag))
 	{
 		case 1:
-			entityTree->getEntitiesByPositionOnProjection(drag, Rt, 1, ctrlDown);
+			pCanvas->getEntitiesByPositionOnProjection(drag, Rt, 1, ctrlDown);
 			break;
 		case 2:
 			tCanvas->getEntitiesByPositionOnTreemap(drag, 1, ctrlDown);
@@ -76,7 +76,7 @@ void mousePassive (int x, int y)
 	else if (mouse->canvas == 1) // Hovering projection
 	{
 		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
-		entityTree->getEntitiesByPositionOnProjection(drag, Rt, 0, ctrlDown);
+		pCanvas->getEntitiesByPositionOnProjection(drag, Rt, 0, ctrlDown);
 		hover = entityTree->hovered;
 	}
 	else

@@ -181,59 +181,6 @@ void EntityTree::setMinMax()
 	}
 }
 
-// Mark entities as selected from projection pane interaction
-void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown)
-{
-	Entity *closest = NULL;
-	hovered = NULL;
-	double smallerDist = FLT_MAX;
-	if (click && !ctrlDown)
-		selected.clear();
-
-	for (vector<BaseEntity*>::iterator b = sortedEntities.begin(); b != sortedEntities.end(); ++b)
-	{
-		if ((*b)->isPackage() == 0)
-		{
-			double bx = ((Entity*)(*b))->normalizedProjectionPoints[Rt].x;
-			double by = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y;
-			if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case point click (or hover of click = 0)
-			{
-				double distX = drag[0] - bx;
-				double distY = drag[1] - by;
-				double dist = sqrt(pow(distX,2) + pow(distY,2));
-				if (dist < 10 && dist < smallerDist) // If click is close enough
-				{
-					if (click)
-					{
-						smallerDist = dist;
-						closest = (Entity*)(*b);
-					}
-					else
-					{
-						smallerDist = dist;
-						hovered = (Entity*)(*b);
-					}
-				}
-			}
-			else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) // If inside selection box
-			{
-				if ((std::find(selected.begin(), selected.end(),(Entity*)*b))!=selected.end())
-					selected.erase(std::find(selected.begin(), selected.end(),(Entity*)*b));
-				else
-					selected.push_back((Entity*)*b);
-			}
-		}
-	}
-	if(click == 1 && closest != NULL)
-	{
-		if ((std::find(selected.begin(), selected.end(),closest))!=selected.end())
-			selected.erase(std::find(selected.begin(), selected.end(),closest));
-		else
-			selected.push_back(closest);
-	}
-}
-
-
 // Add projection point to vector of points
 void EntityTree::addProjection(string name, double x, double y, unsigned index)
 {

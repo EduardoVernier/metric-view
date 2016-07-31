@@ -10,7 +10,60 @@ ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityTree *et)
 	initialHeight = br.y - tl.y;
 }
 
-//
+// Mark entities as selected from projection pane interaction
+void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown)
+{
+	Entity *closest = NULL;
+	entityTree->hovered = NULL;
+	double smallerDist = FLT_MAX;
+
+	if (click && !ctrlDown)
+		entityTree->selected.clear();
+
+	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
+	{
+		if ((*b)->isPackage() == 0)
+		{
+			double bx = ((Entity*)(*b))->normalizedProjectionPoints[Rt].x * xRatio;
+			double by = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y * yRatio;
+			if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case point click (or hover of click = 0)
+			{
+				double distX = drag[0] - bx;
+				double distY = drag[1] - by;
+				double dist = sqrt(pow(distX,2) + pow(distY,2));
+				if (dist < 10 && dist < smallerDist) // If click is close enough
+				{
+					if (click)
+					{
+						smallerDist = dist;
+						closest = (Entity*)(*b);
+					}
+					else
+					{
+						smallerDist = dist;
+						entityTree->hovered = (Entity*)(*b);
+					}
+				}
+			}
+			else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) // If inside selection box
+			{
+				if ((std::find(entityTree->selected.begin(), entityTree->selected.end(),(Entity*)*b))!= entityTree->selected.end())
+					entityTree->selected.erase(std::find(entityTree->selected.begin(), entityTree->selected.end(),(Entity*)*b));
+				else
+					entityTree->selected.push_back((Entity*)*b);
+			}
+		}
+	}
+	if(click == 1 && closest != NULL)
+	{
+		if ((std::find(entityTree->selected.begin(), entityTree->selected.end(),closest))!=entityTree->selected.end())
+			entityTree->selected.erase(std::find(entityTree->selected.begin(), entityTree->selected.end(),closest));
+		else
+			entityTree->selected.push_back(closest);
+	}
+}
+
+// Draw scaled Canvas
 void ProjectionCanvas::drawCanvas(unsigned Rt)
 {
 	glColor3f(1.0f, 1.0f, 1.0f);
