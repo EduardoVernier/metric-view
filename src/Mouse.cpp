@@ -17,28 +17,19 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 	rawY = _y;
 	lastCanvas = canvas;
 
-	if(streamgraphFlag) // If window layout has streamgraph
+	if (_y > 10 && _y < H_-10)
 	{
-		if (_y > 10 && _y < H_- 10 - streamgraphHeight)
+		if (_x > 10 && _x < 10 + (W_-30)/2)
 		{
-			if (_x > 10 && _x < 10 + (W_-30)/2)
-			{
-				canvas = P;
-				x = _x-10;
-				y = _y-10 - streamgraphHeight;
-			}
-			else if (_x > 20 + (W_-30)/2 && _x < W_-10)
-			{
-				canvas = T;
-				x = _x - (20+(W_-30)/2);
-				y = _y - 10 - streamgraphHeight;
-			}
-			else
-			{
-				canvas = NONE;
-				x = 0;
-				y = 0;
-			}
+			canvas = P;
+			x = _x-10;
+			y = _y-10;
+		}
+		else if (_x > 20 + (W_-30)/2 && _x < W_-10)
+		{
+			canvas = T;
+			x = _x - (20+(W_-30)/2);
+			y = _y - 10;
 		}
 		else
 		{
@@ -49,33 +40,9 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 	}
 	else
 	{
-		if (_y > 10 && _y < H_-10)
-		{
-			if (_x > 10 && _x < 10 + (W_-30)/2)
-			{
-				canvas = P;
-				x = _x-10;
-				y = _y-10;
-			}
-			else if (_x > 20 + (W_-30)/2 && _x < W_-10)
-			{
-				canvas = T;
-				x = _x - (20+(W_-30)/2);
-				y = _y - 10;
-			}
-			else
-			{
-				canvas = NONE;
-				x = 0;
-				y = 0;
-			}
-		}
-		else
-		{
-			canvas = NONE;
-			x = 0;
-			y = 0;
-		}
+		canvas = NONE;
+		x = 0;
+		y = 0;
 	}
 
 	if (button == 0 && state == 0)
