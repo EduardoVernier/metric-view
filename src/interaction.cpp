@@ -6,6 +6,7 @@ int radiusMetricIndex=21;
 int colorMetricIndex=21;
 int colormapIndex=0;
 int deltaPie = 0;
+int streamgraphFlag = 0;
 
 void initializeUI()
 {
@@ -28,6 +29,7 @@ void initializeUI()
 	colormapLB->add_item(1, "Qualitative Colormap (Hierarchy)");
 	colormapLB->add_item(2, "Divergent Colormap");
 	glui->add_checkbox("Display delta pie slice", &deltaPie);
+	glui->add_checkbox("Stream Graph", &streamgraphFlag);
 
 	entityTree->setColorMetric(colorMetricIndex);
 	entityTree->setRadiusMetric(radiusMetricIndex);
@@ -56,7 +58,7 @@ void mouseClick(int button, int state, int x, int y)
 			entityTree->getEntitiesByPositionOnProjection(drag, Rt, 1, ctrlDown);
 			break;
 		case 2:
-			entityTree->getEntitiesByPositionOnTreemap(drag, 1, ctrlDown);
+			tCanvas->getEntitiesByPositionOnTreemap(drag, 1, ctrlDown);
 			break;
 	}
 	mouse->updateMouse(x, y);
@@ -68,7 +70,7 @@ void mousePassive (int x, int y)
 	if (mouse->canvas == 2) // Hovering treemap
 	{
 		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
-		entityTree->getEntitiesByPositionOnTreemap(drag, 0, ctrlDown);
+		tCanvas->getEntitiesByPositionOnTreemap(drag, 0, ctrlDown);
 		hover = entityTree->hovered;
 	}
 	else if (mouse->canvas == 1) // Hovering projection

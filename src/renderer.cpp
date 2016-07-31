@@ -2,16 +2,18 @@
 
 extern int winWidth, winHeight;
 extern int mainWindow;
+extern EntityTree *entityTree;
+extern unsigned Rt;
+extern int streamgraphFlag;
 
 // Singletons
 Mouse *mouse = new Mouse();
 Canvas *pCanvas = NULL;
 Canvas *tCanvas = NULL;
-extern EntityTree *entityTree;
-extern unsigned Rt;
 
 BaseEntity* hover = NULL; // Drawing of hovering label
 int mxdown, mydown, mx, my, mclicked; // Mouse coordinates
+int streamgraphHeight = 250;
 
 // Glut/GLui argument functions
 void display()
@@ -46,6 +48,7 @@ void idle()
 // Drawing
 void render()
 {
+	setCanvassesSizes(winWidth, winHeight);
 	pCanvas->drawCanvas(Rt);
 	tCanvas->drawCanvas(Rt);
 	drawHoveringLabel();
@@ -57,7 +60,7 @@ void render()
 // Update objects when window size changes
 void setCanvassesSizes(int W, int H)
 {
-	cout << "Width: " << W << " Height: " << H << endl;
+	//cout << "Width: " << W << " Height: " << H << endl;
 	winWidth = W;
 	winHeight = H;
 
@@ -73,6 +76,13 @@ void setCanvassesSizes(int W, int H)
 	Point tTL, tBR;
 	tTL.x = 20 + (W-30)/2.0; tTL.y = 10;
 	tBR.x = W-10; tBR.y = H-10;
+
+	// Define Streamgraph Canvas dimentions if necessary
+	if (streamgraphFlag)
+	{
+		pBR.y -= streamgraphHeight;
+		tBR.y -= streamgraphHeight;
+	}
 
 	// Instantiate if it's the first call, else just update size
 	if (pCanvas == NULL && tCanvas == NULL)

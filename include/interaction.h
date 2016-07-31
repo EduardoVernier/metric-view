@@ -7,6 +7,7 @@
 
 #include "Mouse.h"
 #include "Treemap.h"
+#include "TreemapCanvas.h"
 
 extern Mouse *mouse;
 extern EntityTree *entityTree;
@@ -14,6 +15,7 @@ extern unsigned winWidth, winHeight;
 extern BaseEntity *hover;
 extern unsigned Rt;
 extern int mainWindow;
+extern TreemapCanvas *tCanvas;
 
 // Button/checkbox/listbox ids
 enum UI_IDs

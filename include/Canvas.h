@@ -20,7 +20,9 @@ protected:
 
 public:
 	Point top_left, bottom_right;
+	double xRatio, yRatio;
 	void setSize(Point tl, Point br);
 	virtual void drawCanvas(unsigned Rt) = 0;
 };
+
 #endif

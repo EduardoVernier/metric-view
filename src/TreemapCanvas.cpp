@@ -8,6 +8,41 @@ TreemapCanvas::TreemapCanvas (Point tl, Point br, EntityTree *et)
 	initialHeight = br.y - tl.y;
 }
 
+// Fill vector of pointers of the selected entities
+// For some strange reason, the entityTree member is always NULL in this method, so I'm passing it's pointer as arg
+void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsigned ctrlDown)
+{
+	if (click && !ctrlDown)
+		entityTree->selected.clear();
+
+	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
+	{
+		if ((*b)->isPackage() == 0)
+		{
+			if ((*b)->getCoord(3) * yRatio < drag[1])
+				continue; // b too high
+			else if ((*b)->getCoord(1) * yRatio > drag[3])
+				continue; // svg too low
+			else if ((*b)->getCoord(2) * xRatio < drag[0])
+				continue; // svg too far left
+			else if ((*b)->getCoord(0) * xRatio > drag[2])
+				continue; // svg too far right
+			else
+			{
+				if (click)
+				{
+					if ((std::find(entityTree->selected.begin(), entityTree->selected.end(),(Entity*)*b))!= entityTree->selected.end())
+						entityTree->selected.erase(std::find(entityTree->selected.begin(),entityTree-> selected.end(),(Entity*)*b));
+					else
+						entityTree->selected.push_back((Entity*)*b);
+				}
+				else
+					entityTree->hovered = (Entity*)*b;
+			}
+		}
+	}
+}
+
 // First draw elements and then package borders
 void TreemapCanvas::drawCanvas(unsigned Rt)
 {
@@ -15,8 +50,8 @@ void TreemapCanvas::drawCanvas(unsigned Rt)
 
 	// Scale initial aspect ratio by new
 	glPushMatrix();
-	double xRatio = double(currentWidth)/double(initialWidth);
-	double yRatio = double(currentHeight)/double(initialHeight);
+	xRatio = double(currentWidth)/double(initialWidth);
+	yRatio = double(currentHeight)/double(initialHeight);
 	glScaled(xRatio, yRatio, 1);
 
 	// Draw treemap squares

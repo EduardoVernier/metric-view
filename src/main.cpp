@@ -52,7 +52,6 @@ void initializeVisualization(int argc, char **argv)
 	glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
 }
 
-
 void buildEntityTree(int argc, char **argv, EntityTree *et)
 {
 	// Check if a string was inputed

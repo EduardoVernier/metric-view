@@ -18,8 +18,8 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 
 	// Scale initial aspect ratio by new
 	glPushMatrix();
-	double xRatio = double(currentWidth)/double(initialWidth);
-	double yRatio = double(currentHeight)/double(initialHeight);
+	xRatio = double(currentWidth)/double(initialWidth);
+	yRatio = double(currentHeight)/double(initialHeight);
 	glScaled(xRatio, yRatio, 1);
 
 	glEnable(GL_LINE_SMOOTH);

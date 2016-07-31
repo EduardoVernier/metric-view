@@ -181,40 +181,6 @@ void EntityTree::setMinMax()
 	}
 }
 
-// Return vector of pointers of the selected entities
-void EntityTree::getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsigned ctrlDown)
-{
-	if (click && !ctrlDown)
-		selected.clear();
-
-	for (vector<BaseEntity*>::iterator b = sortedEntities.begin(); b != sortedEntities.end(); ++b)
-	{
-		if ((*b)->isPackage() == 0)
-		{
-			if ((*b)->getCoord(3) < drag[1])
-				continue; // b too high
-			else if ((*b)->getCoord(1) > drag[3])
-				continue; // svg too low
-			else if ((*b)->getCoord(2) < drag[0])
-				continue; // svg too far left
-			else if ((*b)->getCoord(0) > drag[2])
-				continue; // svg too far right
-			else
-			{
-				if (click)
-				{
-					if ((std::find(selected.begin(), selected.end(),(Entity*)*b))!=selected.end())
-						selected.erase(std::find(selected.begin(), selected.end(),(Entity*)*b));
-					else
-						selected.push_back((Entity*)*b);
-				}
-				else
-					hovered = (Entity*)*b;
-			}
-		}
-	}
-}
-
 // Mark entities as selected from projection pane interaction
 void EntityTree::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown)
 {
