@@ -8,6 +8,7 @@
 #include "Treemap.h"
 #include "TreemapCanvas.h"
 #include "ProjectionCanvas.h"
+#include "StreamgraphCanvas.h"
 #include "Mouse.h"
 
 void display();

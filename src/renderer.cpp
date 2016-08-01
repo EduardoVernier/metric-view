@@ -10,6 +10,7 @@ extern int streamgraphFlag;
 Mouse *mouse = new Mouse();
 Canvas *pCanvas = NULL;
 Canvas *tCanvas = NULL;
+Canvas *sCanvas = NULL;
 
 BaseEntity* hover = NULL; // Drawing of hovering label
 int mxdown, mydown, mx, my, mclicked; // Mouse coordinates
@@ -60,7 +61,6 @@ void render()
 // Update objects when window size changes
 void setCanvassesSizes(int W, int H)
 {
-	//cout << "Width: " << W << " Height: " << H << endl;
 	winWidth = W;
 	winHeight = H;
 
@@ -82,6 +82,10 @@ void setCanvassesSizes(int W, int H)
 	{
 		pBR.y -= streamgraphHeight;
 		tBR.y -= streamgraphHeight;
+		Point sTL, sBR;
+		sTL.x = 10; sTL.y = pBR.y + 10;
+		sBR.x = W-10; sBR.y = H-10;
+		sCanvas->setSize(sTL, sBR);
 	}
 
 	// Instantiate if it's the first call, else just update size
@@ -89,6 +93,7 @@ void setCanvassesSizes(int W, int H)
 	{
 		pCanvas = new ProjectionCanvas(pTL, pBR, entityTree);
 		tCanvas = new TreemapCanvas(tTL, tBR, entityTree);
+		sCanvas = new StreamgraphCanvas(tTL, tBR, entityTree);
 	}
 	else
 	{
@@ -98,6 +103,7 @@ void setCanvassesSizes(int W, int H)
 
 	pCanvas->drawCanvas(Rt);
 	tCanvas->drawCanvas(Rt);
+	sCanvas->drawCanvas(Rt);
 }
 
 void drawHoveringLabel()
@@ -135,7 +141,7 @@ void drawSelectionBox()
 {
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4f(1, 1, 1, 0.4);
+	glColor4f(0, 0, 0, 0.4);
 	glRecti(mouse->rawLastX, mouse->rawLastY, mouse->rawX, mouse->rawY);
 	glDisable (GL_BLEND);
 }
@@ -143,7 +149,7 @@ void drawSelectionBox()
 void drawRt()
 {
 	string str = to_string(Rt);
-	glColor3f(1, 1, 1);
+	glColor3f(0, 0, 0);
 	int x = winWidth/2 - 30;
 	glRasterPos2i(x, 35);
 	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
