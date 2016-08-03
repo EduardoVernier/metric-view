@@ -266,3 +266,23 @@ void EntityTree::setRadiusMetric(int mIndex)
 		}
 	}
 }
+
+void EntityTree::setStreamMetric(int mIndex)
+{
+	streamMetricIndex = mIndex;
+	streamMetricMin = FLT_MAX;
+	streamMetricMax = FLT_MIN;
+	for (unsigned i = 0; i < sortedEntities.size() ; ++i)
+	{
+		if (sortedEntities[i]->isPackage() == 0)
+		{
+			for (unsigned time = 0; time < ((Entity*)sortedEntities[i])->data.size() ; ++time)
+			{
+				float mValue = ((Entity*)sortedEntities[i])->data[time][mIndex];
+				streamMetricMax = (mValue > radiusMetricMax)? mValue : streamMetricMax;
+				streamMetricMin = (mValue < radiusMetricMin)? mValue : streamMetricMin;
+			}
+		}
+	}
+}
+

@@ -14,7 +14,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
-	int rMetric = entityTree->getRadiusMetric();
+	int sMetric = entityTree->getStreamMetric();
 	vector<double> normMetricValueSum;
 
 	// Filling vector
@@ -26,7 +26,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 		{
 			if((*b)->isPackage() == 0 && (*b)->getName() != "")
 			{
-				sum += ((Entity*)(*b))->data[i][rMetric];
+				sum += ((Entity*)(*b))->data[i][sMetric];
 			}
 		}
 		normMetricValueSum.push_back(sum);
@@ -50,7 +50,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 		{
 			if((*b)->isPackage() == 0 && (*b)->getName() != "")
 			{
-				yPos[t][i] = yPos[t][i-1] + ((Entity*)(*b))->data[t][rMetric]*((0.90*streamgraphHeight)/maxSum);
+				yPos[t][i] = yPos[t][i-1] + ((Entity*)(*b))->data[t][sMetric]*((0.90*streamgraphHeight)/maxSum);
 				++i;
 			}
 		}

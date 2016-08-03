@@ -4,6 +4,7 @@ unsigned ctrlDown = 0;
 GLUI *glui;
 int radiusMetricIndex=21;
 int colorMetricIndex=21;
+int streamMetricIndex=21;
 int colormapIndex=0;
 int deltaPie = 0;
 int streamgraphFlag = 0;
@@ -16,11 +17,14 @@ void initializeUI()
 	GLUI_Listbox *colorLB = glui->add_listbox("", &colorMetricIndex, COLORMETRIC_LB, controlCB);
 	glui->add_statictext("Radius Metric");
 	GLUI_Listbox *radiusLB = glui->add_listbox("", &radiusMetricIndex, RADIUSMETRIC_LB, controlCB);
+	glui->add_statictext("Streamgraph Metric");
+	GLUI_Listbox *streamLB = glui->add_listbox("", &streamMetricIndex, STREAMMETRIC_LB, controlCB);
 	glui->add_statictext("Colormap");
 	for (unsigned i = 0; i < entityTree->metricVector.size(); ++i)
 	{
 		colorLB->add_item(i, entityTree->metricVector[i].c_str());
 		radiusLB->add_item(i, entityTree->metricVector[i].c_str());
+		streamLB->add_item(i, entityTree->metricVector[i].c_str());
 	}
 
 	// Colormap listbox
@@ -33,6 +37,8 @@ void initializeUI()
 
 	entityTree->setColorMetric(colorMetricIndex);
 	entityTree->setRadiusMetric(radiusMetricIndex);
+	entityTree->setStreamMetric(streamMetricIndex);
+
 }
 
 // Callback handling
@@ -45,6 +51,9 @@ void controlCB(int control)
 		 	break;
 		case RADIUSMETRIC_LB:
 			entityTree->setRadiusMetric(radiusMetricIndex);
+			break;
+		case STREAMMETRIC_LB:
+			entityTree->setStreamMetric(streamMetricIndex);
 			break;
 	}
 }

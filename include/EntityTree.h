@@ -42,6 +42,10 @@ public:
 	int getRadiusMetric() { return radiusMetricIndex; };
 	float getRMMin() { return radiusMetricMin; };
 	float getRMMax() { return radiusMetricMax; };
+	void setStreamMetric(int mIndex);
+	int getStreamMetric() { return streamMetricIndex; };
+	float getSMMin() { return streamMetricMin; };
+	float getSMMax() { return streamMetricMax; };
 
 	vector<string> metricVector;
 	vector<Entity*> selected;
@@ -64,6 +68,10 @@ private:
 	int colorMetricIndex = 21;
 	float colorMetricMin;
 	float colorMetricMax;
+
+	int streamMetricIndex = 21;
+	float streamMetricMin;
+	float streamMetricMax;
 
 	double treeMin, treeMax; // Initial LOC score
 	double minX = FLT_MAX, maxX = FLT_MIN, minY = FLT_MAX, maxY = FLT_MIN;
