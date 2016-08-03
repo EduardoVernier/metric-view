@@ -63,7 +63,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 		glBegin(GL_LINE_STRIP);
 		for (unsigned t = 0; t < entityTree->nRevisions; ++t)
 		{
-			glVertex3f(top_left.x + t*((bottom_right.x - top_left.x)/entityTree->nRevisions), top_left.y + yPos[t][i], 0);
+			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][i], 0);
 		}
 		glEnd();
 	}

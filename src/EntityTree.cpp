@@ -213,6 +213,8 @@ void EntityTree::normalizeProjection(int shortEdge)
 				((Entity*)(*b))->normalizedProjectionPoints[i] = {normX, normY};
 			}
 		}
+		if((*b)->getName() == "")
+			(*b)->setAsPackage(); // Fix root element
 	}
 }
 
