@@ -55,7 +55,8 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 			}
 		}
 	}
-
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// Draw lines
 	for(unsigned i = 0; i < entityTree->selected.size()+1; ++i)
 	{
@@ -67,4 +68,54 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 		}
 		glEnd();
 	}
+
+	// Draw vertical lines
+	for (unsigned t = 0; t < entityTree->nRevisions; ++t)
+	{
+		if (t == Rt)
+			glColor4f(1,0,0,0.5);
+		else
+			glColor4f(0,0,0,0.1);
+
+		glBegin(GL_LINE_STRIP);
+		glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y, 0);
+		glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), bottom_right.y, 0);
+		glEnd();
+	}
+	glDisable(GL_BLEND);
 }
+
+
+// Highlight hovered entity on Streamgraph
+void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, unsigned ctrlDown)
+{
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

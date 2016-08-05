@@ -2,6 +2,9 @@
 
 extern int streamgraphFlag;
 extern int streamgraphHeight;
+extern TreemapCanvas *tCanvas;
+extern ProjectionCanvas *pCanvas;
+extern StreamgraphCanvas *sCanvas;
 
 Mouse::Mouse()
 {
@@ -17,32 +20,58 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 	rawY = _y;
 	lastCanvas = canvas;
 
-	if (_y > 10 && _y < H_-10)
+	if (streamgraphFlag == 0)
 	{
-		if (_x > 10 && _x < 10 + (W_-30)/2)
+		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
+				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
 		{
-			canvas = P;
-			x = _x-10;
-			y = _y-10;
+				canvas = P;
+				x = _x-pCanvas->top_left.x;
+				y = _y-pCanvas->top_left.y;
 		}
-		else if (_x > 20 + (W_-30)/2 && _x < W_-10)
+		else if (_x > tCanvas->top_left.x && _x < tCanvas->bottom_right.x &&
+				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
-			canvas = T;
-			x = _x - (20+(W_-30)/2);
-			y = _y - 10;
+				canvas = T;
+				x = _x-tCanvas->top_left.x;
+				y = _y-tCanvas->top_left.y;
 		}
 		else
 		{
-			canvas = NONE;
-			x = 0;
-			y = 0;
+				canvas = NONE;
+				x = -1;
+				y = -1;
 		}
 	}
 	else
 	{
-		canvas = NONE;
-		x = 0;
-		y = 0;
+		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
+				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
+		{
+				canvas = P;
+				x = _x-pCanvas->top_left.x;
+				y = _y-pCanvas->top_left.y;
+		}
+		else if (_x > tCanvas->top_left.x && _x < tCanvas->bottom_right.x &&
+				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
+		{
+				canvas = T;
+				x = _x-tCanvas->top_left.x;
+				y = _y-tCanvas->top_left.y;
+		}
+		else if (_x > sCanvas->top_left.x && _x < sCanvas->bottom_right.x &&
+				_y > sCanvas->top_left.y && _y < sCanvas->bottom_right.y)
+		{
+				canvas = S;
+				x = _x-sCanvas->top_left.x;
+				y = _y-sCanvas->top_left.y;
+		}
+		else
+		{
+				canvas = NONE;
+				x = -1;
+				y = -1;
+		}
 	}
 
 	if (button == 0 && state == 0)
@@ -71,6 +100,7 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 		pos[1] = lastY;
 		pos[2] = x;
 		pos[3] = y;
+		cout << x << " " << y << " " << canvas << endl;
 		return canvas;
 	}
 
@@ -88,31 +118,57 @@ void Mouse::updateMouse(int _x, int _y)
 	rawX = _x;
 	rawY = _y;
 
-	if (_y > 10 && _y < H_-10)
+	if (streamgraphFlag == 0)
 	{
-		if (_x > 10 && _x < 10 + (W_-30)/2)
+		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
+				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
 		{
-			canvas = P;
-			x = _x-10;
-			y = _y-10;
+				canvas = P;
+				x = _x-pCanvas->top_left.x;
+				y = _y-pCanvas->top_left.y;
 		}
-		else if (_x > 20 + (W_-30)/2 && _x < W_-10)
+		else if (_x > tCanvas->top_left.x && _x < tCanvas->bottom_right.x &&
+				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
-			canvas = T;
-			x = _x - (20+(W_-30)/2);
-			y = _y - 10;
+				canvas = T;
+				x = _x-tCanvas->top_left.x;
+				y = _y-tCanvas->top_left.y;
 		}
 		else
 		{
-			canvas = NONE;
-			x = 0;
-			y = 0;
+				canvas = NONE;
+				x = -1;
+				y = -1;
 		}
 	}
 	else
 	{
-		canvas = NONE;
-		x = 0;
-		y = 0;
+		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
+				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
+		{
+				canvas = P;
+				x = _x-pCanvas->top_left.x;
+				y = _y-pCanvas->top_left.y;
+		}
+		else if (_x > tCanvas->top_left.x && _x < tCanvas->bottom_right.x &&
+				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
+		{
+				canvas = T;
+				x = _x-tCanvas->top_left.x;
+				y = _y-tCanvas->top_left.y;
+		}
+		else if (_x > sCanvas->top_left.x && _x < sCanvas->bottom_right.x &&
+				_y > sCanvas->top_left.y && _y < sCanvas->bottom_right.y)
+		{
+				canvas = S;
+				x = _x-sCanvas->top_left.x;
+				y = _y-sCanvas->top_left.y;
+		}
+		else
+		{
+				canvas = NONE;
+				x = -1;
+				y = -1;
+		}
 	}
 }

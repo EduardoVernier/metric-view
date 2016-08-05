@@ -15,6 +15,7 @@ class StreamgraphCanvas : public Canvas
 public:
 	StreamgraphCanvas(Point tl, Point br, EntityTree* et);
 	void drawCanvas(unsigned Rt);
+	void getEntitiesOnStreamgraph(int *drag, unsigned click, unsigned ctrlDown);
 
 private:
 	EntityTree *entityTree;
