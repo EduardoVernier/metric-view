@@ -76,7 +76,13 @@ void mouseClick(int button, int state, int x, int y)
 void mousePassive (int x, int y)
 {
 	mouse->updateMouse(x, y);
-	if (mouse->canvas == 2) // Hovering treemap
+	if (mouse->canvas == 3) // Hovering streamgraph
+	{
+		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
+		sCanvas->getEntitiesOnStreamgraph(drag, 0, ctrlDown);
+		hover = entityTree->hovered;
+	}
+	else if (mouse->canvas == 2) // Hovering treemap
 	{
 		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
 		tCanvas->getEntitiesByPositionOnTreemap(drag, 0, ctrlDown);

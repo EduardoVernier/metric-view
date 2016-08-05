@@ -9,6 +9,7 @@
 #include "Treemap.h"
 #include "TreemapCanvas.h"
 #include "ProjectionCanvas.h"
+#include "StreamgraphCanvas.h"
 
 extern Mouse *mouse;
 extern EntityTree *entityTree;
@@ -18,6 +19,8 @@ extern unsigned Rt;
 extern int mainWindow;
 extern TreemapCanvas *tCanvas;
 extern ProjectionCanvas *pCanvas;
+extern StreamgraphCanvas *sCanvas;
+
 // Button/checkbox/listbox ids
 enum UI_IDs
 {

@@ -52,6 +52,8 @@ void render()
 	setCanvassesSizes(winWidth, winHeight);
 	pCanvas->drawCanvas(Rt);
 	tCanvas->drawCanvas(Rt);
+	if(streamgraphFlag)
+		sCanvas->drawCanvas(Rt);
 	drawHoveringLabel();
 	if(mouse->state == 0) // If mouse is being clicked
 		drawSelectionBox();
@@ -114,13 +116,14 @@ void drawHoveringLabel()
 		glEnable (GL_BLEND);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glColor4f(0, 0, 0, 0.6);
-		if (mouse->canvas == 2)
+
+		if (mouse->rawX > 0.7*winWidth)
 		{
 			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX - 9*(s.length()), mouse->rawY+2);
 			glDisable (GL_BLEND);
 			renderHoverString(mouse->rawX - 9*(s.length()), mouse->rawY, s);
 		}
-		else if (mouse->canvas == 1)
+		else
 		{
 			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX + 9*(s.length()), mouse->rawY+2);
 			glDisable (GL_BLEND);

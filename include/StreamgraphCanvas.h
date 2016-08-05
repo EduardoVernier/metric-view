@@ -19,5 +19,6 @@ public:
 
 private:
 	EntityTree *entityTree;
+	int hoveredIndex = -1;
 };
 #endif
