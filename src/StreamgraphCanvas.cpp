@@ -92,6 +92,19 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 		glLineWidth(1);
 	}
 
+	// Paint highlighted
+	if(hoveredIndex != -1)
+	{
+		glColor4f(colorHover.R, colorHover.G, colorHover.B, 0.2);
+		glBegin(GL_QUAD_STRIP);
+		for (unsigned t = 0; t < entityTree->nRevisions; ++t)
+		{
+			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][hoveredIndex], 0);
+			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][hoveredIndex+1], 0);
+		}
+		glEnd();
+	}
+
 	// Draw vertical lines
 	for (unsigned t = 0; t < entityTree->nRevisions; ++t)
 	{
@@ -156,7 +169,7 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, unsi
 	}
 
 	// Find Ti and Tj
-	int Ti, Tj;
+	int Ti = -1, Tj = -1;
 	double p;
 	for (int t = 0; t < (int) entityTree->nRevisions; ++t)
 	{
@@ -173,12 +186,15 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, unsi
 
 	//cout << Ti << " " << Tj << " " << p << endl;
 	// Find hovered entity
-	for (int i = 0; i < (int)entityTree->selected.size(); ++i)
+	if (Ti != -1)
 	{
-		if((y > (1-p)*yPos[Ti][i] + p*yPos[Tj][i]) && (y < (1-p)*yPos[Ti][i+1] + p*yPos[Tj][i+1]))
+		for (int i = 0; i < (int)entityTree->selected.size(); ++i)
 		{
-			entityTree->hovered = entityTree->selected[i];
-			break;
+			if((y > (1-p)*yPos[Ti][i] + p*yPos[Tj][i]) && (y < (1-p)*yPos[Ti][i+1] + p*yPos[Tj][i+1]))
+			{
+				entityTree->hovered = entityTree->selected[i];
+				break;
+			}
 		}
 	}
 }
