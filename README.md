@@ -16,5 +16,5 @@ make
 
 On Mac:
 
-The include file is <GLUT/glut.h> instead of the usual <GL/glut.h>
+The include file is GLUT/glut.h instead of the usual GL/glut.h
 If you're building on the command-line, you'll need to use -framework GLUT -framework OpenGL -framework Cocoa to link your program instead of -L/usr/X11R6/lib -lGL -lGLU -lglut -lX11 that Linux uses.
