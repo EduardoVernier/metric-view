@@ -10,6 +10,7 @@
 #include "ProjectionCanvas.h"
 #include "StreamgraphCanvas.h"
 #include "Mouse.h"
+#include "MetricRank.h"
 
 void display();
 void reshape(int w, int h);

@@ -11,6 +11,7 @@ Mouse *mouse = new Mouse();
 Canvas *pCanvas = NULL;
 Canvas *tCanvas = NULL;
 Canvas *sCanvas = NULL;
+MetricRank *mRank = NULL;
 
 BaseEntity* hover = NULL; // Drawing of hovering label
 int mxdown, mydown, mx, my, mclicked; // Mouse coordinates
@@ -96,6 +97,7 @@ void setCanvassesSizes(int W, int H)
 		pCanvas = new ProjectionCanvas(pTL, pBR, entityTree);
 		tCanvas = new TreemapCanvas(tTL, tBR, entityTree);
 		sCanvas = new StreamgraphCanvas(tTL, tBR, entityTree);
+		mRank   = new MetricRank(entityTree);
 	}
 	else
 	{
