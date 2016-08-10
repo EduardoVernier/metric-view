@@ -97,6 +97,17 @@ void TreemapCanvas::drawEntity(BaseEntity *e, unsigned Rt)
 	float value = ((Entity*)e)->data[Rt][cMetric];
 	float normCValue = (value - cMin) / (cMax - cMin);
 
+	// Dynamic treemap experiment
+	if (dynamicTreemap)
+	{
+		double ratio = sqrt(((Entity*)e)->data[Rt][21]/((Entity*)e)->getScore());
+		x0 = x0 + (((1-ratio)*(x1-x0))/2);
+		x1 = x0 + ratio*(x1-x0);
+		y0 = y0 + (((1-ratio)*(y1-y0))/2);
+		y1 = y0 + ratio*(y1-y0);
+	}
+
+
 	// Generate color based on colormap index value
 	Color c (1,1,1);
 	switch (colormapIndex)

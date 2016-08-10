@@ -8,6 +8,7 @@ int streamMetricIndex=21;
 int colormapIndex=0;
 int deltaPie = 0;
 int streamgraphFlag = 0;
+int dynamicTreemap = 0;
 
 void initializeUI()
 {
@@ -34,6 +35,7 @@ void initializeUI()
 	colormapLB->add_item(2, "Divergent Colormap");
 	glui->add_checkbox("Display delta pie slice", &deltaPie);
 	glui->add_checkbox("Stream Graph", &streamgraphFlag);
+	glui->add_checkbox("Dynamic Treemap", &dynamicTreemap);
 
 	entityTree->setColorMetric(colorMetricIndex);
 	entityTree->setRadiusMetric(radiusMetricIndex);

@@ -61,3 +61,30 @@ void Entity::addPointAtIndex(Point p, unsigned index)
 {
 	projectionPoints[index] = p;
 }
+
+double Entity::getScore()
+{
+	double max = 0;
+	for (unsigned i = 0; i < data.size(); ++i)
+	{
+		if (data[i][21] > max)
+			max = data[i][21];
+	}
+	return max;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -15,7 +15,7 @@ class Entity : public BaseEntity
 public:
 	Entity (string csvLine, unsigned nAttributes, unsigned nRevisions);
 	// Overriding baseclass virtual methods
-	double getScore(){ return value; };
+	double getScore();
 	string getName(){ return id; };
 	string getPrefix() { return prefix; };
 	void addPointAtIndex(Point p, unsigned index);

@@ -107,7 +107,8 @@ void setCanvassesSizes(int W, int H)
 
 	pCanvas->drawCanvas(Rt);
 	tCanvas->drawCanvas(Rt);
-	sCanvas->drawCanvas(Rt);
+	if(streamgraphFlag)
+		sCanvas->drawCanvas(Rt);
 }
 
 void drawHoveringLabel()

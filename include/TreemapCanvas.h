@@ -13,6 +13,7 @@
 #include "Colormap.h"
 
 extern int colormapIndex;
+extern int dynamicTreemap;
 
 using namespace std;
 
