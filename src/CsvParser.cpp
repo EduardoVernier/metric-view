@@ -139,6 +139,8 @@ void CsvParser::parseMetricFile(string address, string filename)
 
 	getline(file,line); // number of classes in file
 	getline(file,line); // number of attributes
+	int nAttributes;
+	istringstream(line) >> nAttributes;
 	getline(file,line); // name of attributes - flush
 
 	// Add all elements (classes) from a given revision to the entityTree
@@ -157,7 +159,7 @@ void CsvParser::parseMetricFile(string address, string filename)
 			prefix = name.substr(0,separator);
 
 		Entity *ent = entityTree->getEntityByName(prefix, id);
-		ent->addRevisionData(line, rev);
+		ent->addRevisionData(line, rev, nAttributes);
 	}
 }
 

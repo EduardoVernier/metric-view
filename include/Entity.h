@@ -21,13 +21,13 @@ public:
 	void addPointAtIndex(Point p, unsigned index);
 	unsigned isSelected() { return selected; };
 	void setSelected(unsigned s) { selected = s; };
-	void addRevisionData (string data, unsigned rev);
+	void addRevisionData (string data, unsigned rev, int nAttributes);
 
 	vector <vector <float> > data; // data[revision][metric]
 	vector <Point> projectionPoints;
 	vector <Point> normalizedProjectionPoints;
 
-	double value; // too much trouble to make private because of custom comparator
+	float value; // too much trouble to make private because of custom comparator
 
 private:
 	string prefix = "";

@@ -26,6 +26,7 @@ Entity::Entity (string csvLine, unsigned nAttributes, unsigned nRevisions)
 	unsigned i = 0;
 	while (getline(ss, item, ';'))
 	{
+		if(i >= nAttributes) break;
 		istringstream buffer(item);
 		buffer >> value;
 		data[nRevisions-1][i] = (value);
@@ -36,22 +37,20 @@ Entity::Entity (string csvLine, unsigned nAttributes, unsigned nRevisions)
 	value = data.at(nRevisions-1)[21];
 
 	// Create projection positions vector
-	Point p;
-	p.x = 0; p.y = 0;
-	projectionPoints.resize(nRevisions, p);
-	normalizedProjectionPoints.resize(nRevisions, p);
+	projectionPoints.resize(nRevisions, {0,0});
+	normalizedProjectionPoints.resize(nRevisions, {0,0});
 }
 
-void Entity::addRevisionData (string dataLine, unsigned rev)
+void Entity::addRevisionData (string dataLine, unsigned rev, int nAttributes)
 {
 	stringstream ss(dataLine);
 	string item;
 	getline(ss, item, ';'); // flush name
 
-	unsigned i = 0;
+	int i = 0;
 	while (getline(ss, item, ';'))
 	{
-		float value;
+		if(i >= nAttributes) break;
 		istringstream buffer(item);
 		buffer >> value;
 		data[rev][i] = (value);
