@@ -3,24 +3,25 @@
 MetricRank::MetricRank(EntityTree *_et)
 {
 	et = _et;
-	computeClusters(0, 20);
+	computeGlobalVariance();
 }
 
-void MetricRank::computeClusters(unsigned Rt, double d)
+
+void MetricRank::computeGlobalVariance()
 {
-	// Clear cluster vector for new computation
-	for (unsigned i = 0; i < clusters.size(); ++i)
-	{
-		clusters[i].clear();
-	}
+	unsigned nDim = et->metricVector.size();
+	vector<double> globalMean(nDim, 0.0);
 
-	vector<Entity*> entities;
-	for (vector<BaseEntity*>::iterator b = et->sortedEntities.begin(); b != et->sortedEntities.end(); ++b)
+	// Compute metric mean
+	for(unsigned m = 0; m < nDim; ++m)
 	{
-		if((*b)->isPackage() == 0 && (*b)->getName() != "")
+		for(unsigned t = 0; t < et->nRevisions; ++t)
 		{
-			entities.push_back((Entity*)(*b));
+			for(vector<Entity*>::iterator b = et->entities.begin(); b != et->entities.end(); ++b)
+			{
+				globalMean[m] += (*b)->data[t][m];
+			}
 		}
+		globalMean[m] /= (double)(et->nRevisions*et->entities.size());
 	}
-
 }

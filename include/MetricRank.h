@@ -14,10 +14,12 @@ class MetricRank
 {
 public:
 	MetricRank(EntityTree *_et);
-	void computeClusters(unsigned Rt, double d);
-	vector<vector<Entity*> > clusters;
+
 private:
+	void computeGlobalVariance();
+
 	EntityTree *et;
+	vector<double> globalVariance;
 };
 
 #endif

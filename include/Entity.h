@@ -23,9 +23,9 @@ public:
 	void setSelected(unsigned s) { selected = s; };
 	void addRevisionData (string data, unsigned rev);
 
+	vector <vector <float> > data; // data[revision][metric]
 	vector <Point> projectionPoints;
 	vector <Point> normalizedProjectionPoints;
-	vector <vector <float> > data;
 
 	double value; // too much trouble to make private because of custom comparator
 

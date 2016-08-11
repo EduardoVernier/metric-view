@@ -28,6 +28,7 @@ public:
 	void addEntity(Entity ent);
  	void buildHierarchy();
 	void generateSortedEntitiesVector(Package *p);
+	void generateEntityVector();
 	void printTree();
 	double getMin() { return treeMin; };
 	double getMax() { return treeMax; };
@@ -52,6 +53,7 @@ public:
 	Entity* hovered;
 	vector<Package> packageVector; // Entity tree is a collection of Packages
 	vector<BaseEntity*> sortedEntities; // Contains both Packages and Entities ordered by score
+	vector<Entity*> entities; // Contains only Entities ordered by score
 	int depth = 0;
 	unsigned nRevisions = 0;
 

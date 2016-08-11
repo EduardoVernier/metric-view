@@ -50,6 +50,7 @@ void EntityTree::buildHierarchy()
 	setFirstLevelId(&packageVector[0], 0);
 	sortPackages(&packageVector[0]);
 	generateSortedEntitiesVector(&packageVector[0]);
+	generateEntityVector();
 	setMinMax();
 }
 
@@ -147,6 +148,14 @@ void EntityTree::generateSortedEntitiesVector(Package *p)
 	}
 }
 
+void EntityTree::generateEntityVector()
+{
+	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	{
+		if ((*b)->isPackage() == 0 && (*b)->getName() != "")
+			entities.push_back((Entity*)(*b));
+	}
+}
 void EntityTree::printTree()
 {
 	// Test printing

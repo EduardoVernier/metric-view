@@ -36,8 +36,10 @@ Entity::Entity (string csvLine, unsigned nAttributes, unsigned nRevisions)
 	value = data.at(nRevisions-1)[21];
 
 	// Create projection positions vector
-	projectionPoints.resize(nRevisions, {0,0});
-	normalizedProjectionPoints.resize(nRevisions, {0,0});
+	Point p;
+	p.x = 0; p.y = 0;
+	projectionPoints.resize(nRevisions, p);
+	normalizedProjectionPoints.resize(nRevisions, p);
 }
 
 void Entity::addRevisionData (string dataLine, unsigned rev)
