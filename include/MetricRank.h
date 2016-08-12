@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <cmath>
 
 #include "Entity.h"
 #include "EntityTree.h"
@@ -16,10 +17,11 @@ public:
 	MetricRank(EntityTree *_et);
 
 private:
-	void computeGlobalVariance();
+	void computeGlobalMetricStd();
+	void computeGlobalMetricMean(vector<double> &globalMean);
 
 	EntityTree *et;
-	vector<double> globalVariance;
+	vector<double> globalStd;
 };
 
 #endif

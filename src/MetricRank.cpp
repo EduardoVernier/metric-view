@@ -3,16 +3,36 @@
 MetricRank::MetricRank(EntityTree *_et)
 {
 	et = _et;
-	computeGlobalVariance();
+	computeGlobalMetricStd();
 }
 
 
-void MetricRank::computeGlobalVariance()
+void MetricRank::computeGlobalMetricStd()
 {
 	unsigned nDim = et->metricVector.size();
-	vector<double> globalMean(nDim, 0.0);
+	vector<double> globalMean;
+	globalMean.resize(nDim, 0);
+	globalStd.resize(nDim, 0);
+	computeGlobalMetricMean(globalMean);
 
-	// Compute metric mean
+	for(unsigned m = 0; m < nDim; ++m)
+	{
+		for(unsigned t = 0; t < et->nRevisions; ++t)
+		{
+			for(vector<Entity*>::iterator b = et->entities.begin(); b != et->entities.end(); ++b)
+			{
+				globalStd[m] += pow((*b)->data[t][m] - globalMean[m], 2);
+			}
+		}
+		globalStd[m] /= (double)(et->nRevisions*et->entities.size());
+		globalStd[m] = sqrt(globalStd[m]);
+	}
+}
+
+
+void MetricRank::computeGlobalMetricMean(vector<double> &globalMean)
+{
+	unsigned nDim = et->metricVector.size();
 	for(unsigned m = 0; m < nDim; ++m)
 	{
 		for(unsigned t = 0; t < et->nRevisions; ++t)

@@ -50,8 +50,8 @@ void EntityTree::buildHierarchy()
 	setFirstLevelId(&packageVector[0], 0);
 	sortPackages(&packageVector[0]);
 	generateSortedEntitiesVector(&packageVector[0]);
-	generateEntityVector();
 	setMinMax();
+	generateEntityVector();
 }
 
 // Determines every entity tree level

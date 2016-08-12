@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <iostream>
-#include "math.h"
+#include <cmath>
 #include <GL/glut.h>
 
 #include "Canvas.h"

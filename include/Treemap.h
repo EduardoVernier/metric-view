@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <cfloat>
-#include "math.h"
+#include <cmath>
 
 #include "BaseEntity.h"
 #include "EntityTree.h"
