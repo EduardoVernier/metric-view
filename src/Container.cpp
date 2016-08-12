@@ -14,21 +14,18 @@ Container::Container(double _width, double _height, double _xOffset, double _yOf
 // Subtract area from this container and return a new container
 Container Container::cutArea(double area)
 {
-	Container *newContainer;
-
 	if (width >= height)
 	{
 		double areaWidth = area / height;
 		double newWidth = width - areaWidth;
-		newContainer = new Container(newWidth, height, xOffset + areaWidth, yOffset);
+		return Container(newWidth, height, xOffset + areaWidth, yOffset);
 	}
 	else
 	{
 		double areaHeight = area / width;
 		double newHeight = height - areaHeight;
-		newContainer = new Container(width, newHeight, xOffset, yOffset + areaHeight);
+		return Container(width, newHeight, xOffset, yOffset + areaHeight);
 	}
-	return *newContainer;
 }
 
 // Save coordinates that correspond to each element on the treemap into BaseEntity coords member

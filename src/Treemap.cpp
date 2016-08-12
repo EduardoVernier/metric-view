@@ -57,9 +57,9 @@ void Treemap::treemapSingledimensional(vector<BaseEntity*> *data, double width, 
 	// Bruls' algorithm takes into account that the data is normalized
 	normalize(data, width * height);
 	// Initialize current row and container
-	vector<BaseEntity*> *currentRow = new vector<BaseEntity*>;
+	vector<BaseEntity*> currentRow;
 	Container container (width, height, xOffset, yOffset);
-	squarify(data, currentRow, container);
+	squarify(data, &currentRow, container);
 }
 
 // Implementation of Bruls' Squarified Treemap algorithm
@@ -87,8 +87,8 @@ void Treemap::squarify(vector<BaseEntity*> *data, vector<BaseEntity*> *currentRo
 		// Save current row coordinates into the objects
 		container.saveCoordinates(currentRow, sumNormalizedScores(currentRow));
 		// Start algorithm again with reamining elements
-		vector<BaseEntity*> *newCurrentRow = new vector<BaseEntity*>;
-		squarify(data, newCurrentRow, newContainer);
+		vector<BaseEntity*> newCurrentRow;
+		squarify(data, &newCurrentRow, newContainer);
 	}
 }
 

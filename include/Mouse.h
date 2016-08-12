@@ -26,7 +26,7 @@ public:
 	int W_, H_;
 	int x, y, canvas;
 	int button, state=1;
-	int lastX, lastY, lastCanvas;
+	int lastX = 0, lastY = 0, lastCanvas= 0;
 	int lastButton, lastState;
 };
 
