@@ -4,6 +4,7 @@
 #include <iostream>
 #include <GL/glut.h>
 #include <GL/glui.h>
+#include <queue>
 
 #include "Mouse.h"
 #include "Treemap.h"
@@ -20,6 +21,7 @@ extern int mainWindow;
 extern TreemapCanvas *tCanvas;
 extern ProjectionCanvas *pCanvas;
 extern StreamgraphCanvas *sCanvas;
+extern queue<short> windowQueue;
 
 // Button/checkbox/listbox ids
 enum UI_IDs

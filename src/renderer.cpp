@@ -17,6 +17,8 @@ BaseEntity* hover = NULL; // Drawing of hovering label
 int mxdown, mydown, mx, my, mclicked; // Mouse coordinates
 int streamgraphHeight = 250;
 
+queue<short> windowQueue;
+
 // Glut/GLui argument functions
 void display()
 {
@@ -42,8 +44,15 @@ void reshape(int W, int H)
 
 void idle()
 {
-	if ( glutGetWindow() != mainWindow )
-		glutSetWindow(mainWindow);
+	// Ugly fix for misclicks
+	if(windowQueue.size() < 5)
+		windowQueue.push((short)glutGetWindow());
+	else
+	{
+		windowQueue.pop();
+		windowQueue.push((short)glutGetWindow());
+	}
+
 	glutPostRedisplay();
 }
 

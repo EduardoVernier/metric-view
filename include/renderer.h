@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <GL/glut.h>
 #include <GL/glui.h>
+#include <queue>
 
 #include "Treemap.h"
 #include "TreemapCanvas.h"

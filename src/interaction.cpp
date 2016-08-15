@@ -62,6 +62,17 @@ void controlCB(int control)
 
 void mouseClick(int button, int state, int x, int y)
 {
+	// Terrible way to avoid misclick - unfortunately necessary
+	unsigned queueSize = windowQueue.size();
+	unsigned sum = 0;
+	while (!windowQueue.empty())
+	{
+		sum += windowQueue.front();
+		windowQueue.pop();
+	}
+	if (sum > queueSize)
+		return;
+
 	int drag[4] = {0,0,0,0};
 	switch (mouse->click(button, state, x, y, drag))
 	{
