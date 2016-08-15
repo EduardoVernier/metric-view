@@ -171,7 +171,7 @@ void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3f(c.R,c.G,c.B);
 	glVertex3f(x, y, 0);
-	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
+	for(int i = 0; i <= triangleAmount;i++)
 	{
 		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
 							 y + (radius * sin(i * radians / triangleAmount)), 0);
@@ -180,7 +180,7 @@ void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c
 
 	glBegin(GL_LINE_STRIP);
 	glColor3f(0,0,0);
-	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
+	for(int i = 0; i <= triangleAmount;i++)
 	{
 		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
 							 y + (radius * sin(i * radians / triangleAmount)), 0);
