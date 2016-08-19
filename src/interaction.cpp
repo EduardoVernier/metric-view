@@ -9,6 +9,7 @@ int colormapIndex=0;
 int deltaPie = 0;
 int streamgraphFlag = 0;
 int dynamicTreemap = 0;
+int accelerationRatioIndex = 1;
 
 void initializeUI()
 {
@@ -33,10 +34,21 @@ void initializeUI()
 	colormapLB->add_item(0, "Sequential Colormap");
 	colormapLB->add_item(1, "Qualitative Colormap (Hierarchy)");
 	colormapLB->add_item(2, "Divergent Colormap");
+
+	// Animation speed listbox
+	glui->add_statictext("Animation Speed");
+	GLUI_Listbox *accelerationLB = glui->add_listbox("", &accelerationRatioIndex, ACCELERATION_LB, controlCB);
+	accelerationLB->add_item(0,"1x");
+	accelerationLB->add_item(1,"10x");
+	accelerationLB->add_item(2,"5x");
+	accelerationLB->add_item(3,"2x");
+	accelerationLB->add_item(4,"0.75x");
+	accelerationLB->add_item(5,"0.5x");
+	accelerationLB->add_item(6,"0.1x");
+
 	glui->add_checkbox("Display delta pie slice", &deltaPie);
 	glui->add_checkbox("Stream Graph", &streamgraphFlag);
 	glui->add_checkbox("Dynamic Treemap", &dynamicTreemap);
-
 	entityTree->setColorMetric(colorMetricIndex);
 	entityTree->setRadiusMetric(radiusMetricIndex);
 	entityTree->setStreamMetric(streamMetricIndex);
@@ -56,6 +68,32 @@ void controlCB(int control)
 			break;
 		case STREAMMETRIC_LB:
 			entityTree->setStreamMetric(streamMetricIndex);
+			break;
+		case ACCELERATION_LB:
+			switch (accelerationRatioIndex)
+			{
+				case 0:
+					accelerationRatio = 1;
+					break;
+				case 1:
+					accelerationRatio = 10;
+					break;
+				case 2:
+					accelerationRatio = 5;
+					break;
+				case 3:
+					accelerationRatio = 2;
+					break;
+				case 4:
+					accelerationRatio = 0.75;
+					break;
+				case 5:
+					accelerationRatio = 0.5;
+					break;
+				case 6:
+					accelerationRatio = 0.1;
+					break;
+			}
 			break;
 	}
 }

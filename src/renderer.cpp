@@ -21,6 +21,7 @@ queue<short> windowQueue;
 
 int animationDirection = 0;
 double animationStep = 0.0;
+double accelerationRatio = 1;
 
 // Glut/GLui argument functions
 void display()
@@ -178,7 +179,8 @@ void drawRt()
 
 void calculateAnimationStep()
 {
-	double changeRate = 0.02; // per render() call
+	double changeRate = 0.04; // per render() call
+	changeRate *= accelerationRatio; // set on gui
 	if (animationDirection == 0)
 		return;
 	else

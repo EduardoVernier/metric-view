@@ -26,6 +26,7 @@ extern StreamgraphCanvas *sCanvas;
 extern MetricRank *mRank;
 extern int animationDirection;
 extern double animationStep;
+extern double accelerationRatio;
 
 // Button/checkbox/listbox ids
 enum UI_IDs
@@ -33,7 +34,8 @@ enum UI_IDs
 	COLORMETRIC_LB = 0,
 	RADIUSMETRIC_LB,
 	STREAMMETRIC_LB,
-	COLORMAP_LB
+	COLORMAP_LB,
+	ACCELERATION_LB
 };
 
 void initializeUI();
