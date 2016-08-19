@@ -11,7 +11,7 @@ Treemap::Treemap(EntityTree *et, double _width, double _height)
 	// Take all first level BaseEntities and start treemapping algorithm
 	vector<BaseEntity*> data;
 	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin() ; b != entityTree->sortedEntities.end(); ++b)
-		if((*b)->getLevel() == 1 && (*b)->getScore() != 0)
+		if ((*b)->getLevel() == 1 && (*b)->getScore() != 0)
 		{
 			data.push_back(*b);
 		}
@@ -108,7 +108,7 @@ int Treemap::improvesRatio(vector<BaseEntity*> *currentRow, double nextEntity, i
 		if ((*currentRow)[i]->getNormalizedScore() > maxCurrent)
 			maxCurrent = (*currentRow)[i]->getNormalizedScore();
 
-		if((*currentRow)[i]->getNormalizedScore() < minCurrent)
+		if ((*currentRow)[i]->getNormalizedScore() < minCurrent)
 			minCurrent = (*currentRow)[i]->getNormalizedScore();
 	}
 
@@ -165,7 +165,7 @@ void Treemap::updateSize (double _width, double _height)
 	vector<BaseEntity*> data;
 	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
 	{
-		if((*b)->getLevel() == 1 && (*b)->getScore() != 0)
+		if ((*b)->getLevel() == 1 && (*b)->getScore() != 0)
 		{
 			data.push_back(*b);
 		}

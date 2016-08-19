@@ -4,7 +4,6 @@ MetricRank::MetricRank(EntityTree *_et)
 {
 	et = _et;
 	computeGlobalMetricStd();
-
 }
 
 void MetricRank::computeGlobalMetricStd()
@@ -15,11 +14,11 @@ void MetricRank::computeGlobalMetricStd()
 	globalStd.resize(nDim, 0);
 	computeGlobalMetricMean(globalMean);
 
-	for(unsigned m = 0; m < nDim; ++m)
+	for (unsigned m = 0; m < nDim; ++m)
 	{
-		for(unsigned t = 0; t < et->nRevisions; ++t)
+		for (unsigned t = 0; t < et->nRevisions; ++t)
 		{
-			for(vector<Entity*>::iterator b = et->entities.begin(); b != et->entities.end(); ++b)
+			for (vector<Entity*>::iterator b = et->entities.begin(); b != et->entities.end(); ++b)
 			{
 				globalStd[m] += pow((*b)->data[t][m] - globalMean[m], 2);
 			}
@@ -32,11 +31,11 @@ void MetricRank::computeGlobalMetricStd()
 void MetricRank::computeGlobalMetricMean(vector<double> &globalMean)
 {
 	unsigned nDim = et->metricVector.size();
-	for(unsigned m = 0; m < nDim; ++m)
+	for (unsigned m = 0; m < nDim; ++m)
 	{
-		for(unsigned t = 0; t < et->nRevisions; ++t)
+		for (unsigned t = 0; t < et->nRevisions; ++t)
 		{
-			for(vector<Entity*>::iterator b = et->entities.begin(); b != et->entities.end(); ++b)
+			for (vector<Entity*>::iterator b = et->entities.begin(); b != et->entities.end(); ++b)
 			{
 				globalMean[m] += (*b)->data[t][m];
 			}
@@ -45,3 +44,17 @@ void MetricRank::computeGlobalMetricMean(vector<double> &globalMean)
 	}
 }
 
+void MetricRank::computeLocalGroupMetric()
+{
+	unsigned nDim = et->metricVector.size();
+	vector<double> localMean;
+	localMean.resize(nDim, 0);
+	//localStd.resize(nDim, 0);
+	computeLocalMetricMean(localMean);
+
+}
+
+void MetricRank::computeLocalMetricMean(vector<double> &localMean)
+{
+
+}

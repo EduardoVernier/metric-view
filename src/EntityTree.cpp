@@ -14,7 +14,7 @@ void EntityTree::addEntity(Entity ent)
 		int found = 0;
 		for (vector<Package>::iterator pckg = packageVector.begin() ; pckg != packageVector.end(); ++pckg)
 		{
-			if(pckg->getName() == ent.getPrefix())
+			if (pckg->getName() == ent.getPrefix())
 			{
 				found = 1;
 				pckg->addEntity(ent);
@@ -96,7 +96,7 @@ void EntityTree::sortPackages(Package *p)
 {
 	sort (p->childrenVector.begin(), p->childrenVector.end(), compPackages());
 
-	for(unsigned i = 0; i < p->childrenVector.size(); ++i)
+	for (unsigned i = 0; i < p->childrenVector.size(); ++i)
 	{
 		sortPackages(&p->childrenVector[i]);
 	}
@@ -194,14 +194,14 @@ void EntityTree::setMinMax()
 void EntityTree::addProjection(string name, double x, double y, unsigned index)
 {
 	// Keep mins and maxs updated for normalizing the projection
-	if(x < minX) minX = x;
-	if(x > maxX) maxX = x;
-	if(y < minY) minY = y;
-	if(y > maxY) maxY = y;
+	if (x < minX) minX = x;
+	if (x > maxX) maxX = x;
+	if (y < minY) minY = y;
+	if (y > maxY) maxY = y;
 
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
 	{
-		if((*b)->isPackage() == 0 && name == ((Entity*)(*b))->getPrefix()+'.'+(*b)->getName())
+		if ((*b)->isPackage() == 0 && name == ((Entity*)(*b))->getPrefix()+'.'+(*b)->getName())
 		{
 			((Entity*)(*b))->addPointAtIndex({x, y}, index);
 		}
@@ -213,16 +213,16 @@ void EntityTree::normalizeProjection(int shortEdge)
 {
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
 	{
-		if((*b)->isPackage() == 0)
+		if ((*b)->isPackage() == 0)
 		{
-			for(unsigned i = 0; i < ((Entity*)(*b))->projectionPoints.size() ; ++i)
+			for (unsigned i = 0; i < ((Entity*)(*b))->projectionPoints.size() ; ++i)
 			{
 				double normX = (((Entity*)(*b))->projectionPoints[i].x - minX)*((double)shortEdge)/(maxX - minX) + 20;
 				double normY = (((Entity*)(*b))->projectionPoints[i].y - minY)*((double)shortEdge)/(maxY - minY) + 20;
 				((Entity*)(*b))->normalizedProjectionPoints[i] = {normX, normY};
 			}
 		}
-		if((*b)->getName() == "")
+		if ((*b)->getName() == "")
 			(*b)->setAsPackage(); // Fix root element
 	}
 }
@@ -232,7 +232,7 @@ Entity* EntityTree::getEntityByName(string prefix, string id)
 {
 	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
 	{
-		if((*b)->isPackage() == 0 && ((Entity*)(*b))->getName() == id && ((Entity*)(*b))->getPrefix() == prefix)
+		if ((*b)->isPackage() == 0 && ((Entity*)(*b))->getName() == id && ((Entity*)(*b))->getPrefix() == prefix)
 		{
 			return (Entity*)*b;
 		}

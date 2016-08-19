@@ -23,5 +23,6 @@ void drawHoveringLabel();
 void drawSelectionBox();
 void renderHoverString(int x, int y, string str);
 void drawRt();
+void calculateAnimationStep();
 
 #endif

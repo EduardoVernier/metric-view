@@ -26,7 +26,7 @@ Entity::Entity (string csvLine, unsigned nAttributes, unsigned nRevisions)
 	unsigned i = 0;
 	while (getline(ss, item, ';'))
 	{
-		if(i >= nAttributes) break;
+		if (i >= nAttributes) break;
 		istringstream buffer(item);
 		buffer >> value;
 		data[nRevisions-1][i] = (value);
@@ -50,7 +50,7 @@ void Entity::addRevisionData (string dataLine, unsigned rev, int nAttributes)
 	int i = 0;
 	while (getline(ss, item, ';'))
 	{
-		if(i >= nAttributes) break;
+		if (i >= nAttributes) break;
 		istringstream buffer(item);
 		buffer >> value;
 		data[rev][i] = (value);

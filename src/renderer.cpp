@@ -19,6 +19,9 @@ int streamgraphHeight = 250;
 
 queue<short> windowQueue;
 
+int animationDirection = 0;
+double animationStep = 0.0;
+
 // Glut/GLui argument functions
 void display()
 {
@@ -30,6 +33,7 @@ void display()
 // Function called when window dimentions change
 void reshape(int W, int H)
 {
+	calculateAnimationStep();
 	glShadeModel(GL_SMOOTH);
 	glViewport(0, 0, W, H);
 	glMatrixMode(GL_PROJECTION);
@@ -45,27 +49,27 @@ void reshape(int W, int H)
 void idle()
 {
 	// Ugly fix for misclicks
-	if(windowQueue.size() < 5)
+	if (windowQueue.size() < 5)
 		windowQueue.push((short)glutGetWindow());
 	else
 	{
 		windowQueue.pop();
 		windowQueue.push((short)glutGetWindow());
 	}
-
 	glutPostRedisplay();
 }
 
 // Drawing
 void render()
 {
+	calculateAnimationStep();
 	setCanvassesSizes(winWidth, winHeight);
-	pCanvas->drawCanvas(Rt);
-	tCanvas->drawCanvas(Rt);
-	if(streamgraphFlag)
-		sCanvas->drawCanvas(Rt);
+	pCanvas->drawCanvas(Rt, animationStep);
+	tCanvas->drawCanvas(Rt, animationStep);
+	if (streamgraphFlag)
+		sCanvas->drawCanvas(Rt, animationStep);
 	drawHoveringLabel();
-	if(mouse->state == 0) // If mouse is being clicked
+	if (mouse->state == 0) // If mouse is being clicked
 		drawSelectionBox();
 	drawRt();
 }
@@ -114,10 +118,10 @@ void setCanvassesSizes(int W, int H)
 		tCanvas->setSize(tTL, tBR);
 	}
 
-	pCanvas->drawCanvas(Rt);
-	tCanvas->drawCanvas(Rt);
-	if(streamgraphFlag)
-		sCanvas->drawCanvas(Rt);
+	pCanvas->drawCanvas(Rt, 0.0);
+	tCanvas->drawCanvas(Rt, 0.0);
+	if (streamgraphFlag)
+		sCanvas->drawCanvas(Rt, 0.0);
 }
 
 void drawHoveringLabel()
@@ -169,4 +173,38 @@ void drawRt()
 	glRasterPos2i(x, 35);
 	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
 	glutBitmapString(GLUT_BITMAP_HELVETICA_18, s);
+}
+
+
+void calculateAnimationStep()
+{
+	double changeRate = 0.02; // per render() call
+	if (animationDirection == 0)
+		return;
+	else
+		if (animationDirection == 1)
+		{
+			if (animationStep - 1 < 0.00001) // Safe double comparisson
+			{
+				animationStep += changeRate;
+			}
+			else
+			{
+				animationDirection = 0; // Reset flag
+				animationStep = 0.0;
+			}
+		}
+		else
+		{
+			if (animationStep + 1 > 0.00001) // Safe double comparisson
+			{
+				animationStep -= changeRate;
+			}
+			else
+			{
+				animationDirection = 0; // Reset flag
+				animationStep = 0.0;
+			}
+		}
+	//cout << animationStep << endl;
 }

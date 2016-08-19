@@ -22,7 +22,7 @@ class TreemapCanvas : public Canvas
 public:
 	TreemapCanvas (Point tl, Point br, EntityTree *et);
 	void getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsigned ctrlDown);
-	void drawCanvas(unsigned Rt);
+	void drawCanvas(unsigned Rt, double animationStep);
 
 private:
 	void drawHovered(Entity *e);

@@ -44,7 +44,7 @@ void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, un
 }
 
 // First draw elements and then package borders
-void TreemapCanvas::drawCanvas(unsigned Rt)
+void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
 	vector<BaseEntity*> items = entityTree->sortedEntities;
 

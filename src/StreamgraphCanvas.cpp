@@ -9,7 +9,7 @@ StreamgraphCanvas::StreamgraphCanvas(Point tl, Point br, EntityTree *et)
 }
 
 // Draw Canvas with fixed height
-void StreamgraphCanvas::drawCanvas(unsigned Rt)
+void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
@@ -19,12 +19,12 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 
 	// Filling vector
 	unsigned maxSum = 0;
-	for(unsigned i = 0; i < entityTree->nRevisions; ++i)
+	for (unsigned i = 0; i < entityTree->nRevisions; ++i)
 	{
 		double sum = 0;
 		for (vector<Entity*>::iterator b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
 		{
-			if((*b)->isPackage() == 0 && (*b)->getName() != "")
+			if ((*b)->isPackage() == 0 && (*b)->getName() != "")
 			{
 				sum += ((Entity*)(*b))->data[i][sMetric];
 			}
@@ -49,11 +49,11 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 		int i = 1;
 		for (vector<Entity*>::iterator b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
 		{
-			if((*b)->isPackage() == 0 && (*b)->getName() != "")
+			if ((*b)->isPackage() == 0 && (*b)->getName() != "")
 			{
 				yPos[t][i] = yPos[t][i-1] + ((Entity*)(*b))->data[t][sMetric]*((0.90*streamgraphHeight)/maxSum);
 				++i;
-				if(entityTree->hovered != NULL && (*b)->getName() == entityTree->hovered->getName())
+				if (entityTree->hovered != NULL && (*b)->getName() == entityTree->hovered->getName())
 					hoveredIndex = b - entityTree->selected.begin();
 			}
 		}
@@ -61,7 +61,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// Draw lines
-	for(unsigned i = 0; i < entityTree->selected.size()+1; ++i)
+	for (unsigned i = 0; i < entityTree->selected.size()+1; ++i)
 	{
 		glColor3f(0,0,0);
 		glBegin(GL_LINE_STRIP);
@@ -73,7 +73,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 	}
 
 	// Redraw lines with highlight
-	if(hoveredIndex != -1)
+	if (hoveredIndex != -1)
 	{
 		glLineWidth(3);
 		glColor3f(colorHover.R, colorHover.G, colorHover.B);
@@ -93,7 +93,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt)
 	}
 
 	// Paint highlighted
-	if(hoveredIndex != -1)
+	if (hoveredIndex != -1)
 	{
 		glColor4f(colorHover.R, colorHover.G, colorHover.B, 0.2);
 		glBegin(GL_QUAD_STRIP);
@@ -131,12 +131,12 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, unsi
 
 	// Filling vector
 	unsigned maxSum = 0;
-	for(unsigned i = 0; i < entityTree->nRevisions; ++i)
+	for (unsigned i = 0; i < entityTree->nRevisions; ++i)
 	{
 		double sum = 0;
 		for (vector<Entity*>::iterator b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
 		{
-			if((*b)->isPackage() == 0 && (*b)->getName() != "")
+			if ((*b)->isPackage() == 0 && (*b)->getName() != "")
 			{
 				sum += ((Entity*)(*b))->data[i][sMetric];
 			}
@@ -160,7 +160,7 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, unsi
 		int i = 1;
 		for (vector<Entity*>::iterator b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
 		{
-			if((*b)->isPackage() == 0 && (*b)->getName() != "")
+			if ((*b)->isPackage() == 0 && (*b)->getName() != "")
 			{
 				yPos[t][i] = yPos[t][i-1] + ((Entity*)(*b))->data[t][sMetric]*((0.90*streamgraphHeight)/maxSum);
 				++i;
@@ -190,7 +190,7 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, unsi
 	{
 		for (int i = 0; i < (int)entityTree->selected.size(); ++i)
 		{
-			if((y > (1-p)*yPos[Ti][i] + p*yPos[Tj][i]) && (y < (1-p)*yPos[Ti][i+1] + p*yPos[Tj][i+1]))
+			if ((y > (1-p)*yPos[Ti][i] + p*yPos[Tj][i]) && (y < (1-p)*yPos[Ti][i+1] + p*yPos[Tj][i+1]))
 			{
 				entityTree->hovered = entityTree->selected[i];
 				break;

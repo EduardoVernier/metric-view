@@ -54,7 +54,7 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
 			}
 		}
 	}
-	if(click == 1 && closest != NULL)
+	if (click == 1 && closest != NULL)
 	{
 		if ((std::find(entityTree->selected.begin(), entityTree->selected.end(),closest))!=entityTree->selected.end())
 			entityTree->selected.erase(std::find(entityTree->selected.begin(), entityTree->selected.end(),closest));
@@ -64,7 +64,7 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
 }
 
 // Draw scaled Canvas
-void ProjectionCanvas::drawCanvas(unsigned Rt)
+void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
@@ -87,35 +87,31 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 
 	for (vector<Entity*>::iterator b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
 	{
-		if((*b)->isPackage() == 0 && (*b)->getName() != "")
+		if ((*b)->isPackage() == 0 && (*b)->getName() != "")
 		{
-			double x = ((Entity*)(*b))->normalizedProjectionPoints[Rt].x;
-			double y = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y;
+			Point p = getPoint((Entity*)(*b), Rt, animationStep);
 			float value = ((Entity*)(*b))->data[Rt][rMetric];
 			float radius = ((value) - rMin) / (rMax - rMin);
 			float delta = (Rt > 1) ? (value - ((Entity*)(*b))->data[Rt-1][rMetric])/value: 0;
-			drawEntity(x, y, radius, delta, colorSelection, 1);
+			drawEntity(p.x, p.y, radius, delta, colorSelection, 1);
 		}
 	}
 
 	if (entityTree->hovered)
 	{
-		double x = entityTree->hovered->normalizedProjectionPoints[Rt].x;
-		double y = entityTree->hovered->normalizedProjectionPoints[Rt].y;
+		Point p = getPoint(entityTree->hovered, Rt, animationStep);
 		float value = entityTree->hovered->data[Rt][rMetric];
 		float radius = ((value) - rMin) / (rMax - rMin);
 		float delta = (Rt > 1) ? (value - ((Entity*)(entityTree->hovered))->data[Rt-1][rMetric])/value: 0;
 		//cout << delta << endl;
-		drawEntity(x, y, radius, delta, colorHover, 1);
+		drawEntity(p.x, p.y, radius, delta, colorHover, 1);
 	}
 
 	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
 	{
-		if((*b)->isPackage() == 0 && (*b)->getName() != "")
+		if ((*b)->isPackage() == 0 && (*b)->getName() != "")
 		{
-			double x = ((Entity*)(*b))->normalizedProjectionPoints[Rt].x;
-			double y = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y;
-
+			Point p = getPoint((Entity*)(*b), Rt, animationStep);
 			float value = ((Entity*)(*b))->data[Rt][cMetric];
 			float normCValue = (value - cMin) / (cMax - cMin);
 
@@ -142,7 +138,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt)
 			value = ((Entity*)(*b))->data[Rt][rMetric];
 			float radius = (value - rMin) / (rMax - rMin);
 			float delta = (Rt > 1) ? (value - ((Entity*)(*b))->data[Rt-1][rMetric])/value: 0;
-			drawEntity(x, y, radius, delta, c, 0);
+			drawEntity(p.x, p.y, radius, delta, c, 0);
 		}
 	}
 	glDisable(GL_LINE_SMOOTH);
@@ -171,7 +167,7 @@ void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3f(c.R,c.G,c.B);
 	glVertex3f(x, y, 0);
-	for(int i = 0; i <= triangleAmount;i++)
+	for (int i = 0; i <= triangleAmount;i++)
 	{
 		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
 							 y + (radius * sin(i * radians / triangleAmount)), 0);
@@ -180,7 +176,7 @@ void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c
 
 	glBegin(GL_LINE_STRIP);
 	glColor3f(0,0,0);
-	for(int i = 0; i <= triangleAmount;i++)
+	for (int i = 0; i <= triangleAmount;i++)
 	{
 		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
 							 y + (radius * sin(i * radians / triangleAmount)), 0);
@@ -220,7 +216,7 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 	// Draw circle with missing slice
 	glBegin(GL_TRIANGLE_FAN);
 	glVertex3f(x, y, 0);
-	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
+	for (int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
 		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
 							 y + (radius * sin(i * radians / triangleAmount)), 0);
@@ -231,7 +227,7 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 	glBegin(GL_LINE_STRIP);
 	glColor3f(0,0,0);
 	glVertex3f(x, y, 0);
-	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
+	for (int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
 		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
 							 y + (radius * sin(i * radians / triangleAmount)), 0);
@@ -266,7 +262,7 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 	// Draw missing slice
 	glBegin(GL_TRIANGLE_FAN);
 	glVertex3f(x, y, 0);
-	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
+	for (int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
 		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
 							 y + (radius * sin(i * radians / triangleAmount)), 0);
@@ -292,7 +288,7 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 	glBegin(GL_LINE_STRIP);
 	glLineWidth(2.0);
 	glVertex3f(x, y, 0);
-	for(int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
+	for (int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
 	{
 		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
 							 y + (radius * sin(i * radians / triangleAmount)), 0);
@@ -300,4 +296,30 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 	glVertex3f(x, y, 0);
 	glEnd();
 	glPopMatrix();
+}
+
+Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep)
+{
+	Point p;
+	if (animationStep == 0.0)
+	{
+		p.x = b->normalizedProjectionPoints[Rt].x;
+		p.y = b->normalizedProjectionPoints[Rt].y;
+	}
+	else if (animationStep > 0 && Rt > 0 && Rt < entityTree->nRevisions)
+	{
+		p.x = (1-animationStep)*b->normalizedProjectionPoints[Rt-1].x
+					+ animationStep  *b->normalizedProjectionPoints[Rt].x;
+		p.y = (1-animationStep)*b->normalizedProjectionPoints[Rt-1].y
+					+ animationStep  *b->normalizedProjectionPoints[Rt].y;
+	}
+	else if (animationStep < 0 && Rt < entityTree->nRevisions)
+	{
+		animationStep*=-1;
+		p.x = (1-animationStep)*b->normalizedProjectionPoints[Rt+1].x
+					+ animationStep  *b->normalizedProjectionPoints[Rt].x;
+		p.y = (1-animationStep)*b->normalizedProjectionPoints[Rt+1].y
+					+ animationStep  *b->normalizedProjectionPoints[Rt].y;
+	}
+	return p;
 }

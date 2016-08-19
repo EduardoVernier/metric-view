@@ -936,7 +936,7 @@ public:
         hidden         = false;
         memset(char_widths, -1, sizeof(char_widths)); /* JVK */
         int i;
-        for( i=0; i<GLUI_DEF_MAX_ARRAY; i++ )
+        for ( i=0; i<GLUI_DEF_MAX_ARRAY; i++ )
             float_array_val[i] = last_live_float_array[i] = 0.0;
     }
 

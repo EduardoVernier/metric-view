@@ -73,6 +73,8 @@ void mouseClick(int button, int state, int x, int y)
 	if (sum > queueSize)
 		return;
 
+	vector<Entity*> selected = entityTree->selected;
+	// Find selected entities on entityTree
 	int drag[4] = {0,0,0,0};
 	switch (mouse->click(button, state, x, y, drag))
 	{
@@ -83,6 +85,9 @@ void mouseClick(int button, int state, int x, int y)
 			tCanvas->getEntitiesByPositionOnTreemap(drag, 1, ctrlDown);
 			break;
 	}
+	if (selected != entityTree->selected) // Chage detected in the selected group
+		mRank->computeLocalGroupMetric();
+
 	mouse->updateMouse(x, y);
 }
 
@@ -123,8 +128,22 @@ void keyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 		case 'q': exit(0); break;
-		case 'z': if (Rt > 0) --Rt; cout<<Rt<<endl; break;
-		case 'x': if (Rt < entityTree->nRevisions-1) ++Rt; break;
+		case 'z':
+			if (Rt > 0)
+			{
+				--Rt;
+				animationDirection = -1;
+				animationStep = 0.0;
+			}
+			break;
+		case 'x':
+			if (Rt < entityTree->nRevisions-1)
+			{
+				++Rt;
+				animationDirection = 1;
+				animationStep = 0.0;
+			}
+			break;
 	}
 }
 

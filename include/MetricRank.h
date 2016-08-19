@@ -15,6 +15,9 @@ class MetricRank
 {
 public:
 	MetricRank(EntityTree *_et);
+	void computeLocalGroupMetric();
+	void computeLocalMetricMean(vector<double> &localMean);
+
 	vector<vector<unsigned char>> explainingMetric;
 
 private:
