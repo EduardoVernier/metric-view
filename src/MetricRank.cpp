@@ -3,58 +3,46 @@
 MetricRank::MetricRank(EntityTree *_et)
 {
 	et = _et;
-	computeGlobalMetricStd();
 }
 
-void MetricRank::computeGlobalMetricStd()
+void MetricRank::computeLocalGroupMetric(unsigned Rt)
 {
 	unsigned nDim = et->metricVector.size();
-	vector<double> globalMean;
-	globalMean.resize(nDim, 0);
-	globalStd.resize(nDim, 0);
-	computeGlobalMetricMean(globalMean);
+	vector<double> globalStd(nDim, 0);
+	vector<double> localStd(nDim, 0);
 
-	for (unsigned m = 0; m < nDim; ++m)
-	{
-		for (unsigned t = 0; t < et->nRevisions; ++t)
-		{
-			for (vector<Entity*>::iterator b = et->entities.begin(); b != et->entities.end(); ++b)
-			{
-				globalStd[m] += pow((*b)->data[t][m] - globalMean[m], 2);
-			}
-		}
-		globalStd[m] /= (double)(et->nRevisions*et->entities.size());
-		globalStd[m] = sqrt(globalStd[m]);
-	}
+	computeStd(et->entities, Rt, globalStd);
+	computeStd(et->selected, Rt, localStd);
 }
 
-void MetricRank::computeGlobalMetricMean(vector<double> &globalMean)
+void MetricRank::computeMean(vector<Entity*> entityVector, unsigned Rt, vector<double> &meanVector)
 {
 	unsigned nDim = et->metricVector.size();
 	for (unsigned m = 0; m < nDim; ++m)
 	{
-		for (unsigned t = 0; t < et->nRevisions; ++t)
+		for (vector<Entity*>::iterator b = entityVector.begin(); b != entityVector.end(); ++b)
 		{
-			for (vector<Entity*>::iterator b = et->entities.begin(); b != et->entities.end(); ++b)
-			{
-				globalMean[m] += (*b)->data[t][m];
-			}
+			meanVector[m] += (*b)->data[Rt][m];
 		}
-		globalMean[m] /= (double)(et->nRevisions*et->entities.size());
+		meanVector[m] /= (double)(entityVector.size());
 	}
 }
 
-void MetricRank::computeLocalGroupMetric()
+void MetricRank::computeStd(vector<Entity*> entityVector, unsigned Rt, vector<double> &stdVector)
 {
 	unsigned nDim = et->metricVector.size();
-	vector<double> localMean;
-	localMean.resize(nDim, 0);
-	//localStd.resize(nDim, 0);
-	computeLocalMetricMean(localMean);
 
+	vector<double> meanVector (nDim, 0);
+	computeMean(entityVector, Rt, meanVector);
+
+	for (unsigned m = 0; m < nDim; ++m)
+	{
+		for (vector<Entity*>::iterator b = entityVector.begin(); b != entityVector.end(); ++b)
+		{
+			stdVector[m] += pow((*b)->data[Rt][m] - meanVector[m], 2);
+		}
+		stdVector[m] /= (double)(entityVector.size());
+		stdVector[m] = sqrt(stdVector[m]);
+	}
 }
 
-void MetricRank::computeLocalMetricMean(vector<double> &localMean)
-{
-
-}

@@ -124,7 +124,7 @@ void mouseClick(int button, int state, int x, int y)
 			break;
 	}
 	if (selected != entityTree->selected) // Chage detected in the selected group
-		mRank->computeLocalGroupMetric();
+		mRank->computeLocalGroupMetric(Rt);
 
 	mouse->updateMouse(x, y);
 }

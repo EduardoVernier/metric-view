@@ -15,17 +15,15 @@ class MetricRank
 {
 public:
 	MetricRank(EntityTree *_et);
-	void computeLocalGroupMetric();
-	void computeLocalMetricMean(vector<double> &localMean);
+	void computeLocalGroupMetric(unsigned Rt);
 
 	vector<vector<unsigned char>> explainingMetric;
 
 private:
-	void computeGlobalMetricStd();
-	void computeGlobalMetricMean(vector<double> &globalMean);
+	void computeMean(vector<Entity*> entityVector, unsigned Rt, vector<double> &meanVector);
+	void computeStd(vector<Entity*> entityVector, unsigned Rt, vector<double> &stdVector);
 
 	EntityTree *et;
-	vector<double> globalStd;
 };
 
 #endif
