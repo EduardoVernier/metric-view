@@ -4,6 +4,8 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <utility> // pair
+#include <iostream>
 
 #include "Entity.h"
 #include "EntityTree.h"
@@ -17,11 +19,11 @@ public:
 	MetricRank(EntityTree *_et);
 	void computeLocalGroupMetric(unsigned Rt);
 
-	vector<vector<unsigned char>> explainingMetric;
+	vector<pair<unsigned,double>> explainingMetric;
 
 private:
 	void computeMean(vector<Entity*> entityVector, unsigned Rt, vector<double> &meanVector);
-	void computeStd(vector<Entity*> entityVector, unsigned Rt, vector<double> &stdVector);
+	void computeVar(vector<Entity*> entityVector, unsigned Rt, vector<double> &varVector);
 
 	EntityTree *et;
 };

@@ -172,6 +172,7 @@ void keyboard(unsigned char key, int x, int y)
 				--Rt;
 				animationDirection = -1;
 				animationStep = 0.0;
+				mRank->computeLocalGroupMetric(Rt);
 			}
 			break;
 		case 'x':
@@ -180,6 +181,7 @@ void keyboard(unsigned char key, int x, int y)
 				++Rt;
 				animationDirection = 1;
 				animationStep = 0.0;
+				mRank->computeLocalGroupMetric(Rt);
 			}
 			break;
 	}
