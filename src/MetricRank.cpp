@@ -6,7 +6,6 @@ MetricRank::MetricRank(EntityTree *_et)
 	explainingMetric.resize(et->metricVector.size());
 }
 
-
 void MetricRank::computeLocalGroupMetric(unsigned Rt)
 {
 	unsigned nDim = et->metricVector.size();
@@ -22,15 +21,19 @@ void MetricRank::computeLocalGroupMetric(unsigned Rt)
 
 	for (unsigned m = 0; m < nDim; ++m)
 	{
-		explainingMetric[m] = make_pair(m, (localVar[m]/globalVar[m])/norm);
+		explainingMetric[m].index = m;
+		explainingMetric[m].score = (localVar[m]/globalVar[m])/norm;
 	}
 	sort(explainingMetric.begin(),explainingMetric.end(),
-				[](const pair<unsigned, double>& lhs, const pair<unsigned, double>& rhs)
-					{ return lhs.second < rhs.second; });
+				[](const MetricScore &lhs, const MetricScore &rhs)
+					{ return lhs.score < rhs.score; });
 
 	cout << endl;
-	for_each(explainingMetric.begin(),explainingMetric.end(),[=](const pair<unsigned, double>& a)
-	{	cout << et->metricVector[a.first] << " " << a.second << endl;	});
+	for_each(explainingMetric.begin(),explainingMetric.end(),[=](const MetricScore &a)
+	{
+		cout << std::setw(28) << et->metricVector[a.index] << "\tScore: " << setw(10) << a.score;
+		cout << "\tMean: "<< setw(10) << a.mean << "\tVariance: " << a.variance << endl;
+	});
 }
 
 void MetricRank::computeMean(vector<Entity*> entityVector, unsigned Rt, vector<double> &meanVector)
@@ -43,6 +46,7 @@ void MetricRank::computeMean(vector<Entity*> entityVector, unsigned Rt, vector<d
 			meanVector[m] += (*b)->data[Rt][m];
 		}
 		meanVector[m] /= (double)(entityVector.size());
+		explainingMetric[m].mean = meanVector[m];
 	}
 }
 
@@ -60,6 +64,7 @@ void MetricRank::computeVar(vector<Entity*> entityVector, unsigned Rt, vector<do
 			varVector[m] += pow((*b)->data[Rt][m] - meanVector[m], 2);
 		}
 		varVector[m] /= (double)(entityVector.size());
+		explainingMetric[m].variance = varVector[m];
 	}
 }
 
