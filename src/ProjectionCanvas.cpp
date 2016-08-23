@@ -301,7 +301,8 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep)
 {
 	Point p;
-	if (animationStep == 0.0)
+
+	if (animationStep == 1 || animationStep == -1)
 	{
 		p.x = b->normalizedProjectionPoints[Rt].x;
 		p.y = b->normalizedProjectionPoints[Rt].y;
@@ -315,7 +316,6 @@ Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep)
 	}
 	else if (animationStep < 0 && Rt < entityTree->nRevisions)
 	{
-		animationStep*=-1;
 		p.x = (1-animationStep)*b->normalizedProjectionPoints[Rt+1].x
 					+ animationStep  *b->normalizedProjectionPoints[Rt].x;
 		p.y = (1-animationStep)*b->normalizedProjectionPoints[Rt+1].y

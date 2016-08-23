@@ -24,16 +24,18 @@ void MetricRank::computeLocalGroupMetric(unsigned Rt)
 		explainingMetric[m].index = m;
 		explainingMetric[m].score = (localVar[m]/globalVar[m])/norm;
 	}
+
 	sort(explainingMetric.begin(),explainingMetric.end(),
 				[](const MetricScore &lhs, const MetricScore &rhs)
 					{ return lhs.score < rhs.score; });
 
-	cout << endl;
-	for_each(explainingMetric.begin(),explainingMetric.end(),[=](const MetricScore &a)
-	{
-		cout << std::setw(28) << et->metricVector[a.index] << "\tScore: " << setw(10) << a.score;
-		cout << "\tMean: "<< setw(10) << a.mean << "\tVariance: " << a.variance << endl;
-	});
+	// Print results
+//	cout << string( 100, '\n' );
+//	for_each(explainingMetric.begin(),explainingMetric.end(),[=](const MetricScore &a)
+//	{
+//		cout << std::setw(28) << et->metricVector[a.index] << "\tScore: " << setw(10) << a.score;
+//		cout << "\tMean: "<< setw(10) << a.mean << "\tVariance: " << a.variance << endl;
+//	});
 }
 
 void MetricRank::computeMean(vector<Entity*> entityVector, unsigned Rt, vector<double> &meanVector)

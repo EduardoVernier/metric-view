@@ -55,12 +55,9 @@ void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glScaled(xRatio, yRatio, 1);
 
 	// Draw treemap squares
-	for (vector<BaseEntity*>::iterator it = entityTree->sortedEntities.begin(); it != entityTree->sortedEntities.end(); ++it)
+	for (vector<Entity*>::iterator it = entityTree->entities.begin(); it != entityTree->entities.end(); ++it)
 	{
-		if ((*it)->isPackage() == 0)
-		{
-			drawEntity(*it, Rt);
-		}
+			drawEntity(*it, Rt, animationStep);
 	}
 
 	// Draw Package borders
@@ -82,31 +79,19 @@ void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glPopMatrix();
 }
 
-void TreemapCanvas::drawEntity(BaseEntity *e, unsigned Rt)
+void TreemapCanvas::drawEntity(Entity *e, unsigned Rt, double animationStep)
 {
-	double padding = 0.5;
-	double x0 = e->getCoord(0)+ padding + xOff;
-	double y0 = e->getCoord(1)+ padding + yOff;
-	double x1 = e->getCoord(2)- padding + xOff;
-	double y1 = e->getCoord(3)- padding + yOff;
+	double coords[4];
+	computeRectangleSize(coords, e, Rt, animationStep);
+//	if (e->getName() == "WebvttParser" && animationStep != 0.0)
+//		cout << coords[0] << " " << coords[1] << " " << coords[2] << " " << coords[3] << "    " << animationStep <<  endl;
 
 	int cMetric = entityTree->getColorMetric();
 	float cMin = entityTree->getCMMin();
 	float cMax = entityTree->getCMMax();
 
-	float value = ((Entity*)e)->data[Rt][cMetric];
+	float value = e->data[Rt][cMetric];
 	float normCValue = (value - cMin) / (cMax - cMin);
-
-	// Dynamic treemap experiment
-	if (dynamicTreemap)
-	{
-		double ratio = sqrt(((Entity*)e)->data[Rt][21]/((Entity*)e)->getScore());
-		x0 = x0 + (((1-ratio)*(x1-x0))/2);
-		x1 = x0 + ratio*(x1-x0);
-		y0 = y0 + (((1-ratio)*(y1-y0))/2);
-		y1 = y0 + ratio*(y1-y0);
-	}
-
 
 	// Generate color based on colormap index value
 	Color c (1,1,1);
@@ -127,9 +112,56 @@ void TreemapCanvas::drawEntity(BaseEntity *e, unsigned Rt)
 			}
 			break;
 	}
-
 	glColor3f(c.R, c.G, c.B);
-	glRectd(x0,y0,x1,y1);
+	glRectd(coords[0],coords[1],coords[2],coords[3]);
+
+	// Draw line around rectangle
+	double padding = 0.0;
+	double x0 = e->getCoord(0)+ padding + xOff;
+	double y0 = e->getCoord(1)+ padding + yOff;
+	double x1 = e->getCoord(2)- padding + xOff;
+	double y1 = e->getCoord(3)- padding + yOff;
+	glLineWidth(0.1f);
+	glColor3f(0.0f, 0.0f, 0.0f);
+	glBegin(GL_LINE_STRIP);
+	glVertex2d(x0,y0);
+	glVertex2d(x0,y0);
+	glVertex2d(x0,y1);
+	glVertex2d(x0,y1);
+	glVertex2d(x1,y1);
+	glVertex2d(x1,y1);
+	glVertex2d(x1,y0);
+	glVertex2d(x1,y0);
+	glVertex2d(x0,y0);
+	glEnd();
+}
+
+void TreemapCanvas::computeRectangleSize(double *retCoords, Entity *e, unsigned Rt, double animationStep)
+{
+	double padding = 0.0;
+	double x0 = e->getCoord(0)+ padding + xOff;
+	double y0 = e->getCoord(1)+ padding + yOff;
+	double x1 = e->getCoord(2)- padding + xOff;
+	double y1 = e->getCoord(3)- padding + yOff;
+
+	double ratio = sqrt(e->data[Rt][21]/e->getScore());
+	double prevRatio = sqrt(e->data[Rt][21]/e->getScore());
+	if (animationStep > 0 && Rt > 0 && Rt < entityTree->nRevisions)
+	{
+		prevRatio = sqrt(e->data[Rt-1][21]/e->getScore());
+	}
+	else if (animationStep < 0 && Rt < entityTree->nRevisions)
+	{
+		animationStep*=-1;
+		prevRatio = sqrt(e->data[Rt+1][21]/e->getScore());
+	}
+
+	ratio = (1-animationStep)*prevRatio + animationStep*ratio;
+
+	retCoords[0] = x0 + ((1-ratio)*(x1-x0)/2);
+	retCoords[1] = y0 + ((1-ratio)*(y1-y0)/2);
+	retCoords[2] = x1 - ((1-ratio)*(x1-x0)/2);
+	retCoords[3] = y1 - ((1-ratio)*(y1-y0)/2);
 }
 
 void TreemapCanvas::drawPackage(BaseEntity *e)
@@ -139,7 +171,7 @@ void TreemapCanvas::drawPackage(BaseEntity *e)
 	double x1 = e->getCoord(2) + xOff;
 	double y1 = e->getCoord(3) + yOff;
 
-	glLineWidth(3.0f);
+	glLineWidth(4.0f);
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glBegin(GL_LINE_STRIP);
 	glVertex2d(x0,y0-1);
@@ -152,6 +184,7 @@ void TreemapCanvas::drawPackage(BaseEntity *e)
 	glVertex2d(x1,y0);
 	glVertex2d(x0,y0);
 	glEnd();
+	glLineWidth(1.0f);
 }
 
 void TreemapCanvas::drawHovered(Entity *e)

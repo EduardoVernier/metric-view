@@ -27,7 +27,8 @@ public:
 private:
 	void drawHovered(Entity *e);
 	void drawSelected(Entity *e);
-	void drawEntity(BaseEntity *e, unsigned Rt);
+	void drawEntity(Entity *e, unsigned Rt, double animationStep);
+	void computeRectangleSize(double *retCoords, Entity *e, unsigned Rt, double animationStep);
 	void drawPackage(BaseEntity *e);
 	void labelCells();
 	Color rainbow(double value);

@@ -20,7 +20,7 @@ int streamgraphHeight = 250;
 queue<short> windowQueue;
 
 int animationDirection = 0;
-double animationStep = 0.0;
+double animationStep = 1.0;
 double accelerationRatio = 1;
 
 // Glut/GLui argument functions
@@ -119,10 +119,10 @@ void setCanvassesSizes(int W, int H)
 		tCanvas->setSize(tTL, tBR);
 	}
 
-	pCanvas->drawCanvas(Rt, 0.0);
-	tCanvas->drawCanvas(Rt, 0.0);
+	pCanvas->drawCanvas(Rt, animationStep);
+	tCanvas->drawCanvas(Rt, animationStep);
 	if (streamgraphFlag)
-		sCanvas->drawCanvas(Rt, 0.0);
+		sCanvas->drawCanvas(Rt, animationStep);
 }
 
 void drawHoveringLabel()
@@ -193,7 +193,7 @@ void calculateAnimationStep()
 			else
 			{
 				animationDirection = 0; // Reset flag
-				animationStep = 0.0;
+				animationStep = 1.0;
 			}
 		}
 		else
@@ -205,7 +205,7 @@ void calculateAnimationStep()
 			else
 			{
 				animationDirection = 0; // Reset flag
-				animationStep = 0.0;
+				animationStep = -1.0;
 			}
 		}
 	//cout << animationStep << endl;

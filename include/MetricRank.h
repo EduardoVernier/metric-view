@@ -8,7 +8,6 @@
 #include <iostream>
 #include <iomanip>
 
-
 #include "Entity.h"
 #include "EntityTree.h"
 #include "Colormap.h"
