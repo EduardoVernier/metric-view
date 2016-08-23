@@ -103,7 +103,6 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 		float value = entityTree->hovered->data[Rt][rMetric];
 		float radius = ((value) - rMin) / (rMax - rMin);
 		float delta = (Rt > 1) ? (value - ((Entity*)(entityTree->hovered))->data[Rt-1][rMetric])/value: 0;
-		//cout << delta << endl;
 		drawEntity(p.x, p.y, radius, delta, colorHover, 1);
 	}
 
@@ -298,23 +297,23 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 	glPopMatrix();
 }
 
+// Interpolates points according to animation step
 Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep)
 {
 	Point p;
-
-	if (animationStep == 1 || animationStep == -1)
+	if (animationStep == 1 || animationStep == -1) // No movement
 	{
 		p.x = b->normalizedProjectionPoints[Rt].x;
 		p.y = b->normalizedProjectionPoints[Rt].y;
 	}
-	else if (animationStep > 0 && Rt > 0 && Rt < entityTree->nRevisions)
+	else if (animationStep > 0 && Rt > 0 && Rt < entityTree->nRevisions) // Moving forwards
 	{
 		p.x = (1-animationStep)*b->normalizedProjectionPoints[Rt-1].x
 					+ animationStep  *b->normalizedProjectionPoints[Rt].x;
 		p.y = (1-animationStep)*b->normalizedProjectionPoints[Rt-1].y
 					+ animationStep  *b->normalizedProjectionPoints[Rt].y;
 	}
-	else if (animationStep < 0 && Rt < entityTree->nRevisions)
+	else if (animationStep < 0 && Rt < entityTree->nRevisions) // Moving backwards
 	{
 		p.x = (1-animationStep)*b->normalizedProjectionPoints[Rt+1].x
 					+ animationStep  *b->normalizedProjectionPoints[Rt].x;

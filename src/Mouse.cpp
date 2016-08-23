@@ -100,7 +100,6 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 		pos[1] = lastY;
 		pos[2] = x;
 		pos[3] = y;
-		cout << x << " " << y << " " << canvas << endl;
 		return canvas;
 	}
 

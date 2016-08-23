@@ -184,7 +184,6 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, unsi
 		}
 	}
 
-	//cout << Ti << " " << Tj << " " << p << endl;
 	// Find hovered entity
 	if (Ti != -1)
 	{

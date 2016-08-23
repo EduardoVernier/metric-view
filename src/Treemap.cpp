@@ -121,7 +121,6 @@ int Treemap::improvesRatio(vector<BaseEntity*> *currentRow, double nextEntity, i
 	double currentRatio = fmax(pow(length, 2) * maxCurrent / pow(sumCurrent, 2), pow(sumCurrent, 2) / (pow(length, 2) * minCurrent));
 	double newRatio = fmax(pow(length, 2) * maxNew / pow(sumNew, 2), pow(sumNew, 2) / (pow(length, 2) * minNew));
 
-	//cout << currentRatio << " >= " << newRatio << endl;
 	return currentRatio >= newRatio;
 }
 
@@ -133,9 +132,7 @@ void Treemap::normalize(vector<BaseEntity*> *data, int area)
 	{
 		double newScore = (*b)->getScore() * ((double)area / sum);
 		(*b)->setNormalizedScore(newScore);
-		//cout << (*b)->getName() << " " << (*b)->getScore() << " " << (*b)->getNormalizedScore() << endl;
 	}
-	//cout << endl;
 }
 
 // Sum score of a list of BaseEntities

@@ -179,8 +179,8 @@ void drawRt()
 
 void calculateAnimationStep()
 {
-	double changeRate = 0.04; // per render() call
-	changeRate *= accelerationRatio; // set on gui
+	double changeRate = 0.04; // Per render() call
+	changeRate *= accelerationRatio; // Set on gui
 	if (animationDirection == 0)
 		return;
 	else
@@ -198,15 +198,14 @@ void calculateAnimationStep()
 		}
 		else
 		{
-			if (animationStep + 1 > 0.00001) // Safe double comparisson
+			if (animationStep + 1 > 0.00001)
 			{
 				animationStep -= changeRate;
 			}
 			else
 			{
-				animationDirection = 0; // Reset flag
+				animationDirection = 0;
 				animationStep = -1.0;
 			}
 		}
-	//cout << animationStep << endl;
 }
