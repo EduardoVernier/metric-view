@@ -1,6 +1,6 @@
 
 CC = g++
-CFLAGS = -g -std=c++11 -Wall
+CFLAGS = -g -std=c++14 -Wall
 ONE_WARNING_AT_A_TIME = -Werror -fmax-errors=1
 SRCDIR = src
 BUILDDIR = build

@@ -31,7 +31,6 @@ private:
 	void computeRectangleSize(double *retCoords, Entity *e, unsigned Rt, double animationStep);
 	void drawPackage(BaseEntity *e);
 	void labelCells();
-	Color rainbow(double value);
 
 	EntityTree *entityTree;
 };

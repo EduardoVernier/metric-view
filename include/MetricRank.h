@@ -1,5 +1,4 @@
-#ifndef METRICRANK_H
-#define METRICRANK_H
+#pragma once
 
 #include <vector>
 #include <algorithm>
@@ -36,5 +35,3 @@ private:
 
 	EntityTree *et;
 };
-
-#endif

@@ -18,16 +18,13 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	vector<double> normMetricValueSum;
 
 	// Filling vector
-	unsigned maxSum = 0;
+	auto maxSum = 0;
 	for (unsigned i = 0; i < entityTree->nRevisions; ++i)
 	{
 		double sum = 0;
-		for (vector<Entity*>::iterator b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
+		for (auto e : entityTree->selected)
 		{
-			if ((*b)->isPackage() == 0 && (*b)->getName() != "")
-			{
-				sum += ((Entity*)(*b))->data[i][sMetric];
-			}
+			sum += e->data[i][sMetric];
 		}
 		normMetricValueSum.push_back(sum);
 		if (sum > maxSum)
@@ -47,15 +44,12 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	{
 		yPos[t][0] = streamgraphHeight/2 - normMetricValueSum[t]/2;
 		int i = 1;
-		for (vector<Entity*>::iterator b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
+		for (auto b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
 		{
-			if ((*b)->isPackage() == 0 && (*b)->getName() != "")
-			{
-				yPos[t][i] = yPos[t][i-1] + ((Entity*)(*b))->data[t][sMetric]*((0.90*streamgraphHeight)/maxSum);
-				++i;
-				if (entityTree->hovered != NULL && (*b)->getName() == entityTree->hovered->getName())
-					hoveredIndex = b - entityTree->selected.begin();
-			}
+			yPos[t][i] = yPos[t][i-1] + ((Entity*)(*b))->data[t][sMetric]*((0.90*streamgraphHeight)/maxSum);
+			++i;
+			if (entityTree->hovered != NULL && (*b)->getName() == entityTree->hovered->getName())
+				hoveredIndex = b - entityTree->selected.begin();
 		}
 	}
 	glEnable(GL_BLEND);
@@ -134,12 +128,9 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, unsi
 	for (unsigned i = 0; i < entityTree->nRevisions; ++i)
 	{
 		double sum = 0;
-		for (vector<Entity*>::iterator b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
+		for (auto e : entityTree->selected)
 		{
-			if ((*b)->isPackage() == 0 && (*b)->getName() != "")
-			{
-				sum += ((Entity*)(*b))->data[i][sMetric];
-			}
+			sum += ((Entity*)e)->data[i][sMetric];
 		}
 		normMetricValueSum.push_back(sum);
 		if (sum > maxSum)
@@ -158,13 +149,10 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, unsi
 	{
 		yPos[t][0] = streamgraphHeight/2 - normMetricValueSum[t]/2;
 		int i = 1;
-		for (vector<Entity*>::iterator b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
+		for (auto e : entityTree->selected)
 		{
-			if ((*b)->isPackage() == 0 && (*b)->getName() != "")
-			{
-				yPos[t][i] = yPos[t][i-1] + ((Entity*)(*b))->data[t][sMetric]*((0.90*streamgraphHeight)/maxSum);
-				++i;
-			}
+			yPos[t][i] = yPos[t][i-1] + e->data[t][sMetric]*((0.90*streamgraphHeight)/maxSum);
+			++i;
 		}
 	}
 

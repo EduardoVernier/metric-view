@@ -22,7 +22,7 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
 
 	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
 	{
-		if ((*b)->isPackage() == 0)
+		if ((*b)->isPackage() == 0 && (*b)->getName() != "")
 		{
 			double bx = ((Entity*)(*b))->normalizedProjectionPoints[Rt].x * xRatio;
 			double by = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y * yRatio;
@@ -315,6 +315,7 @@ Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep)
 	}
 	else if (animationStep < 0 && Rt < entityTree->nRevisions) // Moving backwards
 	{
+		animationStep*=-1;
 		p.x = (1-animationStep)*b->normalizedProjectionPoints[Rt+1].x
 					+ animationStep  *b->normalizedProjectionPoints[Rt].x;
 		p.y = (1-animationStep)*b->normalizedProjectionPoints[Rt+1].y

@@ -43,11 +43,11 @@ void MetricRank::computeMean(vector<Entity*> entityVector, unsigned Rt, vector<d
 	unsigned nDim = et->metricVector.size();
 	for (unsigned m = 0; m < nDim; ++m)
 	{
-		for (vector<Entity*>::iterator b = entityVector.begin(); b != entityVector.end(); ++b)
+		for (auto e : entityVector)
 		{
-			meanVector[m] += (*b)->data[Rt][m];
+			meanVector[m] += e->data[Rt][m];
 		}
-		meanVector[m] /= (double)(entityVector.size());
+		meanVector[m] /= double(entityVector.size());
 		explainingMetric[m].mean = meanVector[m];
 	}
 }
@@ -61,9 +61,9 @@ void MetricRank::computeVar(vector<Entity*> entityVector, unsigned Rt, vector<do
 
 	for (unsigned m = 0; m < nDim; ++m)
 	{
-		for (vector<Entity*>::iterator b = entityVector.begin(); b != entityVector.end(); ++b)
+		for (auto e : entityVector)
 		{
-			varVector[m] += pow((*b)->data[Rt][m] - meanVector[m], 2);
+			varVector[m] += pow(e->data[Rt][m] - meanVector[m], 2);
 		}
 		varVector[m] /= (double)(entityVector.size());
 		explainingMetric[m].variance = varVector[m];

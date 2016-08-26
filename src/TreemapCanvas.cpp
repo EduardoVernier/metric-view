@@ -282,27 +282,6 @@ void TreemapCanvas::drawSelected(Entity *e)
 
 }
 
-// Map normalized (0:1) scalar to a color on the rainbow colormap
-Color TreemapCanvas::rainbow(double value)
-{
-	double minT = entityTree->getMin(), maxT = entityTree->getMax();
-	value = value * (1.0/(maxT-minT)) - minT/(maxT-minT);
-
-	const float dx=0.8;
-	if (value<0)
-			value = 0;
-	if (value>1)
-			value = 1;
-
-	value = (6-2*dx)*value+dx;
-	Color c (max(0.0,(3-fabs(value-4)-fabs(value-5))/2),
-	c.G = max(0.0,(4-fabs(value-2)-fabs(value-4))/2),
-	c.B = max(0.0,(3-fabs(value-1)-fabs(value-2))/2));
-
-	return c;
-}
-
-
 void TreemapCanvas::labelCells()
 {
 	for (vector<BaseEntity*>::iterator it = entityTree->sortedEntities.begin(); it != entityTree->sortedEntities.end(); ++it)

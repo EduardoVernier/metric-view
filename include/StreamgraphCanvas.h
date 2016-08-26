@@ -1,5 +1,4 @@
-#ifndef STREAMGRAPHCANVAS_H
-#define STREAMGRAPHCANVAS_H
+#pragma once
 
 #include <GL/glut.h>
 #include "Canvas.h"
@@ -21,4 +20,3 @@ private:
 	EntityTree *entityTree;
 	int hoveredIndex = -1;
 };
-#endif
