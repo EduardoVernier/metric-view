@@ -1,5 +1,4 @@
-#ifndef PROJECTIONCANVAS_H
-#define PROJECTIONCANVAS_H
+#pragma once
 
 #define PI 3.14159265359
 
@@ -32,5 +31,3 @@ private:
 
 	EntityTree *entityTree;
 };
-
-#endif

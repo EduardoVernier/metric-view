@@ -1,5 +1,7 @@
 #include "../include/Mouse.h"
 
+// Has to be here or the compiler will complain
+extern Controller controller;
 extern shared_ptr<TreemapCanvas> tCanvas;
 extern shared_ptr<ProjectionCanvas> pCanvas;
 extern shared_ptr<StreamgraphCanvas> sCanvas;

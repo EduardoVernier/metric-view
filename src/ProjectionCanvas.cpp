@@ -20,38 +20,35 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
 	if (click && !ctrlDown)
 		entityTree->selected.clear();
 
-	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
+	for (auto b : entityTree->entities)
 	{
-		if ((*b)->isPackage() == 0 && (*b)->getName() != "")
+		double bx = b->normalizedProjectionPoints[Rt].x * xRatio;
+		double by = b->normalizedProjectionPoints[Rt].y * yRatio;
+		if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case point click (or hover of click = 0)
 		{
-			double bx = ((Entity*)(*b))->normalizedProjectionPoints[Rt].x * xRatio;
-			double by = ((Entity*)(*b))->normalizedProjectionPoints[Rt].y * yRatio;
-			if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case point click (or hover of click = 0)
+			double distX = drag[0] - bx;
+			double distY = drag[1] - by;
+			double dist = sqrt(pow(distX,2) + pow(distY,2));
+			if (dist < 10 && dist < smallerDist) // If click is close enough
 			{
-				double distX = drag[0] - bx;
-				double distY = drag[1] - by;
-				double dist = sqrt(pow(distX,2) + pow(distY,2));
-				if (dist < 10 && dist < smallerDist) // If click is close enough
+				if (click)
 				{
-					if (click)
-					{
-						smallerDist = dist;
-						closest = (Entity*)(*b);
-					}
-					else
-					{
-						smallerDist = dist;
-						entityTree->hovered = (Entity*)(*b);
-					}
+					smallerDist = dist;
+					closest = b;
+				}
+				else
+				{
+					smallerDist = dist;
+					entityTree->hovered = b;
 				}
 			}
-			else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) // If inside selection box
-			{
-				if ((std::find(entityTree->selected.begin(), entityTree->selected.end(),(Entity*)*b))!= entityTree->selected.end())
-					entityTree->selected.erase(std::find(entityTree->selected.begin(), entityTree->selected.end(),(Entity*)*b));
-				else
-					entityTree->selected.push_back((Entity*)*b);
-			}
+		}
+		else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) // If inside selection box
+		{
+			if ((std::find(entityTree->selected.begin(), entityTree->selected.end(),b))!= entityTree->selected.end())
+				entityTree->selected.erase(std::find(entityTree->selected.begin(), entityTree->selected.end(),b));
+			else
+				entityTree->selected.push_back(b);
 		}
 	}
 	if (click == 1 && closest != NULL)
@@ -85,16 +82,13 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 	float rMin = entityTree->getRMMin();
 	float rMax = entityTree->getRMMax();
 
-	for (vector<Entity*>::iterator b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
+	for (auto b : entityTree->selected)
 	{
-		if ((*b)->isPackage() == 0 && (*b)->getName() != "")
-		{
-			Point p = getPoint((Entity*)(*b), Rt, animationStep);
-			float value = ((Entity*)(*b))->data[Rt][rMetric];
-			float radius = ((value) - rMin) / (rMax - rMin);
-			float delta = (Rt > 1) ? (value - ((Entity*)(*b))->data[Rt-1][rMetric])/value: 0;
-			drawEntity(p.x, p.y, radius, delta, colorSelection, 1);
-		}
+		Point p = getPoint(b, Rt, animationStep);
+		float value = b->data[Rt][rMetric];
+		float radius = ((value) - rMin) / (rMax - rMin);
+		float delta = (Rt > 1) ? (value - b->data[Rt-1][rMetric])/value: 0;
+		drawEntity(p.x, p.y, radius, delta, colorSelection, 1);
 	}
 
 	if (entityTree->hovered)
@@ -102,43 +96,40 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 		Point p = getPoint(entityTree->hovered, Rt, animationStep);
 		float value = entityTree->hovered->data[Rt][rMetric];
 		float radius = ((value) - rMin) / (rMax - rMin);
-		float delta = (Rt > 1) ? (value - ((Entity*)(entityTree->hovered))->data[Rt-1][rMetric])/value: 0;
+		float delta = (Rt > 1) ? (value - entityTree->hovered->data[Rt-1][rMetric])/value: 0;
 		drawEntity(p.x, p.y, radius, delta, colorHover, 1);
 	}
 
-	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
+	for (auto b : entityTree->entities)
 	{
-		if ((*b)->isPackage() == 0 && (*b)->getName() != "")
+		Point p = getPoint(b, Rt, animationStep);
+		float value = b->data[Rt][cMetric];
+		float normCValue = (value - cMin) / (cMax - cMin);
+
+		// Generate color based on colormap index value
+		Color c (1,1,1);
+		switch (controller.colormapIndex)
 		{
-			Point p = getPoint((Entity*)(*b), Rt, animationStep);
-			float value = ((Entity*)(*b))->data[Rt][cMetric];
-			float normCValue = (value - cMin) / (cMax - cMin);
-
-			// Generate color based on colormap index value
-			Color c (1,1,1);
-			switch (controller.colormapIndex)
-			{
-				case 0:
-					c = sequentialColormap(normCValue);
-					break;
-				case 1:
-					c = qualitativeColormap((*b)->firstLevelId);
-					break;
-				case 2:
-					if (Rt > 0)
-					{
-						float pValue = ((Entity*)(*b))->data[Rt-1][cMetric];
-						float pNormCValue = ((pValue - cMin) / (cMax - cMin));
-						c = divergentColormap(normCValue-pNormCValue);
-					}
-					break;
-			}
-
-			value = ((Entity*)(*b))->data[Rt][rMetric];
-			float radius = (value - rMin) / (rMax - rMin);
-			float delta = (Rt > 1) ? (value - ((Entity*)(*b))->data[Rt-1][rMetric])/value: 0;
-			drawEntity(p.x, p.y, radius, delta, c, 0);
+			case 0:
+				c = sequentialColormap(normCValue);
+				break;
+			case 1:
+				c = qualitativeColormap(b->firstLevelId);
+				break;
+			case 2:
+				if (Rt > 0)
+				{
+					float pValue = b->data[Rt-1][cMetric];
+					float pNormCValue = ((pValue - cMin) / (cMax - cMin));
+					c = divergentColormap(normCValue-pNormCValue);
+				}
+				break;
 		}
+
+		value = b->data[Rt][rMetric];
+		float radius = (value - rMin) / (rMax - rMin);
+		float delta = (Rt > 1) ? (value - b->data[Rt-1][rMetric])/value: 0;
+		drawEntity(p.x, p.y, radius, delta, c, 0);
 	}
 	glDisable(GL_LINE_SMOOTH);
 	glPopMatrix();

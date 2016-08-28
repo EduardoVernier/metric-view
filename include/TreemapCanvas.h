@@ -1,5 +1,4 @@
-#ifndef TREEMAPCANVAS_H
-#define TREEMAPCANVAS_H
+#pragma once
 
 #include <vector>
 #include <iostream>
@@ -29,11 +28,9 @@ private:
 	void drawSelected(Entity *e);
 	void drawEntity(Entity *e, unsigned Rt, double animationStep);
 	void computeRectangleSize(double *retCoords, Entity *e, unsigned Rt, double animationStep);
-	void drawPackage(BaseEntity *e);
+	void drawPackageFirstLayer(BaseEntity *e);
+	void drawPackageSecondLayer(BaseEntity *e);
 	void labelCells();
 
 	EntityTree *entityTree;
 };
-
-
-#endif

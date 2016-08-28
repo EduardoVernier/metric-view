@@ -1,5 +1,4 @@
-#ifndef TREEMAP_H
-#define TREEMAP_H
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -31,5 +30,3 @@ private:
 	EntityTree *entityTree;
 	int width, height;
 };
-
-#endif

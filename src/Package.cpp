@@ -4,7 +4,8 @@ void Package::addEntity(Entity ent)
 {
 	sum+=ent.value;
 	entityVector.push_back(ent);
-	sort(entityVector.begin(), entityVector.end(), compEntities());
+	sort(entityVector.begin(), entityVector.end(), [](const Entity& e1, const Entity& e2)
+	{	return (e1.value > e2.value); });
 }
 
 void Package::addChild(Package child)

@@ -1,7 +1,5 @@
 #include "../include/Treemap.h"
 
-using namespace std;
-
 Treemap::Treemap(EntityTree *et, double _width, double _height)
 {
 	entityTree = et;
@@ -10,11 +8,13 @@ Treemap::Treemap(EntityTree *et, double _width, double _height)
 
 	// Take all first level BaseEntities and start treemapping algorithm
 	vector<BaseEntity*> data;
-	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin() ; b != entityTree->sortedEntities.end(); ++b)
-		if ((*b)->getLevel() == 1 && (*b)->getScore() != 0)
+	for (auto b : entityTree->sortedEntities)
+	{
+		if (b->getLevel() == 1 && b->getScore() != 0)
 		{
-			data.push_back(*b);
+			data.push_back(b);
 		}
+	}
 	treemapMultidimensional(&data, (double)_width, (double)_height, 0, 0);
 }
 

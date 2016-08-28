@@ -65,7 +65,14 @@ void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 	{
 		if ((*it)->isPackage())
 		{
-			drawPackage(*it);
+			drawPackageFirstLayer(*it);
+		}
+	}
+	for (vector<BaseEntity*>::iterator it = entityTree->sortedEntities.begin(); it != entityTree->sortedEntities.end(); ++it)
+	{
+		if ((*it)->isPackage())
+		{
+			drawPackageSecondLayer(*it);
 		}
 	}
 
@@ -170,14 +177,33 @@ void TreemapCanvas::computeRectangleSize(double *retCoords, Entity *e, unsigned 
 	retCoords[3] = y1 - ((1-ratio)*(y1-y0)/2);
 }
 
-void TreemapCanvas::drawPackage(BaseEntity *e)
+void TreemapCanvas::drawPackageFirstLayer(BaseEntity *e)
 {
 	double x0 = e->getCoord(0) + xOff;
 	double y0 = e->getCoord(1) + yOff;
 	double x1 = e->getCoord(2) + xOff;
 	double y1 = e->getCoord(3) + yOff;
 
-	glLineWidth(4.0f);
+	glLineWidth(5.0f);
+	glColor3f(0.0f, 0.0f, 0.0f);
+	glBegin(GL_LINE_STRIP);
+	glVertex2d(x0,y0);
+	glVertex2d(x0,y1);
+	glVertex2d(x1,y1);
+	glVertex2d(x1,y0);
+	glVertex2d(x0,y0);
+	glEnd();
+	glLineWidth(1.0f);
+}
+
+void TreemapCanvas::drawPackageSecondLayer(BaseEntity *e)
+{
+	double x0 = e->getCoord(0) + xOff;
+	double y0 = e->getCoord(1) + yOff;
+	double x1 = e->getCoord(2) + xOff;
+	double y1 = e->getCoord(3) + yOff;
+
+	glLineWidth(3.0f);
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glBegin(GL_LINE_STRIP);
 	glVertex2d(x0,y0-1);
@@ -192,6 +218,7 @@ void TreemapCanvas::drawPackage(BaseEntity *e)
 	glEnd();
 	glLineWidth(1.0f);
 }
+
 
 void TreemapCanvas::drawHovered(Entity *e)
 {

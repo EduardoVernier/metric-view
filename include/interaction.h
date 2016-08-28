@@ -1,5 +1,4 @@
-#ifndef INTERACTION_H
-#define INTERACTION_H
+#pragma once
 
 #include <iostream>
 #include <GL/glut.h>
@@ -15,7 +14,6 @@
 #include "Controller.h"
 
 extern Controller controller;
-
 extern shared_ptr<Mouse> mouse;
 extern EntityTree *entityTree;
 extern Entity *hover;
@@ -42,5 +40,3 @@ void mousePassive(int x, int y);
 void mouseUpdate(int x, int y);
 void keyboard(unsigned char key, int x, int y);
 void keyboardMod(int key, int x, int y);
-
-#endif

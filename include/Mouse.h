@@ -1,5 +1,4 @@
-#ifndef MOUSE_H
-#define MOUSE_H
+#pragma once
 
 #include <memory>
 #include <iostream>
@@ -14,8 +13,6 @@
 #define S 3;
 
 using namespace std;
-
-extern Controller controller;
 
 class Mouse
 {
@@ -33,5 +30,3 @@ public:
 	int lastX = 0, lastY = 0, lastCanvas= 0;
 	int lastButton, lastState;
 };
-
-#endif
