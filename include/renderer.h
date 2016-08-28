@@ -13,6 +13,11 @@
 #include "StreamgraphCanvas.h"
 #include "Mouse.h"
 #include "MetricRank.h"
+#include "Controller.h"
+
+extern Controller controller;
+extern unsigned Rt;
+extern EntityTree *entityTree;
 
 void display();
 void reshape(int w, int h);

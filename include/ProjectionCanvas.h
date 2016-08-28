@@ -11,16 +11,16 @@
 #include "Entity.h"
 #include "EntityTree.h"
 #include "Colormap.h"
+#include "Controller.h"
 
-extern int colormapIndex;
-extern int deltaPie;
+extern Controller controller;
 using namespace std;
 
 class ProjectionCanvas : public Canvas
 {
 public:
 	ProjectionCanvas(Point tl, Point br, EntityTree *et);
-	void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown);
+	void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, bool ctrlDown);
 	void drawCanvas(unsigned Rt, double animationStep);
 
 private:

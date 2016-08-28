@@ -1,10 +1,8 @@
 #include "../include/Mouse.h"
 
-extern int streamgraphFlag;
-extern int streamgraphHeight;
-extern TreemapCanvas *tCanvas;
+extern shared_ptr<TreemapCanvas> tCanvas;
 extern shared_ptr<ProjectionCanvas> pCanvas;
-extern StreamgraphCanvas *sCanvas;
+extern shared_ptr<StreamgraphCanvas> sCanvas;
 
 Mouse::Mouse()
 {
@@ -20,7 +18,7 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 	rawY = _y;
 	lastCanvas = canvas;
 
-	if (streamgraphFlag == 0)
+	if (controller.streamgraphFlag == 0)
 	{
 		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
@@ -117,7 +115,7 @@ void Mouse::updateMouse(int _x, int _y)
 	rawX = _x;
 	rawY = _y;
 
-	if (streamgraphFlag == 0)
+	if (controller.streamgraphFlag == 0)
 	{
 		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)

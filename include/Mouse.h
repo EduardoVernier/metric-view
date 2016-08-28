@@ -6,6 +6,7 @@
 #include "TreemapCanvas.h"
 #include "ProjectionCanvas.h"
 #include "StreamgraphCanvas.h"
+#include "Controller.h"
 
 #define NONE 0;
 #define P 1;
@@ -13,6 +14,8 @@
 #define S 3;
 
 using namespace std;
+
+extern Controller controller;
 
 class Mouse
 {

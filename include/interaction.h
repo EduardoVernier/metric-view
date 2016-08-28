@@ -12,21 +12,18 @@
 #include "ProjectionCanvas.h"
 #include "StreamgraphCanvas.h"
 #include "MetricRank.h"
+#include "Controller.h"
 
-extern Mouse *mouse;
+extern Controller controller;
+
+extern shared_ptr<Mouse> mouse;
 extern EntityTree *entityTree;
-extern unsigned winWidth, winHeight;
-extern BaseEntity *hover;
+extern Entity *hover;
 extern unsigned Rt;
-extern int mainWindow;
-extern queue<short> windowQueue;
-extern TreemapCanvas *tCanvas;
+extern shared_ptr<TreemapCanvas> tCanvas;
 extern shared_ptr<ProjectionCanvas> pCanvas;
-extern StreamgraphCanvas *sCanvas;
-extern MetricRank *mRank;
-extern int animationDirection;
-extern double animationStep;
-extern double accelerationRatio;
+extern shared_ptr<StreamgraphCanvas> sCanvas;
+extern shared_ptr<MetricRank> mRank;
 
 // Button/checkbox/listbox ids
 enum UI_IDs

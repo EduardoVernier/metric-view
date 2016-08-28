@@ -1,27 +1,12 @@
 #include "../include/renderer.h"
 
-extern int winWidth, winHeight;
-extern int mainWindow;
-extern EntityTree *entityTree;
-extern unsigned Rt;
-extern int streamgraphFlag;
-
 // Singletons
-Mouse *mouse = new Mouse();
+shared_ptr<Mouse> mouse = std::make_shared<Mouse>();
 shared_ptr<Canvas> pCanvas = nullptr;
 shared_ptr<Canvas> tCanvas = nullptr;
 shared_ptr<Canvas> sCanvas = nullptr;
 shared_ptr<MetricRank> mRank = nullptr;
-
-unique_ptr<Entity> hover = NULL; // Drawing of hovering label
-int mxdown, mydown, mx, my, mclicked; // Mouse coordinates
-int streamgraphHeight = 250;
-
-queue<short> windowQueue;
-
-int animationDirection = 0;
-double animationStep = 1.0;
-double accelerationRatio = 1;
+unique_ptr<Entity> hover = nullptr; // Drawing of hovering label
 
 // Glut/GLui argument functions
 void display()
@@ -50,12 +35,12 @@ void reshape(int W, int H)
 void idle()
 {
 	// Ugly fix for misclicks
-	if (windowQueue.size() < 5)
-		windowQueue.push((short)glutGetWindow());
+	if (controller.windowQueue.size() < 5)
+		controller.windowQueue.push((short)glutGetWindow());
 	else
 	{
-		windowQueue.pop();
-		windowQueue.push((short)glutGetWindow());
+		controller.windowQueue.pop();
+		controller.windowQueue.push((short)glutGetWindow());
 	}
 	glutPostRedisplay();
 }
@@ -64,11 +49,11 @@ void idle()
 void render()
 {
 	calculateAnimationStep();
-	setCanvassesSizes(winWidth, winHeight);
-	pCanvas->drawCanvas(Rt, animationStep);
-	tCanvas->drawCanvas(Rt, animationStep);
-	if (streamgraphFlag)
-		sCanvas->drawCanvas(Rt, animationStep);
+	setCanvassesSizes(controller.winWidth, controller.winHeight);
+	pCanvas->drawCanvas(Rt, controller.animationStep);
+	tCanvas->drawCanvas(Rt, controller.animationStep);
+	if (controller.streamgraphFlag)
+		sCanvas->drawCanvas(Rt, controller.animationStep);
 	drawHoveringLabel();
 	if (mouse->state == 0) // If mouse is being clicked
 		drawSelectionBox();
@@ -78,8 +63,8 @@ void render()
 // Update objects when window size changes
 void setCanvassesSizes(int W, int H)
 {
-	winWidth = W;
-	winHeight = H;
+	controller.winWidth = W;
+	controller.winHeight = H;
 
 	// Let mouse object know that window has changed size
 	mouse->setWindowSize(W, H);
@@ -95,10 +80,10 @@ void setCanvassesSizes(int W, int H)
 	tBR.x = W-10; tBR.y = H-10;
 
 	// Define Streamgraph Canvas dimentions if necessary
-	if (streamgraphFlag)
+	if (controller.streamgraphFlag)
 	{
-		pBR.y -= streamgraphHeight;
-		tBR.y -= streamgraphHeight;
+		pBR.y -= controller.streamgraphHeight;
+		tBR.y -= controller.streamgraphHeight;
 		Point sTL, sBR;
 		sTL.x = 10; sTL.y = pBR.y + 10;
 		sBR.x = W-10; sBR.y = H-10;
@@ -119,10 +104,10 @@ void setCanvassesSizes(int W, int H)
 		tCanvas->setSize(tTL, tBR);
 	}
 
-	pCanvas->drawCanvas(Rt, animationStep);
-	tCanvas->drawCanvas(Rt, animationStep);
-	if (streamgraphFlag)
-		sCanvas->drawCanvas(Rt, animationStep);
+	pCanvas->drawCanvas(Rt, controller.animationStep);
+	tCanvas->drawCanvas(Rt, controller.animationStep);
+	if (controller.streamgraphFlag)
+		sCanvas->drawCanvas(Rt, controller.animationStep);
 }
 
 void drawHoveringLabel()
@@ -134,7 +119,7 @@ void drawHoveringLabel()
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glColor4f(0, 0, 0, 0.6);
 
-		if (mouse->rawX > 0.7*winWidth)
+		if (mouse->rawX > 0.7*controller.winWidth)
 		{
 			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX - 9*(s.length()), mouse->rawY+2);
 			glDisable (GL_BLEND);
@@ -170,7 +155,7 @@ void drawRt()
 {
 	string str = to_string(Rt);
 	glColor3f(0, 0, 0);
-	int x = winWidth/2 - 30;
+	int x = controller.winWidth/2 - 30;
 	glRasterPos2i(x, 35);
 	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
 	glutBitmapString(GLUT_BITMAP_HELVETICA_18, s);
@@ -180,32 +165,32 @@ void drawRt()
 void calculateAnimationStep()
 {
 	double changeRate = 0.04; // Per render() call
-	changeRate *= accelerationRatio; // Set on gui
-	if (animationDirection == 0)
+	changeRate *= controller.accelerationRatio; // Set on gui
+	if (controller.animationDirection == 0)
 		return;
 	else
-		if (animationDirection == 1)
+		if (controller.animationDirection == 1)
 		{
-			if (animationStep - 1 < 0.00001) // Safe double comparisson
+			if (controller.animationStep - 1 + changeRate < 0.00001) // Safe double comparisson
 			{
-				animationStep += changeRate;
+				controller.animationStep += changeRate;
 			}
 			else
 			{
-				animationDirection = 0; // Reset flag
-				animationStep = 1.0;
+				controller.animationDirection = 0; // Reset flag
+				controller.animationStep = 1.0;
 			}
 		}
 		else
 		{
-			if (animationStep + 1 > 0.00001)
+			if (controller.animationStep + 1 - changeRate > 0.00001)
 			{
-				animationStep -= changeRate;
+				controller.animationStep -= changeRate;
 			}
 			else
 			{
-				animationDirection = 0;
-				animationStep = -1.0;
+				controller.animationDirection = 0;
+				controller.animationStep = -1.0;
 			}
 		}
 }

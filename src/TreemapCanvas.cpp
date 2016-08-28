@@ -10,7 +10,7 @@ TreemapCanvas::TreemapCanvas (Point tl, Point br, EntityTree *et)
 
 // Fill vector of pointers of the selected entities
 // For some strange reason, the entityTree member is always NULL in this method, so I'm passing it's pointer as arg
-void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsigned ctrlDown)
+void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, bool ctrlDown)
 {
 	if (click && !ctrlDown)
 		entityTree->selected.clear();
@@ -95,7 +95,7 @@ void TreemapCanvas::drawEntity(Entity *e, unsigned Rt, double animationStep)
 
 	// Generate color based on colormap index value
 	Color c (1,1,1);
-	switch (colormapIndex)
+	switch (controller.colormapIndex)
 	{
 		case 0:
 			c = sequentialColormap(normCValue);
@@ -148,7 +148,7 @@ void TreemapCanvas::computeRectangleSize(double *retCoords, Entity *e, unsigned 
 
 	// If we are dealing with a dynamic treemaps, we interpolate
 	// the shrinking ratios for the animation to be smooth
-	if (dynamicTreemap)
+	if (controller.dynamicTreemap)
 	{
 		ratio = sqrt(e->data[Rt][21]/e->getScore());
 		double prevRatio = sqrt(e->data[Rt][21]/e->getScore());

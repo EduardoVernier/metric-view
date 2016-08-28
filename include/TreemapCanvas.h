@@ -11,9 +11,9 @@
 #include "Package.h"
 #include "EntityTree.h"
 #include "Colormap.h"
+#include "Controller.h"
 
-extern int colormapIndex;
-extern int dynamicTreemap;
+extern Controller controller;
 
 using namespace std;
 
@@ -21,7 +21,7 @@ class TreemapCanvas : public Canvas
 {
 public:
 	TreemapCanvas (Point tl, Point br, EntityTree *et);
-	void getEntitiesByPositionOnTreemap(int *drag, unsigned click, unsigned ctrlDown);
+	void getEntitiesByPositionOnTreemap(int *drag, unsigned click, bool ctrlDown);
 	void drawCanvas(unsigned Rt, double animationStep);
 
 private:

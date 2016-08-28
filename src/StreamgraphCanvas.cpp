@@ -34,7 +34,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	// Normalize based on canvas height and max value
 	for (unsigned i = 0; i < normMetricValueSum.size(); ++i)
 	{
-		normMetricValueSum[i] *= (0.95*streamgraphHeight)/maxSum;
+		normMetricValueSum[i] *= (0.95*controller.streamgraphHeight)/maxSum;
 	}
 
 	hoveredIndex = -1;
@@ -42,11 +42,11 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	double yPos [entityTree->nRevisions][entityTree->selected.size()+1];
 	for (unsigned t = 0; t < entityTree->nRevisions; ++t)
 	{
-		yPos[t][0] = streamgraphHeight/2 - normMetricValueSum[t]/2;
+		yPos[t][0] = controller.streamgraphHeight/2 - normMetricValueSum[t]/2;
 		int i = 1;
 		for (auto b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
 		{
-			yPos[t][i] = yPos[t][i-1] + ((Entity*)(*b))->data[t][sMetric]*((0.90*streamgraphHeight)/maxSum);
+			yPos[t][i] = yPos[t][i-1] + ((Entity*)(*b))->data[t][sMetric]*((0.90*controller.streamgraphHeight)/maxSum);
 			++i;
 			if (entityTree->hovered != NULL && (*b)->getName() == entityTree->hovered->getName())
 				hoveredIndex = b - entityTree->selected.begin();
@@ -117,7 +117,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 
 // Highlight hovered entity on Streamgraph
-void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, unsigned ctrlDown)
+void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, bool ctrlDown)
 {
 	int x = drag[0], y = drag[1];
 	int sMetric = entityTree->getStreamMetric();
@@ -140,18 +140,18 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, unsi
 	// Normalize based on canvas height and max value
 	for (unsigned i = 0; i < normMetricValueSum.size(); ++i)
 	{
-		normMetricValueSum[i] *= (0.95*streamgraphHeight)/maxSum;
+		normMetricValueSum[i] *= (0.95*controller.streamgraphHeight)/maxSum;
 	}
 
 	// Compute y coords for each line for each member
 	double yPos [entityTree->nRevisions][entityTree->selected.size()+1];
 	for (unsigned t = 0; t < entityTree->nRevisions; ++t)
 	{
-		yPos[t][0] = streamgraphHeight/2 - normMetricValueSum[t]/2;
+		yPos[t][0] = controller.streamgraphHeight/2 - normMetricValueSum[t]/2;
 		int i = 1;
 		for (auto e : entityTree->selected)
 		{
-			yPos[t][i] = yPos[t][i-1] + e->data[t][sMetric]*((0.90*streamgraphHeight)/maxSum);
+			yPos[t][i] = yPos[t][i-1] + e->data[t][sMetric]*((0.90*controller.streamgraphHeight)/maxSum);
 			++i;
 		}
 	}

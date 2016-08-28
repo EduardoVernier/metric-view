@@ -11,7 +11,7 @@ ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityTree *et)
 }
 
 // Mark entities as selected from projection pane interaction
-void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, unsigned ctrlDown)
+void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, bool ctrlDown)
 {
 	Entity *closest = NULL;
 	entityTree->hovered = NULL;
@@ -116,7 +116,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 			// Generate color based on colormap index value
 			Color c (1,1,1);
-			switch (colormapIndex)
+			switch (controller.colormapIndex)
 			{
 				case 0:
 					c = sequentialColormap(normCValue);
@@ -147,7 +147,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 // Draw circles
 void ProjectionCanvas::drawEntity(double x, double y, float radius, float delta, Color c, int action)
 {
-	if (deltaPie == 0 || fabs(delta) < 0.01) // 1% tolerance
+	if (controller.deltaPie == 0 || fabs(delta) < 0.01) // 1% tolerance
 		drawSolidEntity(x+10, y+10, radius, c, action);
 	else
 		drawPieEntity(x+10, y+10, radius, delta, c, action);
@@ -193,7 +193,7 @@ void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float del
 		radius += 2;
 
 	GLfloat radians = 2.0f * PI;
-	if (deltaPie)
+	if (controller.deltaPie)
 		radians *= (1 - fabs(delta)); // Take only a fraction of the 360 degrees
 
 	// Old indian trick to rotate a circle around it's center
