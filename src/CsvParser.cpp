@@ -1,6 +1,4 @@
 #include "../include/CsvParser.h"
-#include "../include/EntityTree.h"
-#include "../include/Package.h" // Remove after testing
 
 CsvParser::CsvParser(EntityTree *et, string dataDirName, string projectionDirName)
 {

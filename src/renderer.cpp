@@ -70,23 +70,19 @@ void setCanvassesSizes(int W, int H)
 	mouse->setWindowSize(W, H);
 
 	// Vertices Top-Left and Bottom-Right of Projection canvas
-	Point pTL, pBR;
-	pTL.x = 10; pTL.y = 10;
-	pBR.x = 10 + (W-30)/2; pBR.y = H-10;
+	Point pTL {10, 10};
+	Point pBR {10 + (W-30)/2.0, H-10.0};
 
 	// Vertices of Treemap canvas
-	Point tTL, tBR;
-	tTL.x = 20 + (W-30)/2.0; tTL.y = 10;
-	tBR.x = W-10; tBR.y = H-10;
+	Point tTL {20 + (W-30)/2.0, 10};
+	Point tBR {W - 10.0, H - 10.0};
 
 	// Define Streamgraph Canvas dimentions if necessary
 	if (controller.streamgraphFlag)
 	{
 		pBR.y -= controller.streamgraphHeight;
 		tBR.y -= controller.streamgraphHeight;
-		Point sTL, sBR;
-		sTL.x = 10; sTL.y = pBR.y + 10;
-		sBR.x = W-10; sBR.y = H-10;
+		Point sTL {10, pBR.y + 10}, sBR {W-10.0, H-10.0};
 		sCanvas->setSize(sTL, sBR);
 	}
 

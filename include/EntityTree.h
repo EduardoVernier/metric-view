@@ -13,14 +13,6 @@
 
 using namespace std;
 
-struct compPackages
-{
-	bool operator() (const Package& p1, const Package& p2) const
-	{
-		return (p1.sum > p2.sum);
-	}
-};
-
 class EntityTree
 {
 public:
@@ -50,7 +42,7 @@ public:
 
 	vector<string> metricVector;
 	vector<Entity*> selected;
-	Entity* hovered = NULL;
+	Entity *hovered = NULL;
 	vector<Package> packageVector; // Entity tree is a collection of Packages
 	vector<BaseEntity*> sortedEntities; // Contains both Packages and Entities ordered by score
 	vector<Entity*> entities; // Contains only Entities ordered by score

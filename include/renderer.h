@@ -1,5 +1,4 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#pragma once
 
 #include <memory>
 #include <stdio.h>
@@ -30,5 +29,3 @@ void drawSelectionBox();
 void renderHoverString(int x, int y, string str);
 void drawRt();
 void calculateAnimationStep();
-
-#endif

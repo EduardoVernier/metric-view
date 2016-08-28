@@ -1,5 +1,4 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#pragma once
 
 #include <iostream>
 #include <sstream>
@@ -23,7 +22,7 @@ public:
 	void setSelected(unsigned s) { selected = s; };
 	void addRevisionData (string data, unsigned rev, int nAttributes);
 
-	vector <vector <float> > data; // data[revision][metric]
+	vector <vector <float>> data; // data[revision][metric]
 	vector <Point> projectionPoints;
 	vector <Point> normalizedProjectionPoints;
 
@@ -34,5 +33,3 @@ private:
 	string id;
 	unsigned selected = 0;
 };
-
-#endif

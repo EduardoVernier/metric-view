@@ -1,5 +1,4 @@
-#ifndef CSVPARSER_H
-#define CSVPARSER_H
+#pragma once
 
 #include <iostream>
 #include <fstream>
@@ -25,6 +24,3 @@ private:
 
 	EntityTree *entityTree;
 };
-
-
-#endif

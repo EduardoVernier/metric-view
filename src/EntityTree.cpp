@@ -94,7 +94,8 @@ void EntityTree::setFirstLevelId(Package *p, int id)
 // Sorts individual packages (parcial order)
 void EntityTree::sortPackages(Package *p)
 {
-	sort (p->childrenVector.begin(), p->childrenVector.end(), compPackages());
+	sort (p->childrenVector.begin(), p->childrenVector.end(),
+				[](const Package& p1, const Package& p2){ return (p1.sum > p2.sum); });
 
 	for (unsigned i = 0; i < p->childrenVector.size(); ++i)
 	{
@@ -150,10 +151,10 @@ void EntityTree::generateSortedEntitiesVector(Package *p)
 
 void EntityTree::generateEntityVector()
 {
-	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	for (auto b : sortedEntities)
 	{
-		if ((*b)->isPackage() == 0 && (*b)->getName() != "")
-			entities.push_back((Entity*)(*b));
+		if (b->isPackage() == 0 && b->getName() != "")
+			entities.push_back((Entity*)b);
 	}
 }
 void EntityTree::printTree()
@@ -180,12 +181,12 @@ void EntityTree::setMinMax()
 {
 	treeMin = FLT_MAX;
 	treeMax = FLT_MIN;
-	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	for (auto b : sortedEntities)
 	{
-		if ((*b)->isPackage() == 0)
+		if (b->isPackage() == 0)
 		{
-			treeMin = ((*b)->getScore() < treeMin) ? (*b)->getScore() : treeMin;
-			treeMax = ((*b)->getScore() > treeMax) ? (*b)->getScore() : treeMax;
+			treeMin = (b->getScore() < treeMin) ? b->getScore() : treeMin;
+			treeMax = (b->getScore() > treeMax) ? b->getScore() : treeMax;
 		}
 	}
 }
@@ -199,11 +200,11 @@ void EntityTree::addProjection(string name, double x, double y, unsigned index)
 	if (y < minY) minY = y;
 	if (y > maxY) maxY = y;
 
-	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	for (auto b : sortedEntities)
 	{
-		if ((*b)->isPackage() == 0 && name == ((Entity*)(*b))->getPrefix()+'.'+(*b)->getName())
+		if (b->isPackage() == 0 && name == ((Entity*)b)->getPrefix()+'.'+b->getName())
 		{
-			((Entity*)(*b))->addPointAtIndex({x, y}, index);
+			((Entity*)b)->addPointAtIndex({x, y}, index);
 		}
 	}
 }
@@ -211,30 +212,28 @@ void EntityTree::addProjection(string name, double x, double y, unsigned index)
 // Normalize projection points to fit on canvas nicely
 void EntityTree::normalizeProjection(int shortEdge)
 {
-	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	for (auto b : entities)
 	{
-		if ((*b)->isPackage() == 0)
+		for (unsigned i = 0; i < ((Entity*)b)->projectionPoints.size() ; ++i)
 		{
-			for (unsigned i = 0; i < ((Entity*)(*b))->projectionPoints.size() ; ++i)
-			{
-				double normX = (((Entity*)(*b))->projectionPoints[i].x - minX)*((double)shortEdge)/(maxX - minX) + 20;
-				double normY = (((Entity*)(*b))->projectionPoints[i].y - minY)*((double)shortEdge)/(maxY - minY) + 20;
-				((Entity*)(*b))->normalizedProjectionPoints[i] = {normX, normY};
-			}
+			double normX = (((Entity*)b)->projectionPoints[i].x - minX)*((double)shortEdge)/(maxX - minX) + 20;
+			double normY = (((Entity*)b)->projectionPoints[i].y - minY)*((double)shortEdge)/(maxY - minY) + 20;
+			((Entity*)b)->normalizedProjectionPoints[i] = {normX, normY};
 		}
-		if ((*b)->getName() == "")
-			(*b)->setAsPackage(); // Fix root element
+
+		if (b->getName() == "")
+			b->setAsPackage(); // Fix root element
 	}
 }
 
 // Given a name and prefix, return corresponding entity pointer
 Entity* EntityTree::getEntityByName(string prefix, string id)
 {
-	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	for (auto b : entities)
 	{
-		if ((*b)->isPackage() == 0 && ((Entity*)(*b))->getName() == id && ((Entity*)(*b))->getPrefix() == prefix)
+		if (b->getName() == id && b->getPrefix() == prefix)
 		{
-			return (Entity*)*b;
+			return b;
 		}
 	}
 	return NULL;

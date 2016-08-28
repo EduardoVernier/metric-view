@@ -1,5 +1,4 @@
-#ifndef CONTAINER_H
-#define CONTAINER_H
+#pragma once
 
 #include <vector>
 #include "BaseEntity.h"
@@ -16,5 +15,3 @@ public:
 	double width, height, xOffset, yOffset, shortestEdge;
 
 };
-
-#endif
