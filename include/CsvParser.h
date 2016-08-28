@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <dirent.h>
+#include <memory>
 
 #include "Entity.h"
 #include "EntityTree.h"

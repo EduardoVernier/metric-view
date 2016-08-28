@@ -3,7 +3,7 @@
 extern int streamgraphFlag;
 extern int streamgraphHeight;
 extern TreemapCanvas *tCanvas;
-extern ProjectionCanvas *pCanvas;
+extern shared_ptr<ProjectionCanvas> pCanvas;
 extern StreamgraphCanvas *sCanvas;
 
 Mouse::Mouse()

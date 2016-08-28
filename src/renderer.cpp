@@ -8,12 +8,12 @@ extern int streamgraphFlag;
 
 // Singletons
 Mouse *mouse = new Mouse();
-Canvas *pCanvas = NULL;
-Canvas *tCanvas = NULL;
-Canvas *sCanvas = NULL;
-MetricRank *mRank = NULL;
+shared_ptr<Canvas> pCanvas = nullptr;
+shared_ptr<Canvas> tCanvas = nullptr;
+shared_ptr<Canvas> sCanvas = nullptr;
+shared_ptr<MetricRank> mRank = nullptr;
 
-BaseEntity* hover = NULL; // Drawing of hovering label
+unique_ptr<Entity> hover = NULL; // Drawing of hovering label
 int mxdown, mydown, mx, my, mclicked; // Mouse coordinates
 int streamgraphHeight = 250;
 
@@ -106,12 +106,12 @@ void setCanvassesSizes(int W, int H)
 	}
 
 	// Instantiate if it's the first call, else just update size
-	if (pCanvas == NULL && tCanvas == NULL)
+	if (pCanvas == nullptr && tCanvas == nullptr)
 	{
-		pCanvas = new ProjectionCanvas(pTL, pBR, entityTree);
-		tCanvas = new TreemapCanvas(tTL, tBR, entityTree);
-		sCanvas = new StreamgraphCanvas(tTL, tBR, entityTree);
-		mRank   = new MetricRank(entityTree);
+		pCanvas = std::make_shared<ProjectionCanvas> (pTL, pBR, entityTree);
+		tCanvas = std::make_shared<TreemapCanvas> (tTL, tBR, entityTree);
+		sCanvas = std::make_shared<StreamgraphCanvas> (pTL, pBR, entityTree);
+		mRank   = std::make_shared<MetricRank>(entityTree);
 	}
 	else
 	{
@@ -129,7 +129,7 @@ void drawHoveringLabel()
 {
 	if (hover!=NULL)
 	{
-		string s = ((Entity*)hover)->getPrefix() + "." + hover->getName();
+		string s = hover->getPrefix() + "." + hover->getName();
 		glEnable (GL_BLEND);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glColor4f(0, 0, 0, 0.6);

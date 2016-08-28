@@ -1,6 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <memory>
 #include <stdio.h>
 #include <GL/glut.h>
 #include <GL/glui.h>

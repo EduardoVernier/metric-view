@@ -165,7 +165,9 @@ void keyboard(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-		case 'q': exit(0); break;
+		case 'q':
+			glutLeaveMainLoop();
+			break;
 		case 'z':
 			if (Rt > 0)
 			{

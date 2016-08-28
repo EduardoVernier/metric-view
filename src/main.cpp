@@ -13,6 +13,7 @@ using namespace std;
 
 void initializeVisualization(int argc, char **argv);
 void buildEntityTree(int argc, char **argv, EntityTree *et);
+void cleanUp();
 
 unsigned winWidth = 1920, winHeight = 1056;
 int mainWindow;
@@ -31,6 +32,9 @@ int main(int argc, char **argv)
 	initializeUI();
 	glutIdleFunc(idle);
 	glutMainLoop();
+
+	delete &treemap;
+	delete entityTree;
 	return 0;
 }
 
@@ -41,6 +45,7 @@ void initializeVisualization(int argc, char **argv)
 	glutInit(&argc, argv);
  	glutInitWindowSize(winWidth, winHeight);
 	mainWindow = glutCreateWindow("MetricView");
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
@@ -63,3 +68,4 @@ void buildEntityTree(int argc, char **argv, EntityTree *et)
 
 	CsvParser parser (et, argv[1], argv[2]);
 }
+

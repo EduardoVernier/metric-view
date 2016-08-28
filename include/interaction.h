@@ -21,7 +21,7 @@ extern unsigned Rt;
 extern int mainWindow;
 extern queue<short> windowQueue;
 extern TreemapCanvas *tCanvas;
-extern ProjectionCanvas *pCanvas;
+extern shared_ptr<ProjectionCanvas> pCanvas;
 extern StreamgraphCanvas *sCanvas;
 extern MetricRank *mRank;
 extern int animationDirection;

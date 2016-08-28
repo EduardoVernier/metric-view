@@ -1,6 +1,7 @@
 #ifndef MOUSE_H
 #define MOUSE_H
 
+#include <memory>
 #include <iostream>
 #include "TreemapCanvas.h"
 #include "ProjectionCanvas.h"
