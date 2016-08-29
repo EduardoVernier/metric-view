@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "EntityTree.h"
 #include "Controller.h"
+#include "Colormap.h"
 
 extern Controller controller;
 

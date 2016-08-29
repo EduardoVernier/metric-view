@@ -289,8 +289,8 @@ void EntityTree::setStreamMetric(int mIndex)
 			for (unsigned time = 0; time < ((Entity*)sortedEntities[i])->data.size() ; ++time)
 			{
 				float mValue = ((Entity*)sortedEntities[i])->data[time][mIndex];
-				streamMetricMax = (mValue > radiusMetricMax)? mValue : streamMetricMax;
-				streamMetricMin = (mValue < radiusMetricMin)? mValue : streamMetricMin;
+				streamMetricMax = (mValue > streamMetricMax)? mValue : streamMetricMax;
+				streamMetricMin = (mValue < streamMetricMin)? mValue : streamMetricMin;
 			}
 		}
 	}

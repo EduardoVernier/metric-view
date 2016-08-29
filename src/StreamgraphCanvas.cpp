@@ -52,9 +52,37 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 				hoveredIndex = b - entityTree->selected.begin();
 		}
 	}
+
+
+	// Draw colored polygons
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	unsigned i = 0;
+	for (auto b : entityTree->selected)
+	{
+		glBegin(GL_QUADS);
+		for(unsigned t = 0; t < entityTree->nRevisions; ++t)
+		{
+			double min = entityTree->getSMMin();
+			double max = entityTree->getSMMax();
+			double normCValue = (b->data[t][sMetric] - min) / (max - min);
+			Color c = sequentialColormap(normCValue);
+			glColor3f(c.R,c.G,c.B);
+			if (t > 0)
+			{
+				glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][i], 0);
+				glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][i+1], 0);
+			}
+
+			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][i+1], 0);
+			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][i], 0);
+		}
+		glEnd();
+		++i;
+	}
+
 	// Draw lines
+	glEnable(GL_LINE_SMOOTH);
 	for (unsigned i = 0; i < entityTree->selected.size()+1; ++i)
 	{
 		glColor3f(0,0,0);
