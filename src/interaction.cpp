@@ -21,10 +21,16 @@ void initializeUI()
 	}
 
 	// Colormap listbox
+	glui->add_statictext("Projection and Treemap Colormap");
 	GLUI_Listbox *colormapLB = glui->add_listbox("", &controller.colormapIndex, COLORMAP_LB, controlCB);
 	colormapLB->add_item(0, "Sequential Colormap");
 	colormapLB->add_item(1, "Qualitative Colormap (Hierarchy)");
 	colormapLB->add_item(2, "Divergent Colormap");
+
+	glui->add_statictext("Streamgraph Colormap");
+	GLUI_Listbox *sColormapLB = glui->add_listbox("", &controller.sColormapIndex, SCOLORMAP_LB, controlCB);
+	sColormapLB->add_item(2, "Divergent Colormap");
+	sColormapLB->add_item(0, "Sequential Colormap");
 
 	// Animation speed listbox
 	glui->add_statictext("Animation Speed");

@@ -66,7 +66,22 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 			double min = entityTree->getSMMin();
 			double max = entityTree->getSMMax();
 			double normCValue = (b->data[t][sMetric] - min) / (max - min);
-			Color c = sequentialColormap(normCValue);
+			Color c (1,1,1);
+			switch (controller.sColormapIndex)
+			{
+				case 0:
+					c = sequentialColormap(normCValue);
+					break;
+				case 2:
+					if (t > 0)
+					{
+						float pValue = b->data[t-1][sMetric];
+						float pNormCValue = ((pValue - min) / (max - min));
+						c = divergentColormap(normCValue-pNormCValue);
+					}
+					break;
+			}
+
 			glColor3f(c.R,c.G,c.B);
 			if (t > 0)
 			{

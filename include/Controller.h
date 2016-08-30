@@ -12,6 +12,7 @@ public:
 	int colorMetricIndex = 21;
 	int streamMetricIndex = 21;
 	int colormapIndex = 0;
+	int sColormapIndex = 2;
 	int accelerationRatioIndex = 1;
 
 	int deltaPie = 0;
