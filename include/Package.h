@@ -27,4 +27,5 @@ public:
 	vector<Entity> entityVector;
 	string prefix;
 	double sum = 0;
+	unsigned numberOfEntities = 0;
 };

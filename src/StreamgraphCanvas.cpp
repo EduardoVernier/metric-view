@@ -65,7 +65,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 		{
 			double min = entityTree->getSMMin();
 			double max = entityTree->getSMMax();
-			double normCValue = (b->data[t][sMetric] - min) / (max - min);
+			double normCValue = (b->data[t][sMetric]-min)/(max-min);
 			Color c (1,1,1);
 			switch (controller.sColormapIndex)
 			{
