@@ -4,7 +4,8 @@
 shared_ptr<Mouse> mouse = std::make_shared<Mouse>();
 shared_ptr<Canvas> pCanvas = nullptr;
 shared_ptr<Canvas> tCanvas = nullptr;
-shared_ptr<Canvas> sCanvas = nullptr;
+shared_ptr<Canvas> sbCanvas = nullptr;
+shared_ptr<Canvas> stCanvas = nullptr;
 shared_ptr<MetricRank> mRank = nullptr;
 unique_ptr<Entity> hover = nullptr; // Drawing of hovering label
 
@@ -51,10 +52,17 @@ void render()
 	calculateAnimationStep();
 	setCanvassesSizes(controller.winWidth, controller.winHeight);
 	pCanvas->drawCanvas(Rt, controller.animationStep);
-	tCanvas->drawCanvas(Rt, controller.animationStep);
+
+	if(controller.hierarchicalView == TREEMAP)
+		tCanvas->drawCanvas(Rt, controller.animationStep);
+	else if (controller.hierarchicalView == SUNBURST)
+		sbCanvas->drawCanvas(Rt, controller.animationStep);
+
 	if (controller.streamgraphFlag)
-		sCanvas->drawCanvas(Rt, controller.animationStep);
+		stCanvas->drawCanvas(Rt, controller.animationStep);
+
 	drawHoveringLabel();
+
 	if (mouse->state == 0) // If mouse is being clicked
 		drawSelectionBox();
 	drawRt();
@@ -83,7 +91,7 @@ void setCanvassesSizes(int W, int H)
 		pBR.y -= controller.streamgraphHeight;
 		tBR.y -= controller.streamgraphHeight;
 		Point sTL {10, pBR.y + 10}, sBR {W-10.0, H-10.0};
-		sCanvas->setSize(sTL, sBR);
+		stCanvas->setSize(sTL, sBR);
 	}
 
 	// Instantiate if it's the first call, else just update size
@@ -91,19 +99,16 @@ void setCanvassesSizes(int W, int H)
 	{
 		pCanvas = std::make_shared<ProjectionCanvas> (pTL, pBR, entityTree);
 		tCanvas = std::make_shared<TreemapCanvas> (tTL, tBR, entityTree);
-		sCanvas = std::make_shared<StreamgraphCanvas> (pTL, pBR, entityTree);
+		sbCanvas = std::make_shared<SunburstCanvas> (tTL, tBR, entityTree);
+		stCanvas = std::make_shared<StreamgraphCanvas> (pTL, pBR, entityTree);
 		mRank   = std::make_shared<MetricRank>(entityTree);
 	}
 	else
 	{
 		pCanvas->setSize(pTL, pBR);
 		tCanvas->setSize(tTL, tBR);
+		sbCanvas->setSize(tTL, tBR);
 	}
-
-	pCanvas->drawCanvas(Rt, controller.animationStep);
-	tCanvas->drawCanvas(Rt, controller.animationStep);
-	if (controller.streamgraphFlag)
-		sCanvas->drawCanvas(Rt, controller.animationStep);
 }
 
 void drawHoveringLabel()

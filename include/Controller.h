@@ -2,11 +2,14 @@
 
 #include <queue>
 
+enum hierView { TREEMAP, SUNBURST };
+
 class Controller
 {
 public:
 	int winWidth = 1920, winHeight = 1056;
 	int mainWindow;
+	int hierarchicalView = TREEMAP;
 
 	int radiusMetricIndex = 21;
 	int colorMetricIndex = 21;

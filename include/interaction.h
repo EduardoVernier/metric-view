@@ -20,7 +20,7 @@ extern Entity *hover;
 extern unsigned Rt;
 extern shared_ptr<TreemapCanvas> tCanvas;
 extern shared_ptr<ProjectionCanvas> pCanvas;
-extern shared_ptr<StreamgraphCanvas> sCanvas;
+extern shared_ptr<StreamgraphCanvas> stCanvas;
 extern shared_ptr<MetricRank> mRank;
 
 // Button/checkbox/listbox ids
@@ -31,7 +31,8 @@ enum UI_IDs
 	STREAMMETRIC_LB,
 	COLORMAP_LB,
 	SCOLORMAP_LB,
-	ACCELERATION_LB
+	ACCELERATION_LB,
+	HIERARCHICAL_LB
 };
 
 void initializeUI();

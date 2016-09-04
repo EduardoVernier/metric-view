@@ -12,13 +12,17 @@ void initializeUI()
 	GLUI_Listbox *radiusLB = glui->add_listbox("", &controller.radiusMetricIndex, RADIUSMETRIC_LB, controlCB);
 	glui->add_statictext("Streamgraph Metric");
 	GLUI_Listbox *streamLB = glui->add_listbox("", &controller.streamMetricIndex, STREAMMETRIC_LB, controlCB);
-	glui->add_statictext("Colormap");
 	for (unsigned i = 0; i < entityTree->metricVector.size(); ++i)
 	{
 		colorLB->add_item(i, entityTree->metricVector[i].c_str());
 		radiusLB->add_item(i, entityTree->metricVector[i].c_str());
 		streamLB->add_item(i, entityTree->metricVector[i].c_str());
 	}
+
+	glui->add_statictext("Hierarchical View");
+	GLUI_Listbox *hierarchicalLB = glui->add_listbox("", &controller.hierarchicalView, HIERARCHICAL_LB, controlCB);
+	hierarchicalLB->add_item(TREEMAP, "Treemap");
+	hierarchicalLB->add_item(SUNBURST, "Sunburst");
 
 	// Colormap listbox
 	glui->add_statictext("Projection and Treemap Colormap");
@@ -132,7 +136,7 @@ void mousePassive (int x, int y)
 	if (mouse->canvas == 3) // Hovering streamgraph
 	{
 		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
-		sCanvas->getEntitiesOnStreamgraph(drag, 0, controller.ctrlDown);
+		stCanvas->getEntitiesOnStreamgraph(drag, 0, controller.ctrlDown);
 		hover = entityTree->hovered;
 	}
 	else if (mouse->canvas == 2) // Hovering treemap

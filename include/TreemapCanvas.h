@@ -6,14 +6,11 @@
 #include <GL/glut.h>
 
 #include "Canvas.h"
-#include "Entity.h"
-#include "Package.h"
 #include "EntityTree.h"
 #include "Colormap.h"
 #include "Controller.h"
 
 extern Controller controller;
-
 using namespace std;
 
 class TreemapCanvas : public Canvas

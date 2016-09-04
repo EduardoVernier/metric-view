@@ -154,7 +154,7 @@ void EntityTree::generateEntityVector()
 {
 	for (auto b : sortedEntities)
 	{
-		if (b->isPackage() == 0 && b->getName() != "")
+		if (b->isEntity() && b->getName() != "")
 			entities.push_back((Entity*)b);
 	}
 }
@@ -182,7 +182,7 @@ void EntityTree::setMinMax()
 	treeMax = FLT_MIN;
 	for (auto b : sortedEntities)
 	{
-		if (b->isPackage() == 0)
+		if (b->isEntity())
 		{
 			treeMin = (b->getScore() < treeMin) ? b->getScore() : treeMin;
 			treeMax = (b->getScore() > treeMax) ? b->getScore() : treeMax;
@@ -201,7 +201,7 @@ void EntityTree::addProjection(string name, double x, double y, unsigned index)
 
 	for (auto b : sortedEntities)
 	{
-		if (b->isPackage() == 0 && name == ((Entity*)b)->getPrefix()+'.'+b->getName())
+		if (b->isEntity() && name == ((Entity*)b)->getPrefix()+'.'+b->getName())
 		{
 			((Entity*)b)->addPointAtIndex({x, y}, index);
 		}
@@ -245,7 +245,7 @@ void EntityTree::setColorMetric(int mIndex)
 	colorMetricMax = FLT_MIN;
 	for (unsigned i = 0; i < sortedEntities.size() ; ++i)
 	{
-		if (sortedEntities[i]->isPackage() == 0)
+		if (sortedEntities[i]->isEntity())
 		{
 			for (unsigned time = 0; time < ((Entity*)sortedEntities[i])->data.size() ; ++time)
 			{
@@ -264,7 +264,7 @@ void EntityTree::setRadiusMetric(int mIndex)
 	radiusMetricMax = FLT_MIN;
 	for (unsigned i = 0; i < sortedEntities.size() ; ++i)
 	{
-		if (sortedEntities[i]->isPackage() == 0)
+		if (sortedEntities[i]->isEntity())
 		{
 			for (unsigned time = 0; time < ((Entity*)sortedEntities[i])->data.size() ; ++time)
 			{
@@ -283,7 +283,7 @@ void EntityTree::setStreamMetric(int mIndex)
 	streamMetricMax = FLT_MIN;
 	for (unsigned i = 0; i < sortedEntities.size() ; ++i)
 	{
-		if (sortedEntities[i]->isPackage() == 0)
+		if (sortedEntities[i]->isEntity())
 		{
 			for (unsigned time = 0; time < ((Entity*)sortedEntities[i])->data.size() ; ++time)
 			{

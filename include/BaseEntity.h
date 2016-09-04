@@ -13,6 +13,7 @@ public:
 	int getLevel() { return level; }
 	void setAsPackage() { packageFlag = 1; };
 	int isPackage() { return packageFlag; };
+	int isEntity() { return !packageFlag; };
 	void setNormalizedScore(double s) { normalizedScore = s; };
 	double getNormalizedScore() { return normalizedScore; };
 	void setCoords(double *_coords);

@@ -17,7 +17,7 @@ void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, bo
 
 	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
 	{
-		if ((*b)->isPackage() == 0)
+		if ((*b)->isEntity())
 		{
 			if ((*b)->getCoord(3) * yRatio < drag[1])
 				continue; // b too high
@@ -313,7 +313,7 @@ void TreemapCanvas::labelCells()
 {
 	for (vector<BaseEntity*>::iterator it = entityTree->sortedEntities.begin(); it != entityTree->sortedEntities.end(); ++it)
 	{
-		if ((*it)->isPackage() == 0)
+		if ((*it)->isEntity())
 		{
 			double x0 = (*it)->getCoord(0) + xOff;
 			double y0 = (*it)->getCoord(1) + yOff;

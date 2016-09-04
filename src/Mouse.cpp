@@ -4,7 +4,7 @@
 extern Controller controller;
 extern shared_ptr<TreemapCanvas> tCanvas;
 extern shared_ptr<ProjectionCanvas> pCanvas;
-extern shared_ptr<StreamgraphCanvas> sCanvas;
+extern shared_ptr<StreamgraphCanvas> stCanvas;
 
 Mouse::Mouse()
 {
@@ -59,12 +59,12 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 				x = _x-tCanvas->top_left.x;
 				y = _y-tCanvas->top_left.y;
 		}
-		else if (_x > sCanvas->top_left.x && _x < sCanvas->bottom_right.x &&
-				_y > sCanvas->top_left.y && _y < sCanvas->bottom_right.y)
+		else if (_x > stCanvas->top_left.x && _x < stCanvas->bottom_right.x &&
+				_y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
 		{
 				canvas = S;
-				x = _x-sCanvas->top_left.x;
-				y = _y-sCanvas->top_left.y;
+				x = _x-stCanvas->top_left.x;
+				y = _y-stCanvas->top_left.y;
 		}
 		else
 		{
@@ -156,12 +156,12 @@ void Mouse::updateMouse(int _x, int _y)
 				x = _x-tCanvas->top_left.x;
 				y = _y-tCanvas->top_left.y;
 		}
-		else if (_x > sCanvas->top_left.x && _x < sCanvas->bottom_right.x &&
-				_y > sCanvas->top_left.y && _y < sCanvas->bottom_right.y)
+		else if (_x > stCanvas->top_left.x && _x < stCanvas->bottom_right.x &&
+				_y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
 		{
 				canvas = S;
-				x = _x-sCanvas->top_left.x;
-				y = _y-sCanvas->top_left.y;
+				x = _x-stCanvas->top_left.x;
+				y = _y-stCanvas->top_left.y;
 		}
 		else
 		{
