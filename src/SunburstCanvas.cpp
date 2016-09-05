@@ -27,13 +27,19 @@ void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 {
-	double x = xOff + initialWidth/2;
-	double y = yOff + initialHeight/2;
+	currentTheta -= PI/2;
+	double x = xOff + currentWidth/2;
+	double y = yOff + currentHeight/2;
 
-	double innerDiameter = 50;
+	double innerRadius = 30;
 	double unitWidth = (2.0*PI)/(double)entityTree->entities.size();
-	double r0 = b->getLevel()*50 + innerDiameter;
-	double r1 = (b->getLevel()+1)*50 + innerDiameter;
+
+	double shortSide = (currentWidth < currentHeight)? currentWidth : currentHeight;
+	double r = ((shortSide - innerRadius)/2)/(entityTree->depth+1);
+	r*=0.9;
+	double r0 = b->getLevel()*r + innerRadius;
+	double r1 = (b->getLevel()+1)*r + innerRadius;
+
 	double theta0 = currentTheta;
 	double theta1;
 	if(b->isPackage())
@@ -41,13 +47,10 @@ void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 	else
 		theta1 = currentTheta + unitWidth;
 
-
 	// Colored polygon
 	Color c = getColor(controller.colormapIndex, b, Rt);
 	glColor3f(c.R,c.G,c.B);
 	glBegin(GL_QUADS);
-
-	// Upper arch
 	for (double t = theta0; t < theta1-0.01; t+=0.001)
 	{
 		glVertex3f(x + (r0 * cos(t)), y + (r0 * sin(t)), 0);
@@ -55,7 +58,6 @@ void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 		glVertex3f(x + (r1 * cos(t+0.01)), y + (r1 * sin(t+0.01)), 0);
 		glVertex3f(x + (r0 * cos(t+0.01)), y + (r0 * sin(t+0.01)), 0);
 	}
-
 	glEnd();
 
 
