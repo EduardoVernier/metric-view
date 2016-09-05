@@ -27,7 +27,6 @@ void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 {
-	currentTheta -= PI/2;
 	double x = xOff + currentWidth/2;
 	double y = yOff + currentHeight/2;
 
@@ -35,8 +34,7 @@ void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 	double unitWidth = (2.0*PI)/(double)entityTree->entities.size();
 
 	double shortSide = (currentWidth < currentHeight)? currentWidth : currentHeight;
-	double r = ((shortSide - innerRadius)/2)/(entityTree->depth+1);
-	r*=0.9;
+	double r = (shortSide/2 - innerRadius)/(entityTree->depth+1);
 	double r0 = b->getLevel()*r + innerRadius;
 	double r1 = (b->getLevel()+1)*r + innerRadius;
 

@@ -40,6 +40,7 @@ void EntityTree::buildHierarchy()
 		{
 			if (i->getName().find(j->getName()) != string::npos)
 			{
+				j->sum += i->sum;
 				j->addChild(*i);
 				packageVector.erase((i+1).base());
 				break;
@@ -170,7 +171,7 @@ void EntityTree::printTree()
 
 		cout << (*b)->getLevel() << " - " << (*b)->getScore() << " " << (*b)->getName() << " ";
 		if ((*b)->isPackage())
-			cout << ((Package*)(*b))->numberOfEntities;
+			cout << ((Package*)(*b))->numberOfEntities << " " << ((Package*)(*b))->sum;
 		cout << endl;
 	}
 }

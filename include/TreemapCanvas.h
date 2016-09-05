@@ -30,4 +30,5 @@ private:
 	void labelCells();
 
 	EntityTree *entityTree;
+	double treemapXOff, treemapYOff;
 };
