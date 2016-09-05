@@ -10,55 +10,56 @@ SunburstCanvas::SunburstCanvas (Point tl, Point br, EntityTree *et)
 
 void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
-	glColor3f(1.0f, 1.0f, 0.1f);
+	glColor3f(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
-	double innerDiameter = 50;
-	double unit_width = (2.0*PI)/(double)entityTree->entities.size();
+	double unitWidth = (2.0*PI)/(double)entityTree->entities.size();
 	double currentTheta = 0.0;
 	for (auto b : entityTree->sortedEntities)
 	{
-		double r0 = b->getLevel()*50 + innerDiameter;
-		double r1 = (b->getLevel()+1)*50 + innerDiameter;
-		double theta0 = currentTheta;
-		double theta1;
-		if(b->isPackage())
-			theta1 = currentTheta + ((Package*)b)->numberOfEntities*unit_width;
-		else
-		{
-			theta1 = currentTheta + unit_width;
-			currentTheta = theta1;
-		}
+		drawSlice(b, Rt, currentTheta);
 
-		drawSlice(Rt, r0, theta0, r1, theta1);
+		if (b->isEntity())
+			currentTheta += unitWidth;
 	}
 }
 
 
-void SunburstCanvas::drawSlice(unsigned Rt, double r0, double theta0, double r1, double theta1)
+void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 {
 	double x = xOff + initialWidth/2;
 	double y = yOff + initialHeight/2;
 
-	glBegin(GL_POLYGON);
-	glColor3f(1,0,0);
+	double innerDiameter = 50;
+	double unitWidth = (2.0*PI)/(double)entityTree->entities.size();
+	double r0 = b->getLevel()*50 + innerDiameter;
+	double r1 = (b->getLevel()+1)*50 + innerDiameter;
+	double theta0 = currentTheta;
+	double theta1;
+	if(b->isPackage())
+		theta1 = currentTheta + ((Package*)b)->numberOfEntities*unitWidth;
+	else
+		theta1 = currentTheta + unitWidth;
 
-	glVertex3f(x + (r0 * cos(theta0)), y + (r0 * sin(theta0)), 0);
+
+	// Colored polygon
+	Color c = getColor(controller.colormapIndex, b, Rt);
+	glColor3f(c.R,c.G,c.B);
+	glBegin(GL_QUADS);
 
 	// Upper arch
-	for (double t = theta0; t <= theta1; t+=0.01)
-		glVertex3f(x + (r1 * cos(t)), y + (r1 * sin(t)), 0);
-
-	glVertex3f(x + (r0 * cos(theta1)), y + (r0 * sin(theta1)), 0);
-
-	// Lower arch
-	for (double t = theta1; t >= theta0; t-=0.01)
+	for (double t = theta0; t < theta1-0.01; t+=0.001)
+	{
 		glVertex3f(x + (r0 * cos(t)), y + (r0 * sin(t)), 0);
+		glVertex3f(x + (r1 * cos(t)), y + (r1 * sin(t)), 0);
+		glVertex3f(x + (r1 * cos(t+0.01)), y + (r1 * sin(t+0.01)), 0);
+		glVertex3f(x + (r0 * cos(t+0.01)), y + (r0 * sin(t+0.01)), 0);
+	}
 
 	glEnd();
 
 
-
+	// Line around it
 	glBegin(GL_LINE_STRIP);
 	glColor3f(0,0,0);
 

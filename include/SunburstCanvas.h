@@ -5,7 +5,7 @@
 #include "Canvas.h"
 #include "EntityTree.h"
 #include "Controller.h"
-
+#include "Colormap.h"
 #define PI 3.14159265359
 
 extern Controller controller;
@@ -18,7 +18,7 @@ public:
 	void drawCanvas(unsigned Rt, double animationStep);
 
 private:
-	void drawSlice(unsigned Rt, double r0, double theta0, double r1, double theta1);
+	void drawSlice(BaseEntity* b, unsigned Rt, double currentTheta);
 
 	EntityTree *entityTree;
 
