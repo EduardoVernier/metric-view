@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 	glutIdleFunc(idle);
 	glutMainLoop();
 
-	delete entityTree;
+	//delete entityTree;
 	return 0;
 }
 

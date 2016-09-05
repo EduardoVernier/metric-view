@@ -74,10 +74,6 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 	glEnable(GL_LINE_SMOOTH);
 
-	int cMetric = entityTree->getColorMetric();
-	float cMin = entityTree->getCMMin();
-	float cMax = entityTree->getCMMax();
-
 	int rMetric = entityTree->getRadiusMetric();
 	float rMin = entityTree->getRMMin();
 	float rMax = entityTree->getRMMax();
@@ -103,32 +99,9 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 	for (auto b : entityTree->entities)
 	{
 		Point p = getPoint(b, Rt, animationStep);
-		float value = b->data[Rt][cMetric];
-		float normCValue = (value - cMin) / (cMax - cMin);
-
-		// Generate color based on colormap index value
-		Color c (1,1,1);
-		switch (controller.colormapIndex)
-		{
-			case 0:
-				c = sequentialColormap(normCValue);
-				break;
-			case 1:
-				c = qualitativeColormap(b->firstLevelId);
-				break;
-			case 2:
-				if (Rt > 0)
-				{
-					float pValue = b->data[Rt-1][cMetric];
-					float pNormCValue = ((pValue - cMin) / (cMax - cMin));
-					c = divergentColormap(normCValue-pNormCValue);
-				}
-				break;
-		}
-
-		value = b->data[Rt][rMetric];
-		float radius = (value - rMin) / (rMax - rMin);
-		float delta = (Rt > 1) ? (value - b->data[Rt-1][rMetric])/value: 0;
+		Color c = getColor(controller.colormapIndex, b, Rt);
+		float radius = (b->data[Rt][rMetric] - rMin) / (rMax - rMin);
+		float delta = (Rt > 1) ? (b->data[Rt][rMetric] - b->data[Rt-1][rMetric])/b->data[Rt][rMetric]: 0;
 		drawEntity(p.x, p.y, radius, delta, c, 0);
 	}
 	glDisable(GL_LINE_SMOOTH);

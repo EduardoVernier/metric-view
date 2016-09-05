@@ -1,5 +1,48 @@
 #include "../include/Colormap.h"
 
+Color getColor(int colormap, BaseEntity *b, unsigned Rt)
+{
+	int cMetric = entityTree->getColorMetric();
+	float cMin = entityTree->getCMMin();
+	float cMax = entityTree->getCMMax();
+	float value;
+
+	if (b->isEntity())
+	{
+		value	= ((Entity*)b)->data[Rt][cMetric];
+	}
+	else
+	{
+		Package* p = (Package*) b;
+		value = 0;
+		for (auto e : p->entityVector)
+			value += e.data[Rt][cMetric];
+		value /= p->entityVector.size();
+	}
+
+	float normCValue = (value - cMin) / (cMax - cMin);
+
+	Color c (1,1,1);
+	switch (colormap)
+	{
+		case (int)COLORMAP::sequential:
+			c = sequentialColormap(normCValue);
+			break;
+		case (int)COLORMAP::qualitative:
+			c = qualitativeColormap(b->firstLevelId);
+			break;
+		case (int)COLORMAP::divergent:
+			if (Rt > 0)
+			{
+				float pValue	= ((Entity*)b)->data[Rt-1][cMetric];
+				float pNormCValue = ((pValue - cMin) / (cMax - cMin));
+				c = divergentColormap(normCValue-pNormCValue);
+			}
+			break;
+	}
+	return c;
+}
+
 /* Blue to red colormap */
 Color divergent[5] ={
   Color(0.019,0.443,0.690),

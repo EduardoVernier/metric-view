@@ -30,34 +30,49 @@ void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
 			currentTheta = theta1;
 		}
 
-		drawSlice(r0, theta0, r1, theta1);
-
+		drawSlice(Rt, r0, theta0, r1, theta1);
 	}
 }
 
 
-void SunburstCanvas::drawSlice(double r0, double theta0, double r1, double theta1)
+void SunburstCanvas::drawSlice(unsigned Rt, double r0, double theta0, double r1, double theta1)
 {
 	double x = xOff + initialWidth/2;
 	double y = yOff + initialHeight/2;
 
+	glBegin(GL_POLYGON);
+	glColor3f(1,0,0);
+
+	glVertex3f(x + (r0 * cos(theta0)), y + (r0 * sin(theta0)), 0);
+
+	// Upper arch
+	for (double t = theta0; t <= theta1; t+=0.01)
+		glVertex3f(x + (r1 * cos(t)), y + (r1 * sin(t)), 0);
+
+	glVertex3f(x + (r0 * cos(theta1)), y + (r0 * sin(theta1)), 0);
+
+	// Lower arch
+	for (double t = theta1; t >= theta0; t-=0.01)
+		glVertex3f(x + (r0 * cos(t)), y + (r0 * sin(t)), 0);
+
+	glEnd();
+
+
+
 	glBegin(GL_LINE_STRIP);
 	glColor3f(0,0,0);
 
-	glVertex3f(x + (r0 * cos(theta0)),
-						 y + (r0 * sin(theta0)), 0);
+	glVertex3f(x + (r0 * cos(theta0)), y + (r0 * sin(theta0)), 0);
 
-	glVertex3f(x + (r1 * cos(theta0)),
-						 y + (r1 * sin(theta0)), 0);
+	// Upper arch
+	for (double t = theta0; t <= theta1; t+=0.01)
+		glVertex3f(x + (r1 * cos(t)), y + (r1 * sin(t)), 0);
 
-	glVertex3f(x + (r1 * cos(theta1)),
-						 y + (r1 * sin(theta1)), 0);
+	glVertex3f(x + (r0 * cos(theta1)), y + (r0 * sin(theta1)), 0);
 
-	glVertex3f(x + (r0 * cos(theta1)),
-						 y + (r0 * sin(theta1)), 0);
-
-	glVertex3f(x + (r0 * cos(theta0)),
-						 y + (r0 * sin(theta0)), 0);
+	// Lower arch
+	for (double t = theta1; t >= theta0; t-=0.01)
+		glVertex3f(x + (r0 * cos(t)), y + (r0 * sin(t)), 0);
 
 	glEnd();
 

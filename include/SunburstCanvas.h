@@ -18,7 +18,7 @@ public:
 	void drawCanvas(unsigned Rt, double animationStep);
 
 private:
-	void drawSlice(double r0, double theta0, double r1, double theta1);
+	void drawSlice(unsigned Rt, double r0, double theta0, double r1, double theta1);
 
 	EntityTree *entityTree;
 

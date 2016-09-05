@@ -91,34 +91,7 @@ void TreemapCanvas::drawEntity(Entity *e, unsigned Rt, double animationStep)
 {
 	double coords[4];
 	computeRectangleSize(coords, e, Rt, animationStep);
-
-	// C prefix stands for color
-	int cMetric = entityTree->getColorMetric();
-	float cMin = entityTree->getCMMin();
-	float cMax = entityTree->getCMMax();
-
-	float value = e->data[Rt][cMetric];
-	float normCValue = (value - cMin) / (cMax - cMin);
-
-	// Generate color based on colormap index value
-	Color c (1,1,1);
-	switch (controller.colormapIndex)
-	{
-		case 0:
-			c = sequentialColormap(normCValue);
-			break;
-		case 1:
-			c = qualitativeColormap(((Entity*)e)->firstLevelId);
-			break;
-		case 2:
-			if (Rt > 0)
-			{
-				float pValue = ((Entity*)e)->data[Rt-1][cMetric];
-				float pNormCValue = ((pValue - cMin) / (cMax - cMin));
-				c = divergentColormap(normCValue-pNormCValue);
-			}
-			break;
-	}
+	Color c = getColor(controller.colormapIndex, e, Rt);
 	glColor3f(c.R, c.G, c.B);
 	glRectd(coords[0],coords[1],coords[2],coords[3]);
 
