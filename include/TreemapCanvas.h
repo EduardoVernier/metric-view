@@ -21,7 +21,7 @@ public:
 	void drawCanvas(unsigned Rt, double animationStep);
 
 private:
-	void drawHovered(Entity *e);
+	void drawHovered(BaseEntity *e);
 	void drawSelected(Entity *e);
 	void drawEntity(Entity *e, unsigned Rt, double animationStep);
 	void computeRectangleSize(double *retCoords, Entity *e, unsigned Rt, double animationStep);

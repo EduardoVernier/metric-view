@@ -195,7 +195,7 @@ void TreemapCanvas::drawPackageSecondLayer(BaseEntity *e)
 }
 
 
-void TreemapCanvas::drawHovered(Entity *e)
+void TreemapCanvas::drawHovered(BaseEntity *e)
 {
 	if (e == NULL) return;
 

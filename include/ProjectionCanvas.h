@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <functional>
 
 #include "Canvas.h"
 #include "Entity.h"

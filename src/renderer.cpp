@@ -115,7 +115,12 @@ void drawHoveringLabel()
 {
 	if (hover!=NULL)
 	{
-		string s = hover->getPrefix() + "." + hover->getName();
+		string s;
+		if (hover->isEntity())
+			s = hover->getPrefix() + "." + hover->getName();
+		else
+			s = hover->getName();
+
 		glEnable (GL_BLEND);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glColor4f(0, 0, 0, 0.6);

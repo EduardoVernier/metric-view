@@ -14,7 +14,6 @@ ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityTree *et)
 void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, bool ctrlDown)
 {
 	Entity *closest = NULL;
-	entityTree->hovered = NULL;
 	double smallerDist = FLT_MAX;
 
 	if (click && !ctrlDown)
@@ -86,14 +85,42 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 		float delta = (Rt > 1) ? (value - b->data[Rt-1][rMetric])/value: 0;
 		drawEntity(p.x, p.y, radius, delta, colorSelection, 1);
 	}
-
-	if (entityTree->hovered)
+	if (entityTree->hovered != NULL)
 	{
-		Point p = getPoint(entityTree->hovered, Rt, animationStep);
-		float value = entityTree->hovered->data[Rt][rMetric];
-		float radius = ((value) - rMin) / (rMax - rMin);
-		float delta = (Rt > 1) ? (value - entityTree->hovered->data[Rt-1][rMetric])/value: 0;
-		drawEntity(p.x, p.y, radius, delta, colorHover, 1);
+		if (entityTree->hovered->isEntity())
+		{
+			Entity *hovered = (Entity*) entityTree->hovered;
+			Point p = getPoint(hovered, Rt, animationStep);
+			float value = hovered->data[Rt][rMetric];
+			float radius = ((value) - rMin) / (rMax - rMin);
+			float delta = (Rt > 1) ? (value - hovered->data[Rt-1][rMetric])/value: 0;
+			drawEntity(p.x, p.y, radius, delta, colorHover, 1);
+		}
+		else if (entityTree->hovered->isPackage())
+		{
+			Package *hovered = (Package*) entityTree->hovered;
+			function<void (Package*)> f;
+			f = [&](Package* p)
+			{
+				if (p == NULL)
+					return;
+				else
+				{
+					for (auto c : p->childrenVector)
+						f(&c);
+
+					for (auto e : p->entityVector)
+					{
+						Point p = getPoint(&e, Rt, animationStep);
+						float value = e.data[Rt][rMetric];
+						float radius = (value - rMin) / (rMax - rMin);
+						float delta = (Rt > 1) ? (value - e.data[Rt-1][rMetric])/value: 0;
+						drawEntity(p.x, p.y, radius, delta, colorHover, 1);
+					}
+				}
+			};
+			f(hovered);
+		}
 	}
 
 	for (auto b : entityTree->entities)

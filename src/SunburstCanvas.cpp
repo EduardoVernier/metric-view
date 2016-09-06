@@ -86,6 +86,7 @@ void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 
 void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlDown)
 {
+	entityTree->hovered = NULL;
 	if (click && !ctrlDown)
 		entityTree->selected.clear();
 
@@ -126,6 +127,9 @@ void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlD
 		if (inBounds(theta, theta0, theta1) && inBounds(r, r0, r1))
 		{
 			cout << b->getName() << endl;
+			if (!click)
+				entityTree->hovered = b;
+
 			return;
 		}
 	}

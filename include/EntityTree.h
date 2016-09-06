@@ -42,7 +42,7 @@ public:
 
 	vector<string> metricVector;
 	vector<Entity*> selected;
-	Entity *hovered = NULL;
+	BaseEntity *hovered = NULL;
 	vector<Package> packageVector; // Entity tree is a collection of Packages
 	vector<BaseEntity*> sortedEntities; // Contains both Packages and Entities ordered by score
 	vector<Entity*> entities; // Contains only Entities ordered by score
