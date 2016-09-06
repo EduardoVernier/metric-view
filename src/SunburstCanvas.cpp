@@ -1,11 +1,19 @@
 #include "../include/SunburstCanvas.h"
 
+template <typename T>
+		bool inBounds(const T& value, const T& low, const T& high) {
+		return !(value < low) && !(high < value);
+}
+
 SunburstCanvas::SunburstCanvas (Point tl, Point br, EntityTree *et)
 {
 	setSize(tl, br);
 	entityTree = et;
 	initialWidth  = br.x - tl.x;
 	initialHeight = br.y - tl.y;
+
+	innerRadius = 30;
+	unitWidth = (2.0*PI)/(double)entityTree->entities.size();
 }
 
 void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
@@ -24,14 +32,10 @@ void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
 	}
 }
 
-
 void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 {
 	double x = xOff + currentWidth/2;
 	double y = yOff + currentHeight/2;
-
-	double innerRadius = 30;
-	double unitWidth = (2.0*PI)/(double)entityTree->entities.size();
 
 	double shortSide = (currentWidth < currentHeight)? currentWidth : currentHeight;
 	double r = (shortSide/2 - innerRadius)/(entityTree->depth+1);
@@ -78,3 +82,52 @@ void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 	glEnd();
 
 }
+
+
+void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlDown)
+{
+	if (click && !ctrlDown)
+		entityTree->selected.clear();
+
+	// Center x and y at middle of the frame
+	double normX = drag[0] - currentWidth/2.0;
+	double normY = currentHeight/2.0 - drag[1];
+
+	// Convert catesian coords to polar coords
+	double r = sqrt(normX*normX + normY*normY);
+	double theta = atan2(normY, normX);
+	if (theta < 0)
+		theta *= -1;
+	else
+		theta = 2*PI - theta;
+
+	cout << normX << ", " << normY << " -- " ;
+	cout << "(" << r << ", " << theta << ")" << endl;
+
+	// Find element using construction algorithm
+	double shortSide = (currentWidth < currentHeight)? currentWidth : currentHeight;
+	double currentTheta = 0;
+	for (auto b : entityTree->sortedEntities)
+	{
+		double ru = (shortSide/2 - innerRadius)/(entityTree->depth+1);
+		double r0 = b->getLevel()*ru + innerRadius;
+		double r1 = (b->getLevel()+1)*ru + innerRadius;
+
+		double theta0 = currentTheta;
+		double theta1;
+		if(b->isPackage())
+			theta1 = currentTheta + ((Package*)b)->numberOfEntities*unitWidth;
+		else
+		{
+			theta1 = currentTheta + unitWidth;
+			currentTheta += unitWidth;
+		}
+
+		if (inBounds(theta, theta0, theta1) && inBounds(r, r0, r1))
+		{
+			cout << b->getName() << endl;
+			return;
+		}
+	}
+}
+

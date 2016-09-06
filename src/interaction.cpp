@@ -121,7 +121,10 @@ void mouseClick(int button, int state, int x, int y)
 			pCanvas->getEntitiesByPositionOnProjection(drag, Rt, 1, controller.ctrlDown);
 			break;
 		case 2:
-			tCanvas->getEntitiesByPositionOnTreemap(drag, 1, controller.ctrlDown);
+			if (controller.hierarchicalView == TREEMAP)
+				tCanvas->getEntitiesByPositionOnTreemap(drag, 1, controller.ctrlDown);
+			else
+				sbCanvas->getEntitiesByPosition(drag, 1, controller.ctrlDown);
 			break;
 	}
 	if (selected != entityTree->selected) // Chage detected in the selected group

@@ -16,10 +16,12 @@ class SunburstCanvas : public Canvas
 public:
 	SunburstCanvas(Point tl, Point br, EntityTree *et);
 	void drawCanvas(unsigned Rt, double animationStep);
+	void getEntitiesByPosition(int *drag, unsigned click, bool ctrlDown);
 
 private:
 	void drawSlice(BaseEntity* b, unsigned Rt, double currentTheta);
 
 	EntityTree *entityTree;
-
+	double innerRadius;
+	double unitWidth;
 };
