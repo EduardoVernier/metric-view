@@ -1,6 +1,8 @@
 #pragma once
 
 #include <GL/glut.h>
+#include <functional>
+#include <vector>
 
 #include "Canvas.h"
 #include "EntityTree.h"

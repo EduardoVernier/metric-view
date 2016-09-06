@@ -1,9 +1,8 @@
 #include "../include/SunburstCanvas.h"
 
 template <typename T>
-		bool inBounds(const T& value, const T& low, const T& high) {
-		return !(value < low) && !(high < value);
-}
+bool inBounds(const T& value, const T& low, const T& high)
+{	return !(value < low) && !(high < value); }
 
 SunburstCanvas::SunburstCanvas (Point tl, Point br, EntityTree *et)
 {
@@ -30,6 +29,7 @@ void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 		drawSlice(b, Rt, currentTheta);
 
+		// Increment theta to avoid overlap
 		if (b->isEntity())
 			currentTheta += unitWidth;
 	}
@@ -37,6 +37,7 @@ void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 {
+	// Compute polar coords given BaseEntity level and currentTheta
 	double x = xOff + currentWidth/2;
 	double y = yOff + currentHeight/2;
 
@@ -72,6 +73,11 @@ void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 		glColor3f(colorHover.R, colorHover.G, colorHover.B);
 		glLineWidth(4.0f);
 	}
+	else if (find (entityTree->selected.begin(), entityTree->selected.end(), b) != entityTree->selected.end())
+	{
+		glColor3f(colorSelection.R, colorSelection.G, colorSelection.B);
+		glLineWidth(4.0f);
+	}
 	else
 		glColor3f(0,0,0);
 	glBegin(GL_LINE_STRIP);
@@ -104,16 +110,13 @@ void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlD
 	double normX = drag[0] - currentWidth/2.0;
 	double normY = currentHeight/2.0 - drag[1];
 
-	// Convert catesian coords to polar coords
+	// Convert cartesian coords to polar coords
 	double r = sqrt(normX*normX + normY*normY);
 	double theta = atan2(normY, normX);
 	if (theta < 0)
 		theta *= -1;
 	else
 		theta = 2*PI - theta;
-
-	cout << normX << ", " << normY << " -- " ;
-	cout << "(" << r << ", " << theta << ")" << endl;
 
 	// Find element using construction algorithm
 	double shortSide = (currentWidth < currentHeight)? currentWidth : currentHeight;
@@ -134,11 +137,51 @@ void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlD
 			currentTheta += unitWidth;
 		}
 
+		// If package/entity is within bounds
 		if (inBounds(theta, theta0, theta1) && inBounds(r, r0, r1))
 		{
-			cout << b->getName() << endl;
 			if (!click)
 				entityTree->hovered = b;
+			else if (click)
+			{
+				if (b->isEntity())
+				{
+					if ((std::find(entityTree->selected.begin(), entityTree->selected.end(), b))!=entityTree->selected.end())
+						entityTree->selected.erase(std::find(entityTree->selected.begin(), entityTree->selected.end(), b));
+					else
+						entityTree->selected.push_back((Entity*)b);
+				}
+				else if (b->isPackage())
+				{
+					// Recursively push entities to selected vector
+					function<void (Package*)> f;
+					f = [&, this](Package* p) mutable
+					{
+						if (p == NULL)
+							return;
+						else
+						{
+							for (auto c : p->childrenVector)
+								f(&c);
+
+							for (auto e : p->entityVector)
+							{
+								for (auto ep : entityTree->entities)
+								{
+									if (e.getName() == ep->getName())
+									{
+										if ((std::find(entityTree->selected.begin(), entityTree->selected.end(), ep))!=entityTree->selected.end())
+											entityTree->selected.erase(std::find(entityTree->selected.begin(), entityTree->selected.end(), ep));
+										else
+											entityTree->selected.push_back(ep);
+									}
+								}
+							}
+						}
+					};
+					f((Package*)b);
+				}
+			}
 
 			return;
 		}

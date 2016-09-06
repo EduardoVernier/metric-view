@@ -98,6 +98,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 		}
 		else if (entityTree->hovered->isPackage())
 		{
+			// Recursive lambda function to find all entities belonging to a package
 			Package *hovered = (Package*) entityTree->hovered;
 			function<void (Package*)> f;
 			f = [&](Package* p)

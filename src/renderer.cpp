@@ -53,7 +53,7 @@ void render()
 	setCanvassesSizes(controller.winWidth, controller.winHeight);
 	pCanvas->drawCanvas(Rt, controller.animationStep);
 
-		if(controller.hierarchicalView == TREEMAP)
+	if(controller.hierarchicalView == TREEMAP)
 		tCanvas->drawCanvas(Rt, controller.animationStep);
 	else if (controller.hierarchicalView == SUNBURST)
 		sbCanvas->drawCanvas(Rt, controller.animationStep);
