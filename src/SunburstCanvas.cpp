@@ -25,6 +25,9 @@ void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
 	double currentTheta = 0.0;
 	for (auto b : entityTree->sortedEntities)
 	{
+		if(b->getName()=="")
+			continue;
+
 		drawSlice(b, Rt, currentTheta);
 
 		if (b->isEntity())
@@ -64,8 +67,14 @@ void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 
 
 	// Line around it
+	if(b == entityTree->hovered)
+	{
+		glColor3f(colorHover.R, colorHover.G, colorHover.B);
+		glLineWidth(4.0f);
+	}
+	else
+		glColor3f(0,0,0);
 	glBegin(GL_LINE_STRIP);
-	glColor3f(0,0,0);
 
 	glVertex3f(x + (r0 * cos(theta0)), y + (r0 * sin(theta0)), 0);
 
@@ -81,6 +90,7 @@ void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 
 	glEnd();
 
+	glLineWidth(1.0f);
 }
 
 
