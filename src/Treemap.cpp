@@ -8,7 +8,7 @@ Treemap::Treemap(EntityTree *et, double _width, double _height)
 
 	// Take all first level BaseEntities and start treemapping algorithm
 	vector<BaseEntity*> data;
-	for (auto b : entityTree->sortedEntities)
+	for (auto b : entityTree->sortedBaseEntities)
 	{
 		if (b->getLevel() == 1 && b->getScore() != 0)
 		{
@@ -160,7 +160,7 @@ void Treemap::updateSize (double _width, double _height)
 	height = _height;
 
 	vector<BaseEntity*> data;
-	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
+	for (vector<BaseEntity*>::iterator b = entityTree->sortedBaseEntities.begin(); b != entityTree->sortedBaseEntities.end(); ++b)
 	{
 		if ((*b)->getLevel() == 1 && (*b)->getScore() != 0)
 		{

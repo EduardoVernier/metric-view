@@ -39,12 +39,13 @@ public:
 	int getStreamMetric() { return streamMetricIndex; };
 	float getSMMin() { return streamMetricMin; };
 	float getSMMax() { return streamMetricMax; };
+	void rankFastestChangingEntities(unsigned Rt, int direction);
 
 	vector<string> metricVector;
 	vector<Entity*> selected;
 	BaseEntity *hovered = NULL;
 	vector<Package> packageVector; // Entity tree is a collection of Packages
-	vector<BaseEntity*> sortedEntities; // Contains both Packages and Entities ordered by score
+	vector<BaseEntity*> sortedBaseEntities; // Contains both Packages and Entities ordered by score
 	vector<Entity*> entities; // Contains only Entities ordered by score
 	int depth = 0;
 	unsigned nRevisions = 0;

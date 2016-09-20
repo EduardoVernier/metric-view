@@ -22,7 +22,7 @@ void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 	double unitWidth = (2.0*PI)/(double)entityTree->entities.size();
 	double currentTheta = 0.0;
-	for (auto b : entityTree->sortedEntities)
+	for (auto b : entityTree->sortedBaseEntities)
 	{
 		if(b->getName()=="")
 			continue;
@@ -121,7 +121,7 @@ void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlD
 	// Find element using construction algorithm
 	double shortSide = (currentWidth < currentHeight)? currentWidth : currentHeight;
 	double currentTheta = 0;
-	for (auto b : entityTree->sortedEntities)
+	for (auto b : entityTree->sortedBaseEntities)
 	{
 		double ru = (shortSide/2 - innerRadius)/(entityTree->depth+1);
 		double r0 = b->getLevel()*ru + innerRadius;

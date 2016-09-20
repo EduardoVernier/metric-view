@@ -117,14 +117,14 @@ void EntityTree::generateSortedEntitiesVector(Package *p)
 			if (p->childrenVector[i].sum >= p->entityVector[j].value)
 			{
 				// Package is bigger
-				sortedEntities.push_back((BaseEntity*) &p->childrenVector[i]);
+				sortedBaseEntities.push_back((BaseEntity*) &p->childrenVector[i]);
 				generateSortedEntitiesVector(&p->childrenVector[i]);
 				i++;
 			}
 			else
 			{
 				// Entity is bigger
-				sortedEntities.push_back((BaseEntity*) &p->entityVector[j]);
+				sortedBaseEntities.push_back((BaseEntity*) &p->entityVector[j]);
 				j++;
 			}
 		}
@@ -133,7 +133,7 @@ void EntityTree::generateSortedEntitiesVector(Package *p)
 			// Only packages left
 			for (; i < p->childrenVector.size(); ++i)
 			{
-				sortedEntities.push_back((BaseEntity*) &p->childrenVector[i]);
+				sortedBaseEntities.push_back((BaseEntity*) &p->childrenVector[i]);
 				generateSortedEntitiesVector(&p->childrenVector[i]);
 			}
 		}
@@ -142,7 +142,7 @@ void EntityTree::generateSortedEntitiesVector(Package *p)
 			// Only entities left
 			for (; j < p->entityVector.size(); ++j)
 			{
-				sortedEntities.push_back((BaseEntity*) &p->entityVector[j]);
+				sortedBaseEntities.push_back((BaseEntity*) &p->entityVector[j]);
 			}
 		}
 
@@ -153,7 +153,7 @@ void EntityTree::generateSortedEntitiesVector(Package *p)
 
 void EntityTree::generateEntityVector()
 {
-	for (auto b : sortedEntities)
+	for (auto b : sortedBaseEntities)
 	{
 		if (b->isEntity() && b->getName() != "")
 			entities.push_back((Entity*)b);
@@ -163,7 +163,7 @@ void EntityTree::generateEntityVector()
 void EntityTree::printTree()
 {
 	// Test printing
-	for (vector<BaseEntity*>::iterator b = sortedEntities.begin() ; b != sortedEntities.end(); ++b)
+	for (vector<BaseEntity*>::iterator b = sortedBaseEntities.begin() ; b != sortedBaseEntities.end(); ++b)
 	{
 		if ((*b)->getName() == "") continue; // Ignore root
 		for (int j = 0; j < (*b)->getLevel(); ++j)
@@ -181,7 +181,7 @@ void EntityTree::setMinMax()
 {
 	treeMin = FLT_MAX;
 	treeMax = FLT_MIN;
-	for (auto b : sortedEntities)
+	for (auto b : sortedBaseEntities)
 	{
 		if (b->isEntity())
 		{
@@ -200,7 +200,7 @@ void EntityTree::addProjection(string name, double x, double y, unsigned index)
 	if (y < minY) minY = y;
 	if (y > maxY) maxY = y;
 
-	for (auto b : sortedEntities)
+	for (auto b : sortedBaseEntities)
 	{
 		if (b->isEntity() && name == ((Entity*)b)->getPrefix()+'.'+b->getName())
 		{
@@ -244,13 +244,13 @@ void EntityTree::setColorMetric(int mIndex)
 	colorMetricIndex = mIndex;
 	colorMetricMin = FLT_MAX;
 	colorMetricMax = FLT_MIN;
-	for (unsigned i = 0; i < sortedEntities.size() ; ++i)
+	for (unsigned i = 0; i < sortedBaseEntities.size() ; ++i)
 	{
-		if (sortedEntities[i]->isEntity())
+		if (sortedBaseEntities[i]->isEntity())
 		{
-			for (unsigned time = 0; time < ((Entity*)sortedEntities[i])->data.size() ; ++time)
+			for (unsigned time = 0; time < ((Entity*)sortedBaseEntities[i])->data.size() ; ++time)
 			{
-				float mValue = ((Entity*)sortedEntities[i])->data[time][mIndex];
+				float mValue = ((Entity*)sortedBaseEntities[i])->data[time][mIndex];
 				colorMetricMax = (mValue > colorMetricMax)? mValue : colorMetricMax;
 				colorMetricMin = (mValue < colorMetricMin)? mValue : colorMetricMin;
 			}
@@ -263,13 +263,13 @@ void EntityTree::setRadiusMetric(int mIndex)
 	radiusMetricIndex = mIndex;
 	radiusMetricMin = FLT_MAX;
 	radiusMetricMax = FLT_MIN;
-	for (unsigned i = 0; i < sortedEntities.size() ; ++i)
+	for (unsigned i = 0; i < sortedBaseEntities.size() ; ++i)
 	{
-		if (sortedEntities[i]->isEntity())
+		if (sortedBaseEntities[i]->isEntity())
 		{
-			for (unsigned time = 0; time < ((Entity*)sortedEntities[i])->data.size() ; ++time)
+			for (unsigned time = 0; time < ((Entity*)sortedBaseEntities[i])->data.size() ; ++time)
 			{
-				float mValue = ((Entity*)sortedEntities[i])->data[time][mIndex];
+				float mValue = ((Entity*)sortedBaseEntities[i])->data[time][mIndex];
 				radiusMetricMax = (mValue > radiusMetricMax)? mValue : radiusMetricMax;
 				radiusMetricMin = (mValue < radiusMetricMin)? mValue : radiusMetricMin;
 			}
@@ -282,13 +282,13 @@ void EntityTree::setStreamMetric(int mIndex)
 	streamMetricIndex = mIndex;
 	streamMetricMin = FLT_MAX;
 	streamMetricMax = FLT_MIN;
-	for (unsigned i = 0; i < sortedEntities.size() ; ++i)
+	for (unsigned i = 0; i < sortedBaseEntities.size() ; ++i)
 	{
-		if (sortedEntities[i]->isEntity())
+		if (sortedBaseEntities[i]->isEntity())
 		{
-			for (unsigned time = 0; time < ((Entity*)sortedEntities[i])->data.size() ; ++time)
+			for (unsigned time = 0; time < ((Entity*)sortedBaseEntities[i])->data.size() ; ++time)
 			{
-				float mValue = ((Entity*)sortedEntities[i])->data[time][mIndex];
+				float mValue = ((Entity*)sortedBaseEntities[i])->data[time][mIndex];
 				streamMetricMax = (mValue > streamMetricMax)? mValue : streamMetricMax;
 				streamMetricMin = (mValue < streamMetricMin)? mValue : streamMetricMin;
 			}
@@ -296,3 +296,25 @@ void EntityTree::setStreamMetric(int mIndex)
 	}
 }
 
+void EntityTree::rankFastestChangingEntities(unsigned Rt, int direction)
+{
+	unsigned K = 10; // Number of shadowed elements
+	vector<pair<double,Entity*>> rank;
+
+	// Compute distances and rank
+	for (auto e : entities)
+	{
+		e->showShadow = false;
+		Point pFrom = e->normalizedProjectionPoints[Rt-direction];
+		Point pTo = e->normalizedProjectionPoints[Rt];
+		double v = sqrt(pow(pTo.x - pFrom.x, 2) + pow(pTo.y - pFrom.y, 2));
+		rank.push_back(make_pair(v, e));
+	}
+	sort(rank.begin(), rank.end());
+
+	// Turn on drawShadow flag on K fastest changing elements
+	for(unsigned i = 0; i < K; ++i)
+	{
+		((Entity*)(rank[rank.size()-1-i].second))->showShadow = true;
+	}
+}

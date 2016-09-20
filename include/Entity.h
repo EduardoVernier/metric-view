@@ -15,11 +15,11 @@ public:
 	Entity (string csvLine, unsigned nAttributes, unsigned nRevisions);
 	// Overriding baseclass virtual methods
 	double getScore();
-	string getName(){ return id; };
-	string getPrefix() { return prefix; };
+	string getName(){ return id; }
+	string getPrefix() { return prefix; }
 	void addPointAtIndex(Point p, unsigned index);
-	unsigned isSelected() { return selected; };
-	void setSelected(unsigned s) { selected = s; };
+	unsigned isSelected() { return selected; }
+	void setSelected(unsigned s) { selected = s; }
 	void addRevisionData (string data, unsigned rev, int nAttributes);
 
 	vector <vector <float>> data; // data[revision][metric]
@@ -27,6 +27,7 @@ public:
 	vector <Point> normalizedProjectionPoints;
 
 	float value; // too much trouble to make private because of custom comparator
+	bool showShadow = false;
 
 private:
 	string prefix = "";

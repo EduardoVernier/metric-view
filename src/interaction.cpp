@@ -182,6 +182,7 @@ void keyboard(unsigned char key, int x, int y)
 				controller.animationDirection = -1;
 				controller.animationStep = 0.0;
 				mRank->computeLocalGroupMetric(Rt);
+				entityTree->rankFastestChangingEntities(Rt, controller.animationDirection );
 			}
 			break;
 		case 'x':
@@ -191,6 +192,7 @@ void keyboard(unsigned char key, int x, int y)
 				controller.animationDirection = 1;
 				controller.animationStep = 0.0;
 				mRank->computeLocalGroupMetric(Rt);
+				entityTree->rankFastestChangingEntities(Rt, controller.animationDirection );
 			}
 			break;
 	}

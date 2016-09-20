@@ -17,7 +17,7 @@ void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, bo
 	if (click && !ctrlDown)
 		entityTree->selected.clear();
 
-	for (vector<BaseEntity*>::iterator b = entityTree->sortedEntities.begin(); b != entityTree->sortedEntities.end(); ++b)
+	for (vector<BaseEntity*>::iterator b = entityTree->sortedBaseEntities.begin(); b != entityTree->sortedBaseEntities.end(); ++b)
 	{
 		if ((*b)->isEntity())
 		{
@@ -48,7 +48,7 @@ void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, bo
 // First draw elements and then package borders
 void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
-	vector<BaseEntity*> items = entityTree->sortedEntities;
+	vector<BaseEntity*> items = entityTree->sortedBaseEntities;
 
 	// Scale initial aspect ratio by new
 	glPushMatrix();
@@ -63,14 +63,14 @@ void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 	}
 
 	// Draw Package borders
-	for (vector<BaseEntity*>::iterator it = entityTree->sortedEntities.begin(); it != entityTree->sortedEntities.end(); ++it)
+	for (vector<BaseEntity*>::iterator it = entityTree->sortedBaseEntities.begin(); it != entityTree->sortedBaseEntities.end(); ++it)
 	{
 		if ((*it)->isPackage())
 		{
 			drawPackageFirstLayer(*it);
 		}
 	}
-	for (vector<BaseEntity*>::iterator it = entityTree->sortedEntities.begin(); it != entityTree->sortedEntities.end(); ++it)
+	for (vector<BaseEntity*>::iterator it = entityTree->sortedBaseEntities.begin(); it != entityTree->sortedBaseEntities.end(); ++it)
 	{
 		if ((*it)->isPackage())
 		{
@@ -286,7 +286,7 @@ void TreemapCanvas::drawSelected(Entity *e)
 
 void TreemapCanvas::labelCells()
 {
-	for (vector<BaseEntity*>::iterator it = entityTree->sortedEntities.begin(); it != entityTree->sortedEntities.end(); ++it)
+	for (vector<BaseEntity*>::iterator it = entityTree->sortedBaseEntities.begin(); it != entityTree->sortedBaseEntities.end(); ++it)
 	{
 		if ((*it)->isEntity())
 		{

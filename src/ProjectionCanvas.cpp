@@ -74,26 +74,41 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glEnable(GL_LINE_SMOOTH);
 
 	int rMetric = entityTree->getRadiusMetric();
-	float rMin = entityTree->getRMMin();
-	float rMax = entityTree->getRMMax();
+	double rMin = entityTree->getRMMin();
+	double rMax = entityTree->getRMMax();
 
+	// Draw shadows
+	for (auto b : entityTree->entities)
+	{
+		if (b->showShadow)
+		{
+			Point p = getPoint(b, Rt, animationStep);
+			double radius = (b->data[Rt][rMetric] - rMin) / (rMax - rMin);
+			drawShadow(p.x, p.y, radius, animationStep);
+		}
+	}
+
+	// Draw selected entities
 	for (auto b : entityTree->selected)
 	{
 		Point p = getPoint(b, Rt, animationStep);
-		float value = b->data[Rt][rMetric];
-		float radius = ((value) - rMin) / (rMax - rMin);
-		float delta = (Rt > 1) ? (value - b->data[Rt-1][rMetric])/value: 0;
+		double value = b->data[Rt][rMetric];
+		double radius = ((value) - rMin) / (rMax - rMin);
+		double delta = (Rt > 1) ? (value - b->data[Rt-1][rMetric])/value: 0;
+		drawShadow(p.x, p.y, radius, animationStep);
 		drawEntity(p.x, p.y, radius, delta, colorSelection, 1);
 	}
+
+	// Draw hovered entities
 	if (entityTree->hovered != NULL)
 	{
 		if (entityTree->hovered->isEntity())
 		{
 			Entity *hovered = (Entity*) entityTree->hovered;
 			Point p = getPoint(hovered, Rt, animationStep);
-			float value = hovered->data[Rt][rMetric];
-			float radius = ((value) - rMin) / (rMax - rMin);
-			float delta = (Rt > 1) ? (value - hovered->data[Rt-1][rMetric])/value: 0;
+			double value = hovered->data[Rt][rMetric];
+			double radius = ((value) - rMin) / (rMax - rMin);
+			double delta = (Rt > 1) ? (value - hovered->data[Rt-1][rMetric])/value: 0;
 			drawEntity(p.x, p.y, radius, delta, colorHover, 1);
 		}
 		else if (entityTree->hovered->isPackage())
@@ -113,9 +128,9 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 					for (auto e : p->entityVector)
 					{
 						Point p = getPoint(&e, Rt, animationStep);
-						float value = e.data[Rt][rMetric];
-						float radius = (value - rMin) / (rMax - rMin);
-						float delta = (Rt > 1) ? (value - e.data[Rt-1][rMetric])/value: 0;
+						double value = e.data[Rt][rMetric];
+						double radius = (value - rMin) / (rMax - rMin);
+						double delta = (Rt > 1) ? (value - e.data[Rt-1][rMetric])/value: 0;
 						drawEntity(p.x, p.y, radius, delta, colorHover, 1);
 					}
 				}
@@ -124,28 +139,59 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 		}
 	}
 
+	// Draw all entities
 	for (auto b : entityTree->entities)
 	{
 		Point p = getPoint(b, Rt, animationStep);
 		Color c = getColor(controller.colormapIndex, b, Rt);
-		float radius = (b->data[Rt][rMetric] - rMin) / (rMax - rMin);
-		float delta = (Rt > 1) ? (b->data[Rt][rMetric] - b->data[Rt-1][rMetric])/b->data[Rt][rMetric]: 0;
+		double radius = (b->data[Rt][rMetric] - rMin) / (rMax - rMin);
+		double delta = (Rt > 1) ? (b->data[Rt][rMetric] - b->data[Rt-1][rMetric])/b->data[Rt][rMetric]: 0;
 		drawEntity(p.x, p.y, radius, delta, c, 0);
 	}
 	glDisable(GL_LINE_SMOOTH);
 	glPopMatrix();
 }
 
-// Draw circles
-void ProjectionCanvas::drawEntity(double x, double y, float radius, float delta, Color c, int action)
+// Draw shadow
+void ProjectionCanvas::drawShadow(double x, double y, double radius, double animationStep)
 {
-	if (controller.deltaPie == 0 || fabs(delta) < 0.01) // 1% tolerance
-		drawSolidEntity(x+10, y+10, radius, c, action);
-	else
-		drawPieEntity(x+10, y+10, radius, delta, c, action);
+	int triangleAmount = 360; //# of triangles/degrees used to draw circle
+
+	radius = (radius*20 + 7)*2; // Ugly as frick
+
+	animationStep = (animationStep < 0)? animationStep*(-1) : animationStep;
+	float opacity = (animationStep < 0.5)? 2*animationStep : 1 - (animationStep-0.5)*2;
+
+	GLfloat radians = 2.0f * PI;
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glBegin(GL_TRIANGLE_FAN);
+	glColor4f(0,0,0,opacity);
+	glVertex3f(x, y, 0);
+	glColor4f(0,0,0,0);
+	for (int i = 0; i <= triangleAmount;i++)
+	{
+		glVertex3f(x + (radius * cos(i * radians / triangleAmount)),
+							 y + (radius * sin(i * radians / triangleAmount)), 0);
+	}
+	glEnd();
+	glDisable(GL_BLEND);
+
 }
 
-void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c, int action)
+
+// Draw circles
+void ProjectionCanvas::drawEntity(double x, double y, double radius, double delta, Color c, int action)
+{
+	if (controller.deltaPie == 0 || fabs(delta) < 0.01) // 1% tolerance
+		drawSolidEntity(x, y, radius, c, action);
+	else
+		drawPieEntity(x, y, radius, delta, c, action);
+}
+
+void ProjectionCanvas::drawSolidEntity(double x, double y, double radius, Color c, int action)
 {
 	int triangleAmount = 360; //# of triangles/degrees used to draw circle
 
@@ -176,7 +222,7 @@ void ProjectionCanvas::drawSolidEntity(double x, double y, float radius, Color c
 }
 
 
-void ProjectionCanvas::drawPieEntity(double x, double y, float radius, float delta, Color c, int action)
+void ProjectionCanvas::drawPieEntity(double x, double y, double radius, double delta, Color c, int action)
 {
 	int triangleAmount = 360; //# of triangles/degrees used to draw circle
 
