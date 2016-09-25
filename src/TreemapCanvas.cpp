@@ -21,14 +21,10 @@ void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, bo
 	{
 		if ((*b)->isEntity())
 		{
-			if ((*b)->getCoord(3) * yRatio < drag[1])
-				continue; // b too high
-			else if ((*b)->getCoord(1) * yRatio > drag[3])
-				continue; // svg too low
-			else if ((*b)->getCoord(2) * xRatio < drag[0])
-				continue; // svg too far left
-			else if ((*b)->getCoord(0) * xRatio > drag[2])
-				continue; // svg too far right
+			if ((*b)->getCoord(3) * yRatio < drag[1])	continue; // b too high
+			else if ((*b)->getCoord(1) * yRatio > drag[3]) continue; // svg too low
+			else if ((*b)->getCoord(2) * xRatio < drag[0]) continue; // svg too far left
+			else if ((*b)->getCoord(0) * xRatio > drag[2]) continue; // svg too far right
 			else
 			{
 				if (click)
@@ -93,16 +89,38 @@ void TreemapCanvas::drawEntity(Entity *e, unsigned Rt, double animationStep)
 {
 	double coords[4];
 	computeRectangleSize(coords, e, Rt, animationStep);
+
+	// Draw colored rect
 	Color c = getColor(controller.colormapIndex, e, Rt);
 	glColor3f(c.R, c.G, c.B);
 	glRectd(coords[0],coords[1],coords[2],coords[3]);
 
-	// Draw line around rectangle
-	double padding = 0.0;
-	double x0 = e->getCoord(0)+ padding + treemapXOff;
-	double y0 = e->getCoord(1)+ padding + treemapYOff;
-	double x1 = e->getCoord(2)- padding + treemapXOff;
-	double y1 = e->getCoord(3)- padding + treemapYOff;
+	// Draw darker border
+	double x0 = coords[0];
+	double y0 = coords[1];
+	double x1 = coords[2];
+	double y1 = coords[3];
+	glLineWidth(0.1f);
+	glColor3f(c.R*0.6, c.G*0.6, c.B*0.6);
+	glBegin(GL_LINE_STRIP);
+	glVertex2d(x0,y0);
+	glVertex2d(x0,y0);
+	glVertex2d(x0,y1);
+	glVertex2d(x0,y1);
+	glVertex2d(x1,y1);
+	glVertex2d(x1,y1);
+	glVertex2d(x1,y0);
+	glVertex2d(x1,y0);
+	glVertex2d(x0,y0);
+	glEnd();
+
+	if (controller.halo && e->showHalo) drawHalo(coords, animationStep);
+
+	// Draw line around full rectangle
+	x0 = e->getCoord(0) + treemapXOff;
+	y0 = e->getCoord(1) + treemapYOff;
+	x1 = e->getCoord(2) + treemapXOff;
+	y1 = e->getCoord(3) + treemapYOff;
 	glLineWidth(0.1f);
 	glColor3f(0.0f, 0.0f, 0.0f);
 	glBegin(GL_LINE_STRIP);
@@ -118,14 +136,47 @@ void TreemapCanvas::drawEntity(Entity *e, unsigned Rt, double animationStep)
 	glEnd();
 }
 
+void TreemapCanvas::drawHalo(const double *coords, double animationStep)
+{
+	if (animationStep != 0.0)
+	{
+		double x0 = coords[0];
+		double y0 = coords[1];
+		double x1 = coords[2];
+		double y1 = coords[3];
+		double xc = (x1+x0)/2.0;
+		double yc = (y1+y0)/2.0;
+
+		animationStep = (animationStep < 0)? animationStep*(-1) : animationStep;
+		float opacity = (animationStep < 0.5)? 2*animationStep : 1 - (animationStep-0.5)*2;
+
+		glEnable(GL_BLEND);
+		glEnable(GL_SMOOTH);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
+		glBegin(GL_TRIANGLE_FAN);
+		glColor4f(0,0,0,0);
+		glVertex3f(xc, yc, 0);
+		glColor4f(0.2,0.2,0.2,opacity);
+		glVertex3f(x0, y0, 0);
+		glVertex3f(x0, y1, 0);
+		glVertex3f(x1, y1, 0);
+		glVertex3f(x1, y0, 0);
+		glVertex3f(x0, y0, 0);
+		glEnd();
+		glDisable(GL_BLEND);
+	}
+
+}
+
 // Return an entitie's vertex coordinates on the treemap
 void TreemapCanvas::computeRectangleSize(double *retCoords, Entity *e, unsigned Rt, double animationStep)
 {
-	double padding = 0.0;
-	double x0 = e->getCoord(0)+ padding + treemapXOff;
-	double y0 = e->getCoord(1)+ padding + treemapYOff;
-	double x1 = e->getCoord(2)- padding + treemapXOff;
-	double y1 = e->getCoord(3)- padding + treemapYOff;
+	double x0 = e->getCoord(0)+  treemapXOff;
+	double y0 = e->getCoord(1) + treemapYOff;
+	double x1 = e->getCoord(2) + treemapXOff;
+	double y1 = e->getCoord(3) + treemapYOff;
 	double ratio = 1;
 
 	// If we are dealing with a dynamic treemaps, we interpolate

@@ -54,6 +54,9 @@ void initializeUI()
 	entityTree->setRadiusMetric(controller.radiusMetricIndex);
 	entityTree->setStreamMetric(controller.streamMetricIndex);
 
+	glui->add_checkbox("Enable halos", &controller.halo);
+
+
 }
 
 // Callback handling
@@ -159,6 +162,7 @@ void mousePassive (int x, int y)
 	}
 	else
 	{
+		entityTree->hovered = NULL;
 		hover = NULL;
 	}
 }

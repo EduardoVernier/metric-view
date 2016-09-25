@@ -27,7 +27,7 @@ public:
 	vector <Point> normalizedProjectionPoints;
 
 	float value; // too much trouble to make private because of custom comparator
-	bool showShadow = false;
+	bool showHalo = false;
 
 private:
 	string prefix = "";

@@ -194,6 +194,7 @@ void EntityTree::setMinMax()
 // Add projection point to vector of points
 void EntityTree::addProjection(string name, double x, double y, unsigned index)
 {
+
 	// Keep mins and maxs updated for normalizing the projection
 	if (x < minX) minX = x;
 	if (x > maxX) maxX = x;
@@ -304,7 +305,7 @@ void EntityTree::rankFastestChangingEntities(unsigned Rt, int direction)
 	// Compute distances and rank
 	for (auto e : entities)
 	{
-		e->showShadow = false;
+		e->showHalo = false;
 		Point pFrom = e->normalizedProjectionPoints[Rt-direction];
 		Point pTo = e->normalizedProjectionPoints[Rt];
 		double v = sqrt(pow(pTo.x - pFrom.x, 2) + pow(pTo.y - pFrom.y, 2));
@@ -315,6 +316,6 @@ void EntityTree::rankFastestChangingEntities(unsigned Rt, int direction)
 	// Turn on drawShadow flag on K fastest changing elements
 	for(unsigned i = 0; i < K; ++i)
 	{
-		((Entity*)(rank[rank.size()-1-i].second))->showShadow = true;
+		((Entity*)(rank[rank.size()-1-i].second))->showHalo = true;
 	}
 }

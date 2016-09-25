@@ -19,6 +19,8 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
 	if (click && !ctrlDown)
 		entityTree->selected.clear();
 
+	entityTree->hovered = NULL;
+
 	for (auto b : entityTree->entities)
 	{
 		double bx = b->normalizedProjectionPoints[Rt].x * xRatio;
@@ -77,14 +79,17 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 	double rMin = entityTree->getRMMin();
 	double rMax = entityTree->getRMMax();
 
-	// Draw shadows
-	for (auto b : entityTree->entities)
+	// Draw halos
+	if (controller.halo)
 	{
-		if (b->showShadow)
+		for (auto b : entityTree->entities)
 		{
-			Point p = getPoint(b, Rt, animationStep);
-			double radius = (b->data[Rt][rMetric] - rMin) / (rMax - rMin);
-			drawShadow(p.x, p.y, radius, animationStep);
+			if (b->showHalo)
+			{
+				Point p = getPoint(b, Rt, animationStep);
+				double radius = (b->data[Rt][rMetric] - rMin) / (rMax - rMin);
+				drawHalo(p.x, p.y, radius, animationStep);
+			}
 		}
 	}
 
@@ -95,7 +100,6 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 		double value = b->data[Rt][rMetric];
 		double radius = ((value) - rMin) / (rMax - rMin);
 		double delta = (Rt > 1) ? (value - b->data[Rt-1][rMetric])/value: 0;
-		drawShadow(p.x, p.y, radius, animationStep);
 		drawEntity(p.x, p.y, radius, delta, colorSelection, 1);
 	}
 
@@ -153,8 +157,10 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 }
 
 // Draw shadow
-void ProjectionCanvas::drawShadow(double x, double y, double radius, double animationStep)
+void ProjectionCanvas::drawHalo(double x, double y, double radius, double animationStep)
 {
+	x += 10;
+	y += 10;
 	int triangleAmount = 360; //# of triangles/degrees used to draw circle
 
 	radius = (radius*20 + 7)*2; // Ugly as frick
@@ -185,6 +191,8 @@ void ProjectionCanvas::drawShadow(double x, double y, double radius, double anim
 // Draw circles
 void ProjectionCanvas::drawEntity(double x, double y, double radius, double delta, Color c, int action)
 {
+	x+=10;
+	y+=10;
 	if (controller.deltaPie == 0 || fabs(delta) < 0.01) // 1% tolerance
 		drawSolidEntity(x, y, radius, c, action);
 	else

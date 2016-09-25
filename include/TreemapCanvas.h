@@ -24,6 +24,7 @@ private:
 	void drawHovered(BaseEntity *e);
 	void drawSelected(Entity *e);
 	void drawEntity(Entity *e, unsigned Rt, double animationStep);
+	void drawHalo(const double *coords, double animationStep);
 	void computeRectangleSize(double *retCoords, Entity *e, unsigned Rt, double animationStep);
 	void drawPackageFirstLayer(BaseEntity *e);
 	void drawPackageSecondLayer(BaseEntity *e);
