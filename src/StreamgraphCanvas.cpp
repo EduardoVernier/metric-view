@@ -143,19 +143,24 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	}
 
 	// Draw vertical lines
+	glColor4f(0,0,0,0.1);
 	for (unsigned t = 0; t < entityTree->nRevisions; ++t)
 	{
-		if (t == Rt)
-			glColor4f(1,0,0,0.5);
-		else
-			glColor4f(0,0,0,0.1);
-
 		glBegin(GL_LINE_STRIP);
 		glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y, 0);
 		glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), bottom_right.y, 0);
 		glEnd();
 	}
 	glDisable(GL_BLEND);
+
+	// Draw red line
+	glColor4f(1,0,0,0.8);
+	glBegin(GL_LINE_STRIP);
+	double Rtp = (animationStep!=0.0 && animationStep > 0)? Rt+animationStep : (Rt+2) + (animationStep);
+	glVertex3f(top_left.x + (Rtp)*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y, 0);
+	glVertex3f(top_left.x + (Rtp)*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), bottom_right.y, 0);
+	glEnd();
+
 }
 
 
