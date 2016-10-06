@@ -11,6 +11,7 @@
 #include "SunburstCanvas.h"
 #include "ProjectionCanvas.h"
 #include "StreamgraphCanvas.h"
+#include "SpectrographCanvas.h"
 #include "Mouse.h"
 #include "MetricRank.h"
 #include "Controller.h"

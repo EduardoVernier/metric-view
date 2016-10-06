@@ -6,6 +6,7 @@ shared_ptr<Canvas> pCanvas = nullptr;
 shared_ptr<Canvas> tCanvas = nullptr;
 shared_ptr<Canvas> sbCanvas = nullptr;
 shared_ptr<Canvas> stCanvas = nullptr;
+shared_ptr<Canvas> spCanvas = nullptr;
 shared_ptr<MetricRank> mRank = nullptr;
 unique_ptr<Entity> hover = nullptr; // Drawing of hovering label
 
@@ -59,7 +60,14 @@ void render()
 		sbCanvas->drawCanvas(Rt, controller.animationStep);
 
 	if (controller.streamgraphFlag)
+	{
 		stCanvas->drawCanvas(Rt, controller.animationStep);
+	}
+	else
+	{
+		spCanvas->drawCanvas(Rt, controller.animationStep);
+	}
+
 
 	drawHoveringLabel();
 
@@ -85,14 +93,6 @@ void setCanvassesSizes(int W, int H)
 	Point tTL {20 + (W-30)/2.0, 10};
 	Point tBR {W - 10.0, H - 10.0};
 
-	// Define Streamgraph Canvas dimentions if necessary
-	if (controller.streamgraphFlag)
-	{
-		pBR.y -= controller.streamgraphHeight;
-		tBR.y -= controller.streamgraphHeight;
-		Point sTL {10, pBR.y + 10}, sBR {W-10.0, H-10.0};
-		stCanvas->setSize(sTL, sBR);
-	}
 
 	// Instantiate if it's the first call, else just update size
 	if (pCanvas == nullptr && tCanvas == nullptr)
@@ -101,10 +101,27 @@ void setCanvassesSizes(int W, int H)
 		tCanvas = std::make_shared<TreemapCanvas> (tTL, tBR, entityTree);
 		sbCanvas = std::make_shared<SunburstCanvas> (tTL, tBR, entityTree);
 		stCanvas = std::make_shared<StreamgraphCanvas> (pTL, pBR, entityTree);
-		mRank   = std::make_shared<MetricRank>(entityTree);
+		spCanvas = std::make_shared<SpectrographCanvas> (pTL, pBR, entityTree);
+		mRank = std::make_shared<MetricRank>(entityTree);
 	}
 	else
 	{
+		// Define Streamgraph Canvas dimentions if necessary
+		if (controller.streamgraphFlag)
+		{
+			pBR.y -= controller.streamgraphHeight;
+			tBR.y -= controller.streamgraphHeight;
+			Point sTL {10, pBR.y + 10}, sBR {W-10.0, H-10.0};
+			stCanvas->setSize(sTL, sBR);
+		}
+		else if (1) // TODO: test for spectrograph
+		{
+			pBR.y -= ((std::shared_ptr<SpectrographCanvas>&) (spCanvas))->getHeight();
+			tBR.y -= ((std::shared_ptr<SpectrographCanvas>&) (spCanvas))->getHeight();
+			Point sTL {10, pBR.y + 10}, sBR {W-10.0, H-10.0};
+			spCanvas->setSize(sTL, sBR);
+		}
+
 		pCanvas->setSize(pTL, pBR);
 		tCanvas->setSize(tTL, tBR);
 		sbCanvas->setSize(tTL, tBR);

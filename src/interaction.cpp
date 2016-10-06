@@ -130,8 +130,12 @@ void mouseClick(int button, int state, int x, int y)
 				sbCanvas->getEntitiesByPosition(drag, 1, controller.ctrlDown);
 			break;
 	}
+
 	if (selected != entityTree->selected) // Chage detected in the selected group
+	{
+		spCanvas->updateLocalSelectedGroup();
 		mRank->computeLocalGroupMetric(Rt);
+	}
 
 	mouse->updateMouse(x, y);
 }

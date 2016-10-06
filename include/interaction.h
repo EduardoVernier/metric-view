@@ -10,6 +10,7 @@
 #include "TreemapCanvas.h"
 #include "ProjectionCanvas.h"
 #include "StreamgraphCanvas.h"
+#include "SpectrographCanvas.h"
 #include "SunburstCanvas.h"
 #include "MetricRank.h"
 #include "Controller.h"
@@ -23,6 +24,7 @@ extern shared_ptr<TreemapCanvas> tCanvas;
 extern shared_ptr<SunburstCanvas> sbCanvas;
 extern shared_ptr<ProjectionCanvas> pCanvas;
 extern shared_ptr<StreamgraphCanvas> stCanvas;
+extern shared_ptr<SpectrographCanvas> spCanvas;
 extern shared_ptr<MetricRank> mRank;
 
 // Button/checkbox/listbox ids
