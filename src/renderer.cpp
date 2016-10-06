@@ -59,11 +59,11 @@ void render()
 	else if (controller.hierarchicalView == SUNBURST)
 		sbCanvas->drawCanvas(Rt, controller.animationStep);
 
-	if (controller.streamgraphFlag)
+	if (controller.evolutionView == STREAMGRAPH)
 	{
 		stCanvas->drawCanvas(Rt, controller.animationStep);
 	}
-	else
+	else if (controller.evolutionView == SPECTROGRAPH)
 	{
 		spCanvas->drawCanvas(Rt, controller.animationStep);
 	}
@@ -107,14 +107,14 @@ void setCanvassesSizes(int W, int H)
 	else
 	{
 		// Define Streamgraph Canvas dimentions if necessary
-		if (controller.streamgraphFlag)
+		if (controller.evolutionView == STREAMGRAPH)
 		{
 			pBR.y -= controller.streamgraphHeight;
 			tBR.y -= controller.streamgraphHeight;
 			Point sTL {10, pBR.y + 10}, sBR {W-10.0, H-10.0};
 			stCanvas->setSize(sTL, sBR);
 		}
-		else if (1) // TODO: test for spectrograph
+		else if (controller.evolutionView == SPECTROGRAPH)
 		{
 			pBR.y -= ((std::shared_ptr<SpectrographCanvas>&) (spCanvas))->getHeight();
 			tBR.y -= ((std::shared_ptr<SpectrographCanvas>&) (spCanvas))->getHeight();

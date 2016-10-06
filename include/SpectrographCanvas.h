@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/glut.h>
+#include <iostream>
 #include "Canvas.h"
 #include "Entity.h"
 #include "EntityTree.h"
@@ -21,6 +22,7 @@ public:
 	void drawCanvas(unsigned Rt, double animationStep);
 	int getHeight();
 	void updateLocalSelectedGroup();
+	void getEntitiesOnSpectrograph(int *drag, unsigned click, bool ctrlDown);
 
 private:
 	vector<pair<double,Entity*>> sortedSelectedEntities;

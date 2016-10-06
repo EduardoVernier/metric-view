@@ -3,6 +3,8 @@
 #include <queue>
 
 enum hierView { TREEMAP, SUNBURST };
+enum evolView { HIDE, STREAMGRAPH, SPECTROGRAPH };
+
 
 class Controller
 {
@@ -10,6 +12,7 @@ public:
 	int winWidth = 1920, winHeight = 1056;
 	int mainWindow;
 	int hierarchicalView = TREEMAP;
+	int evolutionView = HIDE;
 
 	int radiusMetricIndex = 21;
 	int colorMetricIndex = 21;
@@ -20,7 +23,6 @@ public:
 
 	int deltaPie = 0;
 	bool ctrlDown = false;
-	int streamgraphFlag = 0;
 	int dynamicTreemap = 0;
 	int halo = 0;
 

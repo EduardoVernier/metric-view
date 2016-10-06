@@ -24,6 +24,12 @@ void initializeUI()
 	hierarchicalLB->add_item(TREEMAP, "Treemap");
 	hierarchicalLB->add_item(SUNBURST, "Sunburst");
 
+	glui->add_statictext("Evolution View");
+	GLUI_Listbox *evolutionLB = glui->add_listbox("", &controller.evolutionView, HIERARCHICAL_LB, controlCB);
+	evolutionLB->add_item(HIDE, "None");
+	evolutionLB->add_item(STREAMGRAPH, "Streamgraph");
+	evolutionLB->add_item(SPECTROGRAPH, "Spectrograph");
+
 	// Colormap listbox
 	glui->add_statictext("Projection and Treemap Colormap");
 	GLUI_Listbox *colormapLB = glui->add_listbox("", &controller.colormapIndex, COLORMAP_LB, controlCB);
@@ -48,7 +54,6 @@ void initializeUI()
 	accelerationLB->add_item(6,"0.1x");
 
 	glui->add_checkbox("Display delta pie slice", &controller.deltaPie);
-	glui->add_checkbox("Stream Graph", &controller.streamgraphFlag);
 	glui->add_checkbox("Dynamic Treemap", &controller.dynamicTreemap);
 	entityTree->setColorMetric(controller.colorMetricIndex);
 	entityTree->setRadiusMetric(controller.radiusMetricIndex);
@@ -146,7 +151,14 @@ void mousePassive (int x, int y)
 	if (mouse->canvas == 3) // Hovering streamgraph
 	{
 		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
-		stCanvas->getEntitiesOnStreamgraph(drag, 0, controller.ctrlDown);
+		if (controller.evolutionView == STREAMGRAPH)
+		{
+			stCanvas->getEntitiesOnStreamgraph(drag, 0, controller.ctrlDown);
+		}
+		else if (controller.evolutionView == SPECTROGRAPH)
+		{
+			spCanvas->getEntitiesOnSpectrograph(drag, 0, controller.ctrlDown);
+		}
 		hover = entityTree->hovered;
 	}
 	else if (mouse->canvas == 2) // Hovering treemap

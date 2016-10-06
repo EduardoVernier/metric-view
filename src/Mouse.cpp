@@ -20,7 +20,7 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 	rawY = _y;
 	lastCanvas = canvas;
 
-	if (controller.streamgraphFlag == 0)
+	if (controller.evolutionView == HIDE)
 	{
 		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
@@ -117,7 +117,7 @@ void Mouse::updateMouse(int _x, int _y)
 	rawX = _x;
 	rawY = _y;
 
-	if (controller.streamgraphFlag == 0)
+	if (controller.evolutionView == HIDE)
 	{
 		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
