@@ -68,6 +68,16 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 			glEnd();
 	}
 
+	// Draw current Rt "window"
+	glColor4f(1,1,1,0.8);
+	glBegin(GL_LINE_STRIP);
+	double Rtp = (animationStep!=0.0 && animationStep > 0)? Rt+animationStep : (Rt+2) + (animationStep);
+	glVertex3f(top_left.x + (Rtp-1)*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions)), top_left.y, 0);
+	glVertex3f(top_left.x + (Rtp-1)*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions)), bottom_right.y, 0);
+	glVertex3f(top_left.x + (Rtp)*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions)), bottom_right.y, 0);
+	glVertex3f(top_left.x + (Rtp)*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions)), top_left.y, 0);
+	glVertex3f(top_left.x + (Rtp-1)*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions)), top_left.y, 0);
+	glEnd();
 
 }
 
