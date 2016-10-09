@@ -2,18 +2,16 @@
 
 #include <GL/glut.h>
 #include <iostream>
+
 #include "Canvas.h"
 #include "Entity.h"
 #include "EntityTree.h"
 #include "Controller.h"
 #include "Colormap.h"
 #include "Color.h"
-
 #define MAX_LINE_HEIGHT 15
 
 extern Controller controller;
-
-using namespace std;
 
 class SpectrographCanvas : public Canvas
 {
@@ -25,6 +23,6 @@ public:
 	void getEntitiesOnSpectrograph(int *drag, unsigned click, bool ctrlDown);
 
 private:
-	vector<pair<double,Entity*>> sortedSelectedEntities;
+	vector<std::pair<double,Entity*>> sortedSelectedEntities;
 	EntityTree *entityTree;
 };
