@@ -9,7 +9,7 @@
 #include "Colormap.h"
 #include "Color.h"
 
-#define MAX_LINE_HEIGHT 10
+#define MAX_LINE_HEIGHT 15
 
 extern Controller controller;
 

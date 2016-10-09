@@ -58,14 +58,17 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 	}
 
 	// Draw separation
-	for (unsigned i = 0; i < sortedSelectedEntities.size(); ++i)
+	if (getHeight() < 450)
 	{
-			glColor4f(1,1,1,1);
+		for (unsigned i = 0; i < sortedSelectedEntities.size(); ++i)
+		{
+				glColor4f(1,1,1,1);
 
-			glBegin(GL_LINES);
-			glVertex2f(top_left.x, top_left.y + i*cellHeight);
-			glVertex2f(bottom_right.x, top_left.y + i*cellHeight);
-			glEnd();
+				glBegin(GL_LINES);
+				glVertex2f(top_left.x, top_left.y + i*cellHeight);
+				glVertex2f(bottom_right.x, top_left.y + i*cellHeight);
+				glEnd();
+		}
 	}
 
 	// Draw current Rt "window"
