@@ -16,13 +16,19 @@ extern Controller controller;
 class SpectrographCanvas : public Canvas
 {
 public:
-	SpectrographCanvas(Point tl, Point br, EntityTree* et);
+	static SpectrographCanvas& getInstance();
+	void init(Point tl, Point br, EntityTree *et);
+
 	void drawCanvas(unsigned Rt, double animationStep);
-	int getHeight();
+	double getHeight();
 	void updateLocalSelectedGroup();
 	void getEntitiesOnSpectrograph(int *drag, unsigned click, bool ctrlDown);
 
 private:
+	SpectrographCanvas();
+	SpectrographCanvas(SpectrographCanvas const&);
+	void operator=(SpectrographCanvas const&);
+
 	vector<std::pair<double,Entity*>> sortedSelectedEntities;
 	EntityTree *entityTree;
 };

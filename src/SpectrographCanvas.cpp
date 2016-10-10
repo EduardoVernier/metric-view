@@ -2,10 +2,17 @@
 
 bool pairCompare(const std::pair<double, Entity*>& firstElem, const std::pair<double, Entity*>& secondElem) {
 	return firstElem.first < secondElem.first;
-
 }
 
-SpectrographCanvas::SpectrographCanvas(Point tl, Point br, EntityTree *et)
+SpectrographCanvas::SpectrographCanvas() {}
+
+SpectrographCanvas& SpectrographCanvas::getInstance()
+{
+	static SpectrographCanvas instance {};
+ 	return instance;
+}
+
+void SpectrographCanvas::init(Point tl, Point br, EntityTree *et)
 {
 	setSize(tl, br);
 	entityTree = et;
@@ -13,11 +20,10 @@ SpectrographCanvas::SpectrographCanvas(Point tl, Point br, EntityTree *et)
 	initialHeight = br.y - tl.y;
 }
 
-
 int SpectrographCanvas::getHeight()
 {
 	double desiredHeight = entityTree->selected.size()*MAX_LINE_HEIGHT;
-	return (desiredHeight < 500)? desiredHeight : 500;
+	return (int) ((desiredHeight < 500) ? desiredHeight : 500);
 }
 
 void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
@@ -26,8 +32,8 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
 	double cellHeight = ((double) getHeight()-10)/sortedSelectedEntities.size();
-	double cellWidth = (double) currentWidth/entityTree->nRevisions;
-	int sMetric = entityTree->getStreamMetric();
+	double cellWidth = (double) currentWidth/getInstance().entityTree->nRevisions;
+	int sMetric = getInstance().entityTree->getStreamMetric();
 
 	// Draw cells
 	for (unsigned i = 0; i < sortedSelectedEntities.size(); ++i)
@@ -115,3 +121,4 @@ void SpectrographCanvas::getEntitiesOnSpectrograph(int *drag, unsigned click, bo
 		entityTree->hovered = sortedSelectedEntities[index].second;
 	}
 }
+

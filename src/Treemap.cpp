@@ -1,5 +1,8 @@
 #include "../include/Treemap.h"
 
+void
+treemapSingledimensional(vector<BaseEntity *> *pVector, double width, double height, double offset, double yOffset);
+
 Treemap::Treemap(EntityTree *et, double _width, double _height)
 {
 	entityTree = et;

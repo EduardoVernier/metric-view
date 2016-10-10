@@ -138,7 +138,7 @@ void mouseClick(int button, int state, int x, int y)
 
 	if (selected != entityTree->selected) // Chage detected in the selected group
 	{
-		spCanvas->updateLocalSelectedGroup();
+		SpectrographCanvas::getInstance().updateLocalSelectedGroup();
 		mRank->computeLocalGroupMetric(Rt);
 	}
 
@@ -157,7 +157,7 @@ void mousePassive (int x, int y)
 		}
 		else if (controller.evolutionView == SPECTROGRAPH)
 		{
-			spCanvas->getEntitiesOnSpectrograph(drag, 0, controller.ctrlDown);
+			SpectrographCanvas::getInstance().getEntitiesOnSpectrograph(drag, 0, controller.ctrlDown);
 		}
 		hover = entityTree->hovered;
 	}

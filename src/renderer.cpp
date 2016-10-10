@@ -6,7 +6,6 @@ shared_ptr<Canvas> pCanvas = nullptr;
 shared_ptr<Canvas> tCanvas = nullptr;
 shared_ptr<Canvas> sbCanvas = nullptr;
 shared_ptr<Canvas> stCanvas = nullptr;
-shared_ptr<Canvas> spCanvas = nullptr;
 shared_ptr<MetricRank> mRank = nullptr;
 unique_ptr<Entity> hover = nullptr; // Drawing of hovering label
 
@@ -65,7 +64,7 @@ void render()
 	}
 	else if (controller.evolutionView == SPECTROGRAPH)
 	{
-		spCanvas->drawCanvas(Rt, controller.animationStep);
+		SpectrographCanvas::getInstance().drawCanvas(Rt, controller.animationStep);
 	}
 
 
@@ -101,7 +100,7 @@ void setCanvassesSizes(int W, int H)
 		tCanvas = std::make_shared<TreemapCanvas> (tTL, tBR, entityTree);
 		sbCanvas = std::make_shared<SunburstCanvas> (tTL, tBR, entityTree);
 		stCanvas = std::make_shared<StreamgraphCanvas> (pTL, pBR, entityTree);
-		spCanvas = std::make_shared<SpectrographCanvas> (pTL, pBR, entityTree);
+		SpectrographCanvas::getInstance().init(pTL, pBR, entityTree);
 		mRank = std::make_shared<MetricRank>(entityTree);
 	}
 	else
@@ -116,10 +115,11 @@ void setCanvassesSizes(int W, int H)
 		}
 		else if (controller.evolutionView == SPECTROGRAPH)
 		{
-			pBR.y -= ((std::shared_ptr<SpectrographCanvas>&) (spCanvas))->getHeight();
-			tBR.y -= ((std::shared_ptr<SpectrographCanvas>&) (spCanvas))->getHeight();
+			double spectroHeight = SpectrographCanvas::getInstance().getHeight();
+			pBR.y -= spectroHeight;
+			tBR.y -= spectroHeight;
 			Point sTL {10, pBR.y + 10}, sBR {W-10.0, H-10.0};
-			spCanvas->setSize(sTL, sBR);
+			SpectrographCanvas::getInstance().setSize(sTL, sBR);
 		}
 
 		pCanvas->setSize(pTL, pBR);
