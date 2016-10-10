@@ -13,8 +13,8 @@ protected:
 	double xOff, yOff;
 	Color colorHover {0.0f,0.8f,0.8f};
 	Color colorSelection {0.0f,0.7f,0.3f};
-	int initialWidth, initialHeight;
-	int currentWidth, currentHeight;
+	double initialWidth, initialHeight;
+	double currentWidth, currentHeight;
 	int firstMeasurement = 1;
 
 public:
