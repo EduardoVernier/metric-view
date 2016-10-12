@@ -37,11 +37,13 @@ CsvParser::CsvParser(EntityTree *et, string dataDirName, string projectionDirNam
 		}
 	}
 	entityTree->nRevisions = nRevisions;
+
 	closedir (dataDir);
 
 
 	// Build empty entities
 	parseLastMetricFile(dataDirName + "/" + lastRev, nRevisions);
+
 	entityTree->buildHierarchy();
 
 	// Fill entities with metric data
@@ -78,6 +80,8 @@ CsvParser::CsvParser(EntityTree *et, string dataDirName, string projectionDirNam
 			parseProjectionFile(projectionDirName + filename, index);
 		}
 	}
+
+	entityTree->normalizeData();
 }
 
 // Use newest metric file to construct entities
@@ -97,6 +101,7 @@ void CsvParser::parseLastMetricFile(string filename, unsigned nRevisions)
 	istringstream(line) >> nEntities;
 	getline(file,line); // number of attributes
 	istringstream(line) >> nAttributes;
+	entityTree->nDimentions = (unsigned) nAttributes; // Save to entityTree
 	getline(file,line); // name of attributes - flush
 
 	stringstream ss(line);

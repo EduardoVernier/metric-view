@@ -28,7 +28,7 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 	double cellHeight = (getHeight()-10)/sortedSelectedEntities.size();
 	double cellWidth = currentWidth/getInstance().entityTree->nRevisions;
-	int sMetric = getInstance().entityTree->getStreamMetric();
+	int sMetric = controller.streamMetricIndex;
 
 	// Draw cells
 	for (unsigned i = 0; i < sortedSelectedEntities.size(); ++i)
@@ -36,11 +36,9 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 		Entity* e = sortedSelectedEntities[i].second;
 		for (unsigned j = 0; j < entityTree->nRevisions; ++j)
 		{
-			double min = entityTree->getSMMin();
-			double max = entityTree->getSMMax();
-			double normCValue = (e->data[j][sMetric]-min)/(max-min);
+			double normCValue = e->normalizedData[j][sMetric];
 			Color c = sequentialColormap(normCValue);
-			glColor3f(c.R,c.G,c.B);
+			glColor3d(c.R,c.G,c.B);
 
 			glRectd(j*cellWidth, i*cellHeight,
 					(j+1)*cellWidth, (i+1)*cellHeight);
@@ -50,7 +48,7 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 		if(entityTree->hovered != NULL)
 			if (e->getName() == entityTree->hovered->getName())
 		{
-			glColor3f(colorHover.R, colorHover.G, colorHover.B);
+			glColor3d(colorHover.R, colorHover.G, colorHover.B);
 
 			glRectd(-2, i*cellHeight,
 					-9, (i+1)*cellHeight);
@@ -62,11 +60,11 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 	{
 		for (unsigned i = 1; i < sortedSelectedEntities.size(); ++i)
 		{
-				glColor4f(1,1,1,1);
-				glBegin(GL_LINES);
-				glVertex2d(0, i*cellHeight);
-				glVertex2d(currentWidth, i*cellHeight);
-				glEnd();
+			glColor4f(1,1,1,1);
+			glBegin(GL_LINES);
+			glVertex2d(0, i*cellHeight);
+			glVertex2d(currentWidth, i*cellHeight);
+			glEnd();
 		}
 	}
 
@@ -93,16 +91,16 @@ void SpectrographCanvas::updateLocalSelectedGroup()
 {
 	sortedSelectedEntities.clear();
 
-	for (Entity* e : entityTree->selected)
+	for (Entity* entity : entityTree->selected)
 	{
 		double metricMean = 0.0;
 
 		for (unsigned i = 0; i < entityTree->nRevisions; ++i)
 		{
-			metricMean += e->data[i][controller.colorMetricIndex];
+			metricMean += entity->data[i][controller.colorMetricIndex];
 		}
 
-		pair<double, Entity*> selectedPair =  std::make_pair(metricMean/entityTree->nRevisions, e);
+		pair<double, Entity*> selectedPair =  std::make_pair(metricMean/entityTree->nRevisions, entity);
 		sortedSelectedEntities.push_back(selectedPair);
 	}
 

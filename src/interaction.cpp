@@ -1,17 +1,18 @@
 #include "../include/interaction.h"
+#include "../include/GL/glui.h"
 
 GLUI *glui;
 
 void initializeUI()
 {
-	glui = GLUI_Master.create_glui( "GLUI" );
+	glui = GLUI_Master.create_glui("GLUI");
 	// Metric listboxes
 	glui->add_statictext("Color Metric");
-	GLUI_Listbox *colorLB = glui->add_listbox("", &controller.colorMetricIndex, COLORMETRIC_LB, controlCB);
+	GLUI_Listbox *colorLB = glui->add_listbox("", &controller.colorMetricIndex, COLORMETRIC_LB);
 	glui->add_statictext("Radius Metric");
-	GLUI_Listbox *radiusLB = glui->add_listbox("", &controller.radiusMetricIndex, RADIUSMETRIC_LB, controlCB);
-	glui->add_statictext("Streamgraph Metric");
-	GLUI_Listbox *streamLB = glui->add_listbox("", &controller.streamMetricIndex, STREAMMETRIC_LB, controlCB);
+	GLUI_Listbox *radiusLB = glui->add_listbox("", &controller.radiusMetricIndex, RADIUSMETRIC_LB);
+	glui->add_statictext("Evolution View Metric");
+	GLUI_Listbox *streamLB = glui->add_listbox("", &controller.streamMetricIndex, STREAMMETRIC_LB);
 	for (unsigned i = 0; i < entityTree->metricVector.size(); ++i)
 	{
 		colorLB->add_item(i, entityTree->metricVector[i].c_str());
@@ -55,13 +56,7 @@ void initializeUI()
 
 	glui->add_checkbox("Display delta pie slice", &controller.deltaPie);
 	glui->add_checkbox("Dynamic Treemap", &controller.dynamicTreemap);
-	entityTree->setColorMetric(controller.colorMetricIndex);
-	entityTree->setRadiusMetric(controller.radiusMetricIndex);
-	entityTree->setStreamMetric(controller.streamMetricIndex);
-
 	glui->add_checkbox("Enable halos", &controller.halo);
-
-
 }
 
 // Callback handling
@@ -69,15 +64,6 @@ void controlCB(int control)
 {
 	switch (control)
 	{
-		case COLORMETRIC_LB:
-			entityTree->setColorMetric(controller.colorMetricIndex);
-		 	break;
-		case RADIUSMETRIC_LB:
-			entityTree->setRadiusMetric(controller.radiusMetricIndex);
-			break;
-		case STREAMMETRIC_LB:
-			entityTree->setStreamMetric(controller.streamMetricIndex);
-			break;
 		case ACCELERATION_LB:
 			switch (controller.accelerationRatioIndex)
 			{

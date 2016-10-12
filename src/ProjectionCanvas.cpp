@@ -80,9 +80,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 	glEnable(GL_LINE_SMOOTH);
 
-	int rMetric = entityTree->getRadiusMetric();
-	double rMin = entityTree->getRMMin();
-	double rMax = entityTree->getRMMax();
+	unsigned rMetric = (unsigned) controller.radiusMetricIndex;
 
 	// Draw halos
 	if (controller.halo)
@@ -92,7 +90,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 			if (b->showHalo)
 			{
 				Point p = getPoint(b, Rt, animationStep);
-				double radius = (b->data[Rt][rMetric] - rMin) / (rMax - rMin);
+				double radius = b->normalizedData[Rt][rMetric];
 				drawHalo(p.x, p.y, radius, animationStep);
 			}
 		}
@@ -103,7 +101,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 	{
 		Point p = getPoint(b, Rt, animationStep);
 		double value = b->data[Rt][rMetric];
-		double radius = ((value) - rMin) / (rMax - rMin);
+		double radius = b->normalizedData[Rt][rMetric];
 		double delta = (Rt > 1) ? (value - b->data[Rt-1][rMetric])/value: 0;
 		drawEntity(p.x, p.y, radius, delta, colorSelection, 1);
 	}
@@ -116,7 +114,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 			Entity *hovered = (Entity*) entityTree->hovered;
 			Point p = getPoint(hovered, Rt, animationStep);
 			double value = hovered->data[Rt][rMetric];
-			double radius = ((value) - rMin) / (rMax - rMin);
+			double radius = hovered->normalizedData[Rt][rMetric];
 			double delta = (Rt > 1) ? (value - hovered->data[Rt-1][rMetric])/value: 0;
 			drawEntity(p.x, p.y, radius, delta, colorHover, 1);
 		}
@@ -138,7 +136,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 					{
 						Point p = getPoint(&e, Rt, animationStep);
 						double value = e.data[Rt][rMetric];
-						double radius = (value - rMin) / (rMax - rMin);
+						double radius = e.normalizedData[Rt][rMetric];
 						double delta = (Rt > 1) ? (value - e.data[Rt-1][rMetric])/value: 0;
 						drawEntity(p.x, p.y, radius, delta, colorHover, 1);
 					}
@@ -153,7 +151,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 	{
 		Point p = getPoint(b, Rt, animationStep);
 		Color c = getColor(controller.colormapIndex, b, Rt);
-		double radius = (b->data[Rt][rMetric] - rMin) / (rMax - rMin);
+		double radius = b->normalizedData[Rt][rMetric];
 		double delta = (Rt > 1) ? (b->data[Rt][rMetric] - b->data[Rt-1][rMetric])/b->data[Rt][rMetric]: 0;
 		drawEntity(p.x, p.y, radius, delta, c, 0);
 	}

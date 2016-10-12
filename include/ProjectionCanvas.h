@@ -25,7 +25,6 @@ public:
 
 private:
 	void drawEntity(double x, double y, double radius, double delta, Color c, int action);
-	void normalizeProjection();
 	void drawHalo(double x, double y, double radius, double animationStep);
 	void drawSolidEntity(double x, double y, double radius, Color c, int action);
 	void drawPieEntity(double x, double y, double radius, double delta, Color c, int action);

@@ -51,8 +51,8 @@ void EntityTree::buildHierarchy()
 	setFirstLevelId(&packageVector[0], 0);
 	sortPackages(&packageVector[0]);
 	generateSortedEntitiesVector(&packageVector[0]);
-	setMinMax();
 	generateEntityVector();
+	setMinMax();
 	//printTree();
 }
 
@@ -75,7 +75,7 @@ void EntityTree::setHierarchicalLevel(Package *p, int level)
 }
 
 // Determines every entity tree level
-void EntityTree::setFirstLevelId(Package *p, int id)
+void EntityTree::setFirstLevelId(Package *p, int level)
 {
 	if (p->isPackage() == 1 && p->getLevel() <= 2)
 		p->firstLevelId = ++firstLevelGlobalCounter;
@@ -93,7 +93,7 @@ void EntityTree::setFirstLevelId(Package *p, int id)
 	}
 }
 
-// Sorts individual packages (parcial order)
+// Sorts individual packages (partial order)
 void EntityTree::sortPackages(Package *p)
 {
 	sort (p->childrenVector.begin(), p->childrenVector.end(),
@@ -153,25 +153,25 @@ void EntityTree::generateSortedEntitiesVector(Package *p)
 
 void EntityTree::generateEntityVector()
 {
-	for (auto b : sortedBaseEntities)
+	for (auto baseEntity : sortedBaseEntities)
 	{
-		if (b->isEntity() && b->getName() != "")
-			entities.push_back((Entity*)b);
+		if (baseEntity->isEntity() && baseEntity->getName() != "")
+			entities.push_back((Entity*)baseEntity);
 	}
 }
 
 void EntityTree::printTree()
 {
 	// Test printing
-	for (vector<BaseEntity*>::iterator b = sortedBaseEntities.begin() ; b != sortedBaseEntities.end(); ++b)
+	for (vector<BaseEntity*>::iterator baseEntity = sortedBaseEntities.begin() ; baseEntity != sortedBaseEntities.end(); ++baseEntity)
 	{
-		if ((*b)->getName() == "") continue; // Ignore root
-		for (int j = 0; j < (*b)->getLevel(); ++j)
+		if ((*baseEntity)->getName() == "") continue; // Ignore root
+		for (int j = 0; j < (*baseEntity)->getLevel(); ++j)
 			cout << " ";
 
-		cout << (*b)->getLevel() << " - " << (*b)->getScore() << " " << (*b)->getName() << " ";
-		if ((*b)->isPackage())
-			cout << ((Package*)(*b))->numberOfEntities << " " << ((Package*)(*b))->sum;
+		cout << (*baseEntity)->getLevel() << " - " << (*baseEntity)->getScore() << " " << (*baseEntity)->getName() << " ";
+		if ((*baseEntity)->isPackage())
+			cout << ((Package*)(*baseEntity))->numberOfEntities << " " << ((Package*)(*baseEntity))->sum;
 		cout << endl;
 	}
 }
@@ -179,8 +179,8 @@ void EntityTree::printTree()
 // Set min and max for use on colormapping
 void EntityTree::setMinMax()
 {
-	treeMin = FLT_MAX;
-	treeMax = FLT_MIN;
+	treeMin = DBL_MAX;
+	treeMax = DBL_MIN;
 	for (auto b : sortedBaseEntities)
 	{
 		if (b->isEntity())
@@ -194,7 +194,6 @@ void EntityTree::setMinMax()
 // Add projection point to vector of points
 void EntityTree::addProjection(string name, double x, double y, unsigned index)
 {
-
 	// Keep mins and maxs updated for normalizing the projection
 	if (x < minX) minX = x;
 	if (x > maxX) maxX = x;
@@ -213,88 +212,67 @@ void EntityTree::addProjection(string name, double x, double y, unsigned index)
 // Normalize projection points to fit on canvas nicely
 void EntityTree::normalizeProjection(double shortEdge)
 {
-	for (auto b : entities)
+	for (auto entity : entities)
 	{
-		for (unsigned i = 0; i < ((Entity*)b)->projectionPoints.size() ; ++i)
+		for (unsigned i = 0; i < (entity)->projectionPoints.size() ; ++i)
 		{
-			double normX = (((Entity*)b)->projectionPoints[i].x - minX)*((double)shortEdge)/(maxX - minX) + 20;
-			double normY = (((Entity*)b)->projectionPoints[i].y - minY)*((double)shortEdge)/(maxY - minY) + 20;
-			((Entity*)b)->normalizedProjectionPoints[i] = {normX, normY};
+			double normX = ((entity)->projectionPoints[i].x - minX)*(shortEdge)/(maxX - minX) + 20;
+			double normY = ((entity)->projectionPoints[i].y - minY)*(shortEdge)/(maxY - minY) + 20;
+			(entity)->normalizedProjectionPoints[i] = {normX, normY};
 		}
 
-		if (b->getName() == "")
-			b->setAsPackage(); // Fix root element
+		if (entity->getName() == "")
+			entity->setAsPackage(); // Fix root element
 	}
+}
+
+void EntityTree::normalizeData()
+{
+	vector<double> maxMetricValue (nDimentions, DBL_MIN);
+	vector<double> minMetricValue (nDimentions, DBL_MAX);
+
+	// Collect min and max values for each metric
+	for (unsigned metric = 0; metric < nDimentions; ++metric)
+	{
+		for (Entity* entity : entities)
+		{
+			for (unsigned revision = 0; revision < nRevisions; ++revision)
+			{
+				double value = entity->data[revision][metric];
+				if (value > maxMetricValue[metric]) maxMetricValue[metric] = value;
+				if (value < minMetricValue[metric]) minMetricValue[metric] = value;
+			}
+		}
+	}
+
+	// Normalized data
+	for (unsigned metric = 0; metric < nDimentions; ++metric)
+	{
+		for (Entity* entity : entities)
+		{
+			for (unsigned revision = 0; revision < nRevisions; ++revision)
+			{
+				double value = entity->data[revision][metric];
+				entity->normalizedData[revision][metric] =
+						(value - minMetricValue[metric])/(maxMetricValue[metric] - minMetricValue[metric]);
+			}
+		}
+	}
+
+
 }
 
 // Given a name and prefix, return corresponding entity pointer
 Entity* EntityTree::getEntityByName(string prefix, string id)
 {
-	for (auto b : entities)
+	for (auto entity : entities)
 	{
-		if (b->getName() == id && b->getPrefix() == prefix)
+		if (entity->getName() == id && entity->getPrefix() == prefix)
 		{
-			return b;
+			return entity;
 		}
 	}
 	return NULL;
-}
-
-void EntityTree::setColorMetric(int mIndex)
-{
-	colorMetricIndex = mIndex;
-	colorMetricMin = FLT_MAX;
-	colorMetricMax = FLT_MIN;
-	for (unsigned i = 0; i < sortedBaseEntities.size() ; ++i)
-	{
-		if (sortedBaseEntities[i]->isEntity())
-		{
-			for (unsigned time = 0; time < ((Entity*)sortedBaseEntities[i])->data.size() ; ++time)
-			{
-				float mValue = ((Entity*)sortedBaseEntities[i])->data[time][mIndex];
-				colorMetricMax = (mValue > colorMetricMax)? mValue : colorMetricMax;
-				colorMetricMin = (mValue < colorMetricMin)? mValue : colorMetricMin;
-			}
-		}
-	}
-}
-
-void EntityTree::setRadiusMetric(int mIndex)
-{
-	radiusMetricIndex = mIndex;
-	radiusMetricMin = FLT_MAX;
-	radiusMetricMax = FLT_MIN;
-	for (unsigned i = 0; i < sortedBaseEntities.size() ; ++i)
-	{
-		if (sortedBaseEntities[i]->isEntity())
-		{
-			for (unsigned time = 0; time < ((Entity*)sortedBaseEntities[i])->data.size() ; ++time)
-			{
-				float mValue = ((Entity*)sortedBaseEntities[i])->data[time][mIndex];
-				radiusMetricMax = (mValue > radiusMetricMax)? mValue : radiusMetricMax;
-				radiusMetricMin = (mValue < radiusMetricMin)? mValue : radiusMetricMin;
-			}
-		}
-	}
-}
-
-void EntityTree::setStreamMetric(int mIndex)
-{
-	streamMetricIndex = mIndex;
-	streamMetricMin = FLT_MAX;
-	streamMetricMax = FLT_MIN;
-	for (unsigned i = 0; i < sortedBaseEntities.size() ; ++i)
-	{
-		if (sortedBaseEntities[i]->isEntity())
-		{
-			for (unsigned time = 0; time < ((Entity*)sortedBaseEntities[i])->data.size() ; ++time)
-			{
-				float mValue = ((Entity*)sortedBaseEntities[i])->data[time][mIndex];
-				streamMetricMax = (mValue > streamMetricMax)? mValue : streamMetricMax;
-				streamMetricMin = (mValue < streamMetricMin)? mValue : streamMetricMin;
-			}
-		}
-	}
 }
 
 void EntityTree::rankFastestChangingEntities(unsigned Rt, int direction)

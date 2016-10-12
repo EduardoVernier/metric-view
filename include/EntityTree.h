@@ -26,19 +26,8 @@ public:
 	double getMax() { return treeMax; };
 	Entity* getEntityByName(string prefix, string id);
 	void addProjection(string name, double x, double y, unsigned index);
+	void normalizeData();
 	void normalizeProjection(double shortEdge);
-	void setColorMetric(int mIndex);
-	int getColorMetric() { return colorMetricIndex; };
-	float getCMMin() { return colorMetricMin; };
-	float getCMMax() { return colorMetricMax; };
-	void setRadiusMetric(int mIndex);
-	int getRadiusMetric() { return radiusMetricIndex; };
-	float getRMMin() { return radiusMetricMin; };
-	float getRMMax() { return radiusMetricMax; };
-	void setStreamMetric(int mIndex);
-	int getStreamMetric() { return streamMetricIndex; };
-	float getSMMin() { return streamMetricMin; };
-	float getSMMax() { return streamMetricMax; };
 	void rankFastestChangingEntities(unsigned Rt, int direction);
 
 	vector<string> metricVector;
@@ -49,6 +38,7 @@ public:
 	vector<Entity*> entities; // Contains only Entities ordered by score
 	int depth = 0;
 	unsigned nRevisions = 0;
+	unsigned nDimentions = 0;
 
 private:
 	void sortPackages(Package *p);
@@ -57,21 +47,22 @@ private:
 	void setMinMax();
 
 	int radiusMetricIndex = 21;
-	float radiusMetricMin;
-	float radiusMetricMax;
+	double radiusMetricMin;
+	double radiusMetricMax;
 
 	int colorMetricIndex = 21;
-	float colorMetricMin;
-	float colorMetricMax;
+	double colorMetricMin;
+	double colorMetricMax;
 
 	int streamMetricIndex = 21;
-	float streamMetricMin;
-	float streamMetricMax;
+	double streamMetricMin;
+	double streamMetricMax;
 
 	double treeMin, treeMax; // Initial LOC score
-	double minX = FLT_MAX, maxX = FLT_MIN, minY = FLT_MAX, maxY = FLT_MIN;
+	double minX = DBL_MAX, maxX = DBL_MIN, minY = DBL_MAX, maxY = DBL_MIN;
 
 	int firstLevelGlobalCounter = 0;
+
 };
 
 #endif

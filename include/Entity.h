@@ -22,11 +22,12 @@ public:
 	void setSelected(unsigned s) { selected = s; }
 	void addRevisionData (string data, unsigned rev, int nAttributes);
 
-	vector <vector <float>> data; // data[revision][metric]
+	vector <vector <double>> data; // data[revision][metric]
+	vector <vector <double>> normalizedData;
 	vector <Point> projectionPoints;
 	vector <Point> normalizedProjectionPoints;
 
-	float value; // too much trouble to make private because of custom comparator
+	double value; // too much trouble to make private because of custom comparator
 	bool showHalo = false;
 
 private:

@@ -1,32 +1,29 @@
 #include "../include/Colormap.h"
+#include "../include/interaction.h"
 
 Color getColor(int colormap, BaseEntity *b, unsigned Rt)
 {
-	int cMetric = entityTree->getColorMetric();
-	float cMin = entityTree->getCMMin();
-	float cMax = entityTree->getCMMax();
-	float value;
+	int cMetric = controller.colorMetricIndex;
+	double value;
 
 	if (b->isEntity())
 	{
-		value	= ((Entity*)b)->data[Rt][cMetric];
+		value = ((Entity*)b)->normalizedData[Rt][cMetric];
 	}
 	else
 	{
 		Package* p = (Package*) b;
 		value = 0;
-		for (auto e : p->entityVector)
-			value += e.data[Rt][cMetric];
+		for (Entity e : p->entityVector)
+			value += e.normalizedData[Rt][cMetric];
 		value /= p->entityVector.size();
 	}
-
-	float normCValue = (value - cMin) / (cMax - cMin);
 
 	Color c (1,1,1);
 	switch (colormap)
 	{
 		case (int)COLORMAP::sequential:
-			c = sequentialColormap(normCValue);
+			c = sequentialColormap(value);
 			break;
 		case (int)COLORMAP::qualitative:
 			c = qualitativeColormap(b->firstLevelId);
@@ -34,10 +31,11 @@ Color getColor(int colormap, BaseEntity *b, unsigned Rt)
 		case (int)COLORMAP::divergent:
 			if (Rt > 0)
 			{
-				float pValue	= ((Entity*)b)->data[Rt-1][cMetric];
-				float pNormCValue = ((pValue - cMin) / (cMax - cMin));
-				c = divergentColormap(normCValue-pNormCValue);
+				double pValue = ((Entity*)b)->normalizedData[Rt-1][cMetric];
+				c = divergentColormap(value - pValue);
 			}
+			break;
+		default:
 			break;
 	}
 	return c;
@@ -73,7 +71,7 @@ Color sequentialColormap(double v)
 
 Color divergentColormap(double v)
 {
-  float diff = (v)*2 + 0.5; // 5 is the "amplification" level
+  double diff = (v)*2 + 0.5; // 5 is the "amplification" level
   if (diff > 1)
     diff = 1;
   else if (diff < 0)

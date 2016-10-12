@@ -12,7 +12,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
-	int sMetric = entityTree->getStreamMetric();
+	int sMetric = controller.streamMetricIndex;
 	vector<double> normMetricValueSum;
 
 	// Filling vector
@@ -61,21 +61,18 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 		glBegin(GL_QUADS);
 		for(unsigned t = 0; t < entityTree->nRevisions; ++t)
 		{
-			double min = entityTree->getSMMin();
-			double max = entityTree->getSMMax();
-			double normCValue = (b->data[t][sMetric]-min)/(max-min);
+			double value = b->normalizedData[t][sMetric];
 			Color c (1,1,1);
 			switch (controller.sColormapIndex)
 			{
 				case 0:
-					c = sequentialColormap(normCValue);
+					c = sequentialColormap(value);
 					break;
 				case 2:
 					if (t > 0)
 					{
-						float pValue = b->data[t-1][sMetric];
-						float pNormCValue = ((pValue - min) / (max - min));
-						c = divergentColormap(normCValue-pNormCValue);
+						double pValue = b->normalizedData[t-1][sMetric];
+						c = divergentColormap(value-pValue);
 					}
 					break;
 			}
@@ -166,7 +163,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, bool ctrlDown)
 {
 	int x = drag[0], y = drag[1];
-	int sMetric = entityTree->getStreamMetric();
+	int sMetric = controller.streamMetricIndex;
 	vector<double> normMetricValueSum;
 
 	// Filling vector

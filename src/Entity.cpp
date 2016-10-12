@@ -16,11 +16,14 @@ Entity::Entity (string csvLine, unsigned nAttributes, unsigned nRevisions)
 	else
 		prefix = name.substr(0,separator);
 
+	// Initialize vectors
 	data.resize(nRevisions);
+	normalizedData.resize(nRevisions);
 
 	for (unsigned i = 0; i < nRevisions; ++i)
 	{
 		data[i].resize(nAttributes, 0.0f);
+		normalizedData[i].resize(nAttributes, 0.0f);
 	}
 
 	unsigned i = 0;
