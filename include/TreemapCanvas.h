@@ -6,7 +6,7 @@
 #include <GL/glut.h>
 
 #include "Canvas.h"
-#include "EntityTree.h"
+#include "EntityData.h"
 #include "Colormap.h"
 #include "Controller.h"
 
@@ -16,7 +16,7 @@ using namespace std;
 class TreemapCanvas : public Canvas
 {
 public:
-	TreemapCanvas (Point tl, Point br, EntityTree *et);
+	TreemapCanvas (Point tl, Point br, EntityData *et);
 	void getEntitiesByPositionOnTreemap(int *drag, unsigned click, bool ctrlDown);
 	void drawCanvas(unsigned Rt, double animationStep);
 
@@ -30,6 +30,6 @@ private:
 	void drawPackageSecondLayer(BaseEntity *e);
 	void labelCells();
 
-	EntityTree *entityTree;
+	EntityData *entityData;
 	double treemapXOff, treemapYOff;
 };

@@ -6,7 +6,7 @@
 #include <cmath>
 
 #include "BaseEntity.h"
-#include "EntityTree.h"
+#include "EntityData.h"
 #include "Container.h"
 
 using namespace std;
@@ -14,9 +14,9 @@ using namespace std;
 class Treemap
 {
 public:
-	Treemap(EntityTree *et, double _width, double _height);
+	Treemap(EntityData *et, double _width, double _height);
 	void updateSize(double _width, double _height);
-	EntityTree* getTree() { return entityTree; };
+	EntityData* getTree() { return entityData; };
 
 private:
 	void treemapMultidimensional(vector<BaseEntity*> *data, double width, double height, double xOffset, double yOffset);
@@ -27,6 +27,6 @@ private:
 	double sumNormalizedScores(vector<BaseEntity*> *data);
 	int improvesRatio(vector<BaseEntity*> *currentRow, double nextEntity, int length);
 
-	EntityTree *entityTree;
+	EntityData *entityData;
 	int width, height;
 };

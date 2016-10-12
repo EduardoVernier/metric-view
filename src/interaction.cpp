@@ -13,11 +13,11 @@ void initializeUI()
 	GLUI_Listbox *radiusLB = glui->add_listbox("", &controller.radiusMetricIndex, RADIUSMETRIC_LB);
 	glui->add_statictext("Evolution View Metric");
 	GLUI_Listbox *streamLB = glui->add_listbox("", &controller.streamMetricIndex, STREAMMETRIC_LB);
-	for (unsigned i = 0; i < entityTree->metricVector.size(); ++i)
+	for (unsigned i = 0; i < entityData->metricVector.size(); ++i)
 	{
-		colorLB->add_item(i, entityTree->metricVector[i].c_str());
-		radiusLB->add_item(i, entityTree->metricVector[i].c_str());
-		streamLB->add_item(i, entityTree->metricVector[i].c_str());
+		colorLB->add_item(i, entityData->metricVector[i].c_str());
+		radiusLB->add_item(i, entityData->metricVector[i].c_str());
+		streamLB->add_item(i, entityData->metricVector[i].c_str());
 	}
 
 	glui->add_statictext("Hierarchical View");
@@ -106,8 +106,8 @@ void mouseClick(int button, int state, int x, int y)
 	if (sum > queueSize)
 		return;
 
-	vector<Entity*> selected = entityTree->selected;
-	// Find selected entities on entityTree
+	vector<Entity*> selected = entityData->selected;
+	// Find selected entities on entityData
 	int drag[4] = {0,0,0,0};
 	switch (mouse->click(button, state, x, y, drag))
 	{
@@ -122,7 +122,7 @@ void mouseClick(int button, int state, int x, int y)
 			break;
 	}
 
-	if (selected != entityTree->selected) // Chage detected in the selected group
+	if (selected != entityData->selected) // Chage detected in the selected group
 	{
 		SpectrographCanvas::getInstance().updateLocalSelectedGroup();
 		mRank->computeLocalGroupMetric(Rt);
@@ -145,7 +145,7 @@ void mousePassive (int x, int y)
 		{
 			SpectrographCanvas::getInstance().getEntitiesOnSpectrograph(drag, 0, controller.ctrlDown);
 		}
-		hover = entityTree->hovered;
+		hover = entityData->hovered;
 	}
 	else if (mouse->canvas == 2) // Hovering treemap
 	{
@@ -154,17 +154,17 @@ void mousePassive (int x, int y)
 			tCanvas->getEntitiesByPositionOnTreemap(drag, 0, controller.ctrlDown);
 		else
 			sbCanvas->getEntitiesByPosition(drag, 0, controller.ctrlDown);
-		hover = entityTree->hovered;
+		hover = entityData->hovered;
 	}
 	else if (mouse->canvas == 1) // Hovering projection
 	{
 		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
 		pCanvas->getEntitiesByPositionOnProjection(drag, Rt, 0, controller.ctrlDown);
-		hover = entityTree->hovered;
+		hover = entityData->hovered;
 	}
 	else
 	{
-		entityTree->hovered = NULL;
+		entityData->hovered = NULL;
 		hover = NULL;
 	}
 }
@@ -188,17 +188,17 @@ void keyboard(unsigned char key, int x, int y)
 				controller.animationDirection = -1;
 				controller.animationStep = 0.0;
 				mRank->computeLocalGroupMetric(Rt);
-				entityTree->rankFastestChangingEntities(Rt, controller.animationDirection );
+				entityData->rankFastestChangingEntities(Rt, controller.animationDirection );
 			}
 			break;
 		case 'x':
-			if (Rt < entityTree->nRevisions-1)
+			if (Rt < entityData->nRevisions-1)
 			{
 				++Rt;
 				controller.animationDirection = 1;
 				controller.animationStep = 0.0;
 				mRank->computeLocalGroupMetric(Rt);
-				entityTree->rankFastestChangingEntities(Rt, controller.animationDirection );
+				entityData->rankFastestChangingEntities(Rt, controller.animationDirection );
 			}
 			break;
 	}

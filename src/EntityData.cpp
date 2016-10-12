@@ -1,7 +1,7 @@
-#include "../include/EntityTree.h"
+#include "../include/EntityData.h"
 
 // Places a new entity in it's adequate package
-void EntityTree::addEntity(Entity ent)
+void EntityData::addEntity(Entity ent)
 {
 	if (packageVector.empty())
 	{
@@ -32,7 +32,7 @@ void EntityTree::addEntity(Entity ent)
 }
 
 // Takes the list of packages and organizes it in tree
-void EntityTree::buildHierarchy()
+void EntityData::buildHierarchy()
 {
 	for (vector<Package>::reverse_iterator i = packageVector.rbegin(); i!= packageVector.rend(); ++i)
 	{
@@ -52,12 +52,11 @@ void EntityTree::buildHierarchy()
 	sortPackages(&packageVector[0]);
 	generateSortedEntitiesVector(&packageVector[0]);
 	generateEntityVector();
-	setMinMax();
 	//printTree();
 }
 
 // Determines every entity tree level
-void EntityTree::setHierarchicalLevel(Package *p, int level)
+void EntityData::setHierarchicalLevel(Package *p, int level)
 {
 	p->setLevel(level);
 	if (level + 1 > depth)
@@ -75,7 +74,7 @@ void EntityTree::setHierarchicalLevel(Package *p, int level)
 }
 
 // Determines every entity tree level
-void EntityTree::setFirstLevelId(Package *p, int level)
+void EntityData::setFirstLevelId(Package *p, int level)
 {
 	if (p->isPackage() == 1 && p->getLevel() <= 2)
 		p->firstLevelId = ++firstLevelGlobalCounter;
@@ -94,7 +93,7 @@ void EntityTree::setFirstLevelId(Package *p, int level)
 }
 
 // Sorts individual packages (partial order)
-void EntityTree::sortPackages(Package *p)
+void EntityData::sortPackages(Package *p)
 {
 	sort (p->childrenVector.begin(), p->childrenVector.end(),
 				[](const Package& p1, const Package& p2){ return (p1.sum > p2.sum); });
@@ -106,7 +105,7 @@ void EntityTree::sortPackages(Package *p)
 }
 
 // Creates a sorted vector of BaseEntity references
-void EntityTree::generateSortedEntitiesVector(Package *p)
+void EntityData::generateSortedEntitiesVector(Package *p)
 {
 	unsigned i = 0, j = 0;
 	while (1)
@@ -151,7 +150,7 @@ void EntityTree::generateSortedEntitiesVector(Package *p)
 	}
 }
 
-void EntityTree::generateEntityVector()
+void EntityData::generateEntityVector()
 {
 	for (auto baseEntity : sortedBaseEntities)
 	{
@@ -160,7 +159,7 @@ void EntityTree::generateEntityVector()
 	}
 }
 
-void EntityTree::printTree()
+void EntityData::printTree()
 {
 	// Test printing
 	for (vector<BaseEntity*>::iterator baseEntity = sortedBaseEntities.begin() ; baseEntity != sortedBaseEntities.end(); ++baseEntity)
@@ -176,23 +175,8 @@ void EntityTree::printTree()
 	}
 }
 
-// Set min and max for use on colormapping
-void EntityTree::setMinMax()
-{
-	treeMin = DBL_MAX;
-	treeMax = DBL_MIN;
-	for (auto b : sortedBaseEntities)
-	{
-		if (b->isEntity())
-		{
-			treeMin = (b->getScore() < treeMin) ? b->getScore() : treeMin;
-			treeMax = (b->getScore() > treeMax) ? b->getScore() : treeMax;
-		}
-	}
-}
-
 // Add projection point to vector of points
-void EntityTree::addProjection(string name, double x, double y, unsigned index)
+void EntityData::addProjection(string name, double x, double y, unsigned index)
 {
 	// Keep mins and maxs updated for normalizing the projection
 	if (x < minX) minX = x;
@@ -210,7 +194,7 @@ void EntityTree::addProjection(string name, double x, double y, unsigned index)
 }
 
 // Normalize projection points to fit on canvas nicely
-void EntityTree::normalizeProjection(double shortEdge)
+void EntityData::normalizeProjection(double shortEdge)
 {
 	for (auto entity : entities)
 	{
@@ -226,7 +210,7 @@ void EntityTree::normalizeProjection(double shortEdge)
 	}
 }
 
-void EntityTree::normalizeData()
+void EntityData::normalizeData()
 {
 	vector<double> maxMetricValue (nDimentions, DBL_MIN);
 	vector<double> minMetricValue (nDimentions, DBL_MAX);
@@ -263,7 +247,7 @@ void EntityTree::normalizeData()
 }
 
 // Given a name and prefix, return corresponding entity pointer
-Entity* EntityTree::getEntityByName(string prefix, string id)
+Entity* EntityData::getEntityByName(string prefix, string id)
 {
 	for (auto entity : entities)
 	{
@@ -275,7 +259,7 @@ Entity* EntityTree::getEntityByName(string prefix, string id)
 	return NULL;
 }
 
-void EntityTree::rankFastestChangingEntities(unsigned Rt, int direction)
+void EntityData::rankFastestChangingEntities(unsigned Rt, int direction)
 {
 	unsigned K = 10; // Number of shadowed elements
 	vector<pair<double,Entity*>> rank;

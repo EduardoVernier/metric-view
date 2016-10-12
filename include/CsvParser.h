@@ -7,20 +7,20 @@
 #include <memory>
 
 #include "Entity.h"
-#include "EntityTree.h"
+#include "EntityData.h"
 
 using namespace std;
 
 class CsvParser
 {
 public:
-	CsvParser(EntityTree *et, string dataDir, string projectionDirName);
-	EntityTree* getEntityTree() { return entityTree; };
+	CsvParser(EntityData *et, string dataDir, string projectionDirName);
+	EntityData* getEntityData() { return entityData; };
 
 private:
 	void parseLastMetricFile(string filename, unsigned nRevisions);
 	void parseMetricFile(string address, string filename);
 	void parseProjectionFile(string filename, unsigned index);
 
-	EntityTree *entityTree;
+	EntityData *entityData;
 };

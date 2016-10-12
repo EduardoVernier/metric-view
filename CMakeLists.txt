@@ -15,7 +15,7 @@ set(SOURCE_FILES
     include/Controller.h
     include/CsvParser.h
     include/Entity.h
-    include/EntityTree.h
+        include/EntityData.h
     include/interaction.h
     include/MetricRank.h
     include/Mouse.h
@@ -35,7 +35,7 @@ set(SOURCE_FILES
     src/Container.cpp
     src/CsvParser.cpp
     src/Entity.cpp
-    src/EntityTree.cpp
+        src/EntityData.cpp
     src/interaction.cpp
     src/main.cpp
     src/MetricRank.cpp

@@ -5,7 +5,7 @@
 
 #include "Canvas.h"
 #include "Entity.h"
-#include "EntityTree.h"
+#include "EntityData.h"
 #include "Controller.h"
 #include "Colormap.h"
 #include "Color.h"
@@ -17,7 +17,7 @@ class SpectrographCanvas : public Canvas
 {
 public:
 	static SpectrographCanvas& getInstance();
-	void init(Point tl, Point br, EntityTree *et);
+	void init(Point tl, Point br, EntityData *et);
 
 	void drawCanvas(unsigned Rt, double animationStep);
 	double getHeight();
@@ -30,5 +30,5 @@ private:
 	void operator=(SpectrographCanvas const&);
 
 	vector<std::pair<double,Entity*>> sortedSelectedEntities;
-	EntityTree *entityTree;
+	EntityData *entityData;
 };

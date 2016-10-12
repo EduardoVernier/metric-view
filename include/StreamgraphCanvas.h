@@ -3,7 +3,7 @@
 #include <GL/glut.h>
 #include "Canvas.h"
 #include "Entity.h"
-#include "EntityTree.h"
+#include "EntityData.h"
 #include "Controller.h"
 #include "Colormap.h"
 #include "Color.h"
@@ -15,11 +15,11 @@ using namespace std;
 class StreamgraphCanvas : public Canvas
 {
 public:
-	StreamgraphCanvas(Point tl, Point br, EntityTree* et);
+	StreamgraphCanvas(Point tl, Point br, EntityData* et);
 	void drawCanvas(unsigned Rt, double animationStep);
 	void getEntitiesOnStreamgraph(int *drag, unsigned click, bool ctrlDown);
 
 private:
-	EntityTree *entityTree;
+	EntityData *entityData;
 	int hoveredIndex = -1;
 };

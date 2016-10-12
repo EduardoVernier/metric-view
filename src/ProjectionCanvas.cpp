@@ -1,11 +1,11 @@
 #include "../include/ProjectionCanvas.h"
 
-ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityTree *et)
+ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityData *et)
 {
 	setSize(tl, br);
-	entityTree = et;
+	entityData = et;
 	double shortEdge = min(currentHeight, currentWidth);
-	entityTree->normalizeProjection(shortEdge - 50);
+	entityData->normalizeProjection(shortEdge - 50);
 }
 
 // Mark entities as selected from projection pane interaction
@@ -15,18 +15,18 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
 	double smallerDist = FLT_MAX;
 
 	if (click && !ctrlDown)
-		entityTree->selected.clear();
+		entityData->selected.clear();
 
-	entityTree->hovered = NULL;
+	entityData->hovered = NULL;
 
 	xRatio = currentWidth/initialWidth;
 	yRatio = currentHeight/initialHeight;
 	double minRatio = min(xRatio, yRatio);
 
-	for (auto b : entityTree->entities)
+	for (auto entity : entityData->entities)
 	{
-		double bx = b->normalizedProjectionPoints[Rt].x * minRatio;
-		double by = b->normalizedProjectionPoints[Rt].y * minRatio;
+		double bx = entity->normalizedProjectionPoints[Rt].x * minRatio;
+		double by = entity->normalizedProjectionPoints[Rt].y * minRatio;
 		if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case point click (or hover of click = 0)
 		{
 			double distX = drag[0] - bx;
@@ -37,41 +37,41 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
 				if (click)
 				{
 					smallerDist = dist;
-					closest = b;
+					closest = entity;
 				}
 				else
 				{
 					smallerDist = dist;
-					entityTree->hovered = b;
+					entityData->hovered = entity;
 				}
 			}
 		}
 		else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) // If inside selection box
 		{
-			if ((std::find(entityTree->selected.begin(), entityTree->selected.end(),b))!= entityTree->selected.end())
-				entityTree->selected.erase(std::find(entityTree->selected.begin(), entityTree->selected.end(),b));
+			if ((std::find(entityData->selected.begin(), entityData->selected.end(),entity))!= entityData->selected.end())
+				entityData->selected.erase(std::find(entityData->selected.begin(), entityData->selected.end(),entity));
 			else
-				entityTree->selected.push_back(b);
+				entityData->selected.push_back(entity);
 		}
 	}
 	if (click == 1 && closest != NULL)
 	{
-		if ((std::find(entityTree->selected.begin(), entityTree->selected.end(),closest))!=entityTree->selected.end())
-			entityTree->selected.erase(std::find(entityTree->selected.begin(), entityTree->selected.end(),closest));
+		if ((std::find(entityData->selected.begin(), entityData->selected.end(),closest))!=entityData->selected.end())
+			entityData->selected.erase(std::find(entityData->selected.begin(), entityData->selected.end(),closest));
 		else
-			entityTree->selected.push_back(closest);
+			entityData->selected.push_back(closest);
 	}
 }
 
 // Draw scaled Canvas
 void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
-	glColor3f(1.0f, 1.0f, 1.0f);
+	glColor3d(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
 	// Scale initial aspect ratio by new
 	glPushMatrix();
-	glTranslated(top_left.x, top_left.y, 0.0);
+	glTranslated(xOff, yOff, 0.0);
 
 	xRatio = currentWidth/initialWidth;
 	yRatio = currentHeight/initialHeight;
@@ -85,43 +85,43 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 	// Draw halos
 	if (controller.halo)
 	{
-		for (auto b : entityTree->entities)
+		for (auto entity : entityData->entities)
 		{
-			if (b->showHalo)
+			if (entity->showHalo)
 			{
-				Point p = getPoint(b, Rt, animationStep);
-				double radius = b->normalizedData[Rt][rMetric];
+				Point p = getPoint(entity, Rt, animationStep);
+				double radius = entity->normalizedData[Rt][rMetric];
 				drawHalo(p.x, p.y, radius, animationStep);
 			}
 		}
 	}
 
 	// Draw selected entities
-	for (auto b : entityTree->selected)
+	for (auto selected : entityData->selected)
 	{
-		Point p = getPoint(b, Rt, animationStep);
-		double value = b->data[Rt][rMetric];
-		double radius = b->normalizedData[Rt][rMetric];
-		double delta = (Rt > 1) ? (value - b->data[Rt-1][rMetric])/value: 0;
+		Point p = getPoint(selected, Rt, animationStep);
+		double value = selected->data[Rt][rMetric];
+		double radius = selected->normalizedData[Rt][rMetric];
+		double delta = (Rt > 1) ? (value - selected->data[Rt-1][rMetric])/value: 0;
 		drawEntity(p.x, p.y, radius, delta, colorSelection, 1);
 	}
 
 	// Draw hovered entities
-	if (entityTree->hovered != NULL)
+	if (entityData->hovered != NULL)
 	{
-		if (entityTree->hovered->isEntity())
+		if (entityData->hovered->isEntity())
 		{
-			Entity *hovered = (Entity*) entityTree->hovered;
+			Entity *hovered = (Entity*) entityData->hovered;
 			Point p = getPoint(hovered, Rt, animationStep);
 			double value = hovered->data[Rt][rMetric];
 			double radius = hovered->normalizedData[Rt][rMetric];
 			double delta = (Rt > 1) ? (value - hovered->data[Rt-1][rMetric])/value: 0;
 			drawEntity(p.x, p.y, radius, delta, colorHover, 1);
 		}
-		else if (entityTree->hovered->isPackage())
+		else if (entityData->hovered->isPackage())
 		{
 			// Recursive lambda function to find all entities belonging to a package
-			Package *hovered = (Package*) entityTree->hovered;
+			Package *hovered = (Package*) entityData->hovered;
 			function<void (Package*)> f;
 			f = [&](Package* p)
 			{
@@ -147,7 +147,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 	}
 
 	// Draw all entities
-	for (auto b : entityTree->entities)
+	for (auto b : entityData->entities)
 	{
 		Point p = getPoint(b, Rt, animationStep);
 		Color c = getColor(controller.colormapIndex, b, Rt);
@@ -352,14 +352,14 @@ Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep)
 		p.x = b->normalizedProjectionPoints[Rt].x;
 		p.y = b->normalizedProjectionPoints[Rt].y;
 	}
-	else if (animationStep > 0 && Rt > 0 && Rt < entityTree->nRevisions) // Moving forwards
+	else if (animationStep > 0 && Rt > 0 && Rt < entityData->nRevisions) // Moving forwards
 	{
 		p.x = (1-animationStep)*b->normalizedProjectionPoints[Rt-1].x
 					+ animationStep  *b->normalizedProjectionPoints[Rt].x;
 		p.y = (1-animationStep)*b->normalizedProjectionPoints[Rt-1].y
 					+ animationStep  *b->normalizedProjectionPoints[Rt].y;
 	}
-	else if (animationStep < 0 && Rt < entityTree->nRevisions) // Moving backwards
+	else if (animationStep < 0 && Rt < entityData->nRevisions) // Moving backwards
 	{
 		animationStep*=-1;
 		p.x = (1-animationStep)*b->normalizedProjectionPoints[Rt+1].x

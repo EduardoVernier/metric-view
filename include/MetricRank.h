@@ -8,7 +8,7 @@
 #include <iomanip>
 
 #include "Entity.h"
-#include "EntityTree.h"
+#include "EntityData.h"
 #include "Colormap.h"
 
 using namespace std;
@@ -24,7 +24,7 @@ struct MetricScore
 class MetricRank
 {
 public:
-	MetricRank(EntityTree *_et);
+	MetricRank(EntityData *_et);
 	void computeLocalGroupMetric(unsigned Rt);
 
 	vector<MetricScore> explainingMetric;
@@ -33,5 +33,5 @@ private:
 	void computeMean(vector<Entity*> entityVector, unsigned Rt, vector<double> &meanVector);
 	void computeVar(vector<Entity*> entityVector, unsigned Rt, vector<double> &varVector);
 
-	EntityTree *et;
+	EntityData *et;
 };

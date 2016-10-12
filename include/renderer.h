@@ -18,7 +18,7 @@
 
 extern Controller controller;
 extern unsigned Rt;
-extern EntityTree *entityTree;
+extern EntityData *entityData;
 
 void display();
 void reshape(int w, int h);

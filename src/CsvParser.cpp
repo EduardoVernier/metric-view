@@ -1,8 +1,8 @@
 #include "../include/CsvParser.h"
 
-CsvParser::CsvParser(EntityTree *et, string dataDirName, string projectionDirName)
+CsvParser::CsvParser(EntityData *et, string dataDirName, string projectionDirName)
 {
-	entityTree = et;
+	entityData = et;
 
 	// Parse metric data
 	struct dirent *dDirent;
@@ -36,7 +36,7 @@ CsvParser::CsvParser(EntityTree *et, string dataDirName, string projectionDirNam
 			nRevisions++;
 		}
 	}
-	entityTree->nRevisions = nRevisions;
+	entityData->nRevisions = nRevisions;
 
 	closedir (dataDir);
 
@@ -44,7 +44,7 @@ CsvParser::CsvParser(EntityTree *et, string dataDirName, string projectionDirNam
 	// Build empty entities
 	parseLastMetricFile(dataDirName + "/" + lastRev, nRevisions);
 
-	entityTree->buildHierarchy();
+	entityData->buildHierarchy();
 
 	// Fill entities with metric data
 	dataDir = opendir(dataDirName.c_str());
@@ -81,7 +81,7 @@ CsvParser::CsvParser(EntityTree *et, string dataDirName, string projectionDirNam
 		}
 	}
 
-	entityTree->normalizeData();
+	entityData->normalizeData();
 }
 
 // Use newest metric file to construct entities
@@ -101,7 +101,7 @@ void CsvParser::parseLastMetricFile(string filename, unsigned nRevisions)
 	istringstream(line) >> nEntities;
 	getline(file,line); // number of attributes
 	istringstream(line) >> nAttributes;
-	entityTree->nDimentions = (unsigned) nAttributes; // Save to entityTree
+	entityData->nDimentions = (unsigned) nAttributes; // Save to entityData
 	getline(file,line); // name of attributes - flush
 
 	stringstream ss(line);
@@ -109,16 +109,16 @@ void CsvParser::parseLastMetricFile(string filename, unsigned nRevisions)
 	{
 		string metricName;
 		getline(ss, metricName, ';');
-		entityTree->metricVector.push_back(metricName);
+		entityData->metricVector.push_back(metricName);
 	}
 
 	// Add tree root
-	entityTree->addEntity(Entity(";0;0;0;0;0;0;0;0.0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.0;0;0;0;0;0;0", nAttributes, nRevisions));
+	entityData->addEntity(Entity(";0;0;0;0;0;0;0;0.0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.0;0;0;0;0;0;0", nAttributes, nRevisions));
 
-	// Add all elements (classes) from last metric file to the entityTree
+	// Add all elements (classes) from last metric file to the entityData
 	while(getline(file,line))
 	{
-		entityTree->addEntity(Entity(line, nAttributes, nRevisions));
+		entityData->addEntity(Entity(line, nAttributes, nRevisions));
 	}
 }
 
@@ -146,7 +146,7 @@ void CsvParser::parseMetricFile(string address, string filename)
 	istringstream(line) >> nAttributes;
 	getline(file,line); // name of attributes - flush
 
-	// Add all elements (classes) from a given revision to the entityTree
+	// Add all elements (classes) from a given revision to the entityData
 	while(getline(file,line))
 	{
 		// Collect name
@@ -161,7 +161,7 @@ void CsvParser::parseMetricFile(string address, string filename)
 		else
 			prefix = name.substr(0,separator);
 
-		Entity *ent = entityTree->getEntityByName(prefix, id);
+		Entity *ent = entityData->getEntityByName(prefix, id);
 		ent->addRevisionData(line, rev, nAttributes);
 	}
 }
@@ -196,6 +196,6 @@ void CsvParser::parseProjectionFile(string filename, unsigned index)
 		getline(ss, sy, ';');
 		istringstream(sy) >> y;
 		// cout << name << " " << x << " " << y << endl;
-		entityTree->addProjection(name, x, y, index);
+		entityData->addProjection(name, x, y, index);
 	}
 }

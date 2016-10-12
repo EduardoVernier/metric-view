@@ -8,15 +8,15 @@ SpectrographCanvas& SpectrographCanvas::getInstance()
  	return instance;
 }
 
-void SpectrographCanvas::init(Point tl, Point br, EntityTree *et)
+void SpectrographCanvas::init(Point tl, Point br, EntityData *et)
 {
 	setSize(tl, br);
-	entityTree = et;
+	entityData = et;
 }
 
 double SpectrographCanvas::getHeight()
 {
-	double desiredHeight = entityTree->selected.size() * MAX_LINE_HEIGHT;
+	double desiredHeight = entityData->selected.size() * MAX_LINE_HEIGHT;
 	return (desiredHeight < 500) ? desiredHeight : 500; // Set 500 as limit for now
 }
 
@@ -27,14 +27,14 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glTranslated(top_left.x, top_left.y, 0);
 
 	double cellHeight = (getHeight()-10)/sortedSelectedEntities.size();
-	double cellWidth = currentWidth/getInstance().entityTree->nRevisions;
+	double cellWidth = currentWidth/getInstance().entityData->nRevisions;
 	int sMetric = controller.streamMetricIndex;
 
 	// Draw cells
 	for (unsigned i = 0; i < sortedSelectedEntities.size(); ++i)
 	{
 		Entity* e = sortedSelectedEntities[i].second;
-		for (unsigned j = 0; j < entityTree->nRevisions; ++j)
+		for (unsigned j = 0; j < entityData->nRevisions; ++j)
 		{
 			double normCValue = e->normalizedData[j][sMetric];
 			Color c = sequentialColormap(normCValue);
@@ -45,8 +45,8 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 		}
 		// Draw hover indication
-		if(entityTree->hovered != NULL)
-			if (e->getName() == entityTree->hovered->getName())
+		if(entityData->hovered != NULL)
+			if (e->getName() == entityData->hovered->getName())
 		{
 			glColor3d(colorHover.R, colorHover.G, colorHover.B);
 
@@ -91,16 +91,16 @@ void SpectrographCanvas::updateLocalSelectedGroup()
 {
 	sortedSelectedEntities.clear();
 
-	for (Entity* entity : entityTree->selected)
+	for (Entity* entity : entityData->selected)
 	{
 		double metricMean = 0.0;
 
-		for (unsigned i = 0; i < entityTree->nRevisions; ++i)
+		for (unsigned i = 0; i < entityData->nRevisions; ++i)
 		{
 			metricMean += entity->data[i][controller.colorMetricIndex];
 		}
 
-		pair<double, Entity*> selectedPair =  std::make_pair(metricMean/entityTree->nRevisions, entity);
+		pair<double, Entity*> selectedPair =  std::make_pair(metricMean/entityData->nRevisions, entity);
 		sortedSelectedEntities.push_back(selectedPair);
 	}
 
@@ -114,6 +114,6 @@ void SpectrographCanvas::getEntitiesOnSpectrograph(int *drag, unsigned click, bo
 	unsigned index = (unsigned) floor(y / cellHeight) - 1;
 	if (index >= 0 && index < sortedSelectedEntities.size())
 	{
-		entityTree->hovered = sortedSelectedEntities[index].second;
+		entityData->hovered = sortedSelectedEntities[index].second;
 	}
 }

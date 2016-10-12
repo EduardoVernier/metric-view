@@ -1,26 +1,26 @@
 #include "../include/StreamgraphCanvas.h"
 
-StreamgraphCanvas::StreamgraphCanvas(Point tl, Point br, EntityTree *et)
+StreamgraphCanvas::StreamgraphCanvas(Point tl, Point br, EntityData *et)
 {
 	setSize(tl, br);
-	entityTree = et;
+	entityData = et;
 }
 
 // Draw Canvas with fixed height
 void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
-	glColor3f(1.0f, 1.0f, 1.0f);
+	glColor3d(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
 	int sMetric = controller.streamMetricIndex;
 	vector<double> normMetricValueSum;
 
 	// Filling vector
-	auto maxSum = 0;
-	for (unsigned i = 0; i < entityTree->nRevisions; ++i)
+	double maxSum = 0;
+	for (unsigned i = 0; i < entityData->nRevisions; ++i)
 	{
 		double sum = 0;
-		for (auto e : entityTree->selected)
+		for (auto e : entityData->selected)
 		{
 			sum += e->data[i][sMetric];
 		}
@@ -37,17 +37,17 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 	hoveredIndex = -1;
 	// Compute y coords for each line for each member
-	double yPos [entityTree->nRevisions][entityTree->selected.size()+1];
-	for (unsigned t = 0; t < entityTree->nRevisions; ++t)
+	double yPos [entityData->nRevisions][entityData->selected.size()+1];
+	for (unsigned t = 0; t < entityData->nRevisions; ++t)
 	{
 		yPos[t][0] = controller.streamgraphHeight/2 - normMetricValueSum[t]/2;
 		int i = 1;
-		for (auto b = entityTree->selected.begin(); b != entityTree->selected.end(); ++b)
+		for (auto b = entityData->selected.begin(); b != entityData->selected.end(); ++b)
 		{
 			yPos[t][i] = yPos[t][i-1] + ((Entity*)(*b))->data[t][sMetric]*((0.90*controller.streamgraphHeight)/maxSum);
 			++i;
-			if (entityTree->hovered != NULL && (*b)->getName() == entityTree->hovered->getName())
-				hoveredIndex = b - entityTree->selected.begin();
+			if (entityData->hovered != NULL && (*b)->getName() == entityData->hovered->getName())
+				hoveredIndex = b - entityData->selected.begin();
 		}
 	}
 
@@ -56,10 +56,10 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	unsigned i = 0;
-	for (auto b : entityTree->selected)
+	for (auto b : entityData->selected)
 	{
 		glBegin(GL_QUADS);
-		for(unsigned t = 0; t < entityTree->nRevisions; ++t)
+		for(unsigned t = 0; t < entityData->nRevisions; ++t)
 		{
 			double value = b->normalizedData[t][sMetric];
 			Color c (1,1,1);
@@ -75,17 +75,18 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 						c = divergentColormap(value-pValue);
 					}
 					break;
+				default:break;
 			}
 
-			glColor3f(c.R,c.G,c.B);
+			glColor3d(c.R,c.G,c.B);
 			if (t > 0)
 			{
-				glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][i], 0);
-				glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][i+1], 0);
+				glVertex3d(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][i], 0);
+				glVertex3d(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][i+1], 0);
 			}
 
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][i+1], 0);
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][i], 0);
+			glVertex3d(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][i+1], 0);
+			glVertex3d(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][i], 0);
 		}
 		glEnd();
 		++i;
@@ -93,13 +94,13 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 	// Draw lines
 	glEnable(GL_LINE_SMOOTH);
-	for (unsigned i = 0; i < entityTree->selected.size()+1; ++i)
+	for (unsigned i = 0; i < entityData->selected.size()+1; ++i)
 	{
 		glColor3f(0,0,0);
 		glBegin(GL_LINE_STRIP);
-		for (unsigned t = 0; t < entityTree->nRevisions; ++t)
+		for (unsigned t = 0; t < entityData->nRevisions; ++t)
 		{
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][i], 0);
+			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][i], 0);
 		}
 		glEnd();
 	}
@@ -110,15 +111,15 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 		glLineWidth(3);
 		glColor3f(colorHover.R, colorHover.G, colorHover.B);
 		glBegin(GL_LINE_STRIP);
-		for (unsigned t = 0; t < entityTree->nRevisions; ++t)
+		for (unsigned t = 0; t < entityData->nRevisions; ++t)
 		{
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][hoveredIndex], 0);
+			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][hoveredIndex], 0);
 		}
 		glEnd();
 		glBegin(GL_LINE_STRIP);
-		for (unsigned t = 0; t < entityTree->nRevisions; ++t)
+		for (unsigned t = 0; t < entityData->nRevisions; ++t)
 		{
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][hoveredIndex+1], 0);
+			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][hoveredIndex+1], 0);
 		}
 		glEnd();
 		glLineWidth(1);
@@ -129,21 +130,21 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	{
 		glColor4f(colorHover.R, colorHover.G, colorHover.B, 0.2);
 		glBegin(GL_QUAD_STRIP);
-		for (unsigned t = 0; t < entityTree->nRevisions; ++t)
+		for (unsigned t = 0; t < entityData->nRevisions; ++t)
 		{
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][hoveredIndex], 0);
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y + yPos[t][hoveredIndex+1], 0);
+			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][hoveredIndex], 0);
+			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][hoveredIndex+1], 0);
 		}
 		glEnd();
 	}
 
 	// Draw vertical lines
 	glColor4f(0,0,0,0.1);
-	for (unsigned t = 0; t < entityTree->nRevisions; ++t)
+	for (unsigned t = 0; t < entityData->nRevisions; ++t)
 	{
 		glBegin(GL_LINE_STRIP);
-		glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y, 0);
-		glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), bottom_right.y, 0);
+		glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y, 0);
+		glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), bottom_right.y, 0);
 		glEnd();
 	}
 	glDisable(GL_BLEND);
@@ -152,8 +153,8 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glColor4f(1,0,0,0.8);
 	glBegin(GL_LINE_STRIP);
 	double Rtp = (animationStep!=0.0 && animationStep > 0)? Rt+animationStep : (Rt+2) + (animationStep);
-	glVertex3f(top_left.x + (Rtp)*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), top_left.y, 0);
-	glVertex3f(top_left.x + (Rtp)*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1)), bottom_right.y, 0);
+	glVertex3f(top_left.x + (Rtp)*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y, 0);
+	glVertex3f(top_left.x + (Rtp)*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), bottom_right.y, 0);
 	glEnd();
 
 }
@@ -168,10 +169,10 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, bool
 
 	// Filling vector
 	unsigned maxSum = 0;
-	for (unsigned i = 0; i < entityTree->nRevisions; ++i)
+	for (unsigned i = 0; i < entityData->nRevisions; ++i)
 	{
 		double sum = 0;
-		for (auto e : entityTree->selected)
+		for (auto e : entityData->selected)
 		{
 			sum += ((Entity*)e)->data[i][sMetric];
 		}
@@ -187,12 +188,12 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, bool
 	}
 
 	// Compute y coords for each line for each member
-	double yPos [entityTree->nRevisions][entityTree->selected.size()+1];
-	for (unsigned t = 0; t < entityTree->nRevisions; ++t)
+	double yPos [entityData->nRevisions][entityData->selected.size()+1];
+	for (unsigned t = 0; t < entityData->nRevisions; ++t)
 	{
 		yPos[t][0] = controller.streamgraphHeight/2 - normMetricValueSum[t]/2;
 		int i = 1;
-		for (auto e : entityTree->selected)
+		for (auto e : entityData->selected)
 		{
 			yPos[t][i] = yPos[t][i-1] + e->data[t][sMetric]*((0.90*controller.streamgraphHeight)/maxSum);
 			++i;
@@ -202,10 +203,10 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, bool
 	// Find Ti and Tj
 	int Ti = -1, Tj = -1;
 	double p;
-	for (int t = 0; t < (int) entityTree->nRevisions; ++t)
+	for (int t = 0; t < (int) entityData->nRevisions; ++t)
 	{
-		float t0 = t*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1));
-		float t1 = (t+1)*(float(bottom_right.x - top_left.x)/float(entityTree->nRevisions-1));
+		float t0 = t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1));
+		float t1 = (t+1)*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1));
 		if (x > t0 && x < t1)
 		{
 			p = (x - t0)/(t1-t0);
@@ -218,11 +219,11 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, bool
 	// Find hovered entity
 	if (Ti != -1)
 	{
-		for (int i = 0; i < (int)entityTree->selected.size(); ++i)
+		for (int i = 0; i < (int)entityData->selected.size(); ++i)
 		{
 			if ((y > (1-p)*yPos[Ti][i] + p*yPos[Tj][i]) && (y < (1-p)*yPos[Ti][i+1] + p*yPos[Tj][i+1]))
 			{
-				entityTree->hovered = entityTree->selected[i];
+				entityData->hovered = entityData->selected[i];
 				break;
 			}
 		}

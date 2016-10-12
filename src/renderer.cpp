@@ -96,12 +96,12 @@ void setCanvassesSizes(int W, int H)
 	// Instantiate if it's the first call, else just update size
 	if (pCanvas == nullptr && tCanvas == nullptr)
 	{
-		pCanvas = std::make_shared<ProjectionCanvas> (pTL, pBR, entityTree);
-		tCanvas = std::make_shared<TreemapCanvas> (tTL, tBR, entityTree);
-		sbCanvas = std::make_shared<SunburstCanvas> (tTL, tBR, entityTree);
-		stCanvas = std::make_shared<StreamgraphCanvas> (pTL, pBR, entityTree);
-		SpectrographCanvas::getInstance().init(pTL, pBR, entityTree);
-		mRank = std::make_shared<MetricRank>(entityTree);
+		pCanvas = std::make_shared<ProjectionCanvas> (pTL, pBR, entityData);
+		tCanvas = std::make_shared<TreemapCanvas> (tTL, tBR, entityData);
+		sbCanvas = std::make_shared<SunburstCanvas> (tTL, tBR, entityData);
+		stCanvas = std::make_shared<StreamgraphCanvas> (pTL, pBR, entityData);
+		SpectrographCanvas::getInstance().init(pTL, pBR, entityData);
+		mRank = std::make_shared<MetricRank>(entityData);
 	}
 	else
 	{
@@ -159,7 +159,7 @@ void drawHoveringLabel()
 
 void renderHoverString(int x, int y, string str)
 {
-	glColor3f(1, 1, 1);
+	glColor3d(1, 1, 1);
 	glRasterPos2i(x, y);
 	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
 	glutBitmapString(GLUT_BITMAP_9_BY_15, s);
@@ -177,7 +177,7 @@ void drawSelectionBox()
 void drawRt()
 {
 	string str = to_string(Rt);
-	glColor3f(0, 0, 0);
+	glColor3d(0, 0, 0);
 	int x = controller.winWidth/2 - 30;
 	glRasterPos2i(x, 35);
 	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());

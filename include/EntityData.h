@@ -1,5 +1,4 @@
-#ifndef ENTITYTREE_H
-#define ENTITYTREE_H
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -13,17 +12,15 @@
 
 using namespace std;
 
-class EntityTree
+class EntityData
 {
 public:
-	EntityTree(){ };
+	EntityData(){};
 	void addEntity(Entity ent);
  	void buildHierarchy();
 	void generateSortedEntitiesVector(Package *p);
 	void generateEntityVector();
 	void printTree();
-	double getMin() { return treeMin; };
-	double getMax() { return treeMax; };
 	Entity* getEntityByName(string prefix, string id);
 	void addProjection(string name, double x, double y, unsigned index);
 	void normalizeData();
@@ -44,25 +41,8 @@ private:
 	void sortPackages(Package *p);
 	void setHierarchicalLevel(Package *p, int level);
 	void setFirstLevelId(Package *p, int level);
-	void setMinMax();
 
-	int radiusMetricIndex = 21;
-	double radiusMetricMin;
-	double radiusMetricMax;
-
-	int colorMetricIndex = 21;
-	double colorMetricMin;
-	double colorMetricMax;
-
-	int streamMetricIndex = 21;
-	double streamMetricMin;
-	double streamMetricMax;
-
-	double treeMin, treeMax; // Initial LOC score
-	double minX = DBL_MAX, maxX = DBL_MIN, minY = DBL_MAX, maxY = DBL_MIN;
-
+	double minX = DBL_MAX, maxX = DBL_MIN, minY = DBL_MAX, maxY = DBL_MIN; // Used in the projection normalizationF
 	int firstLevelGlobalCounter = 0;
 
 };
-
-#endif

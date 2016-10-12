@@ -1,11 +1,11 @@
 #pragma once
 
 #include <cmath>
-#include "EntityTree.h"
+#include "EntityData.h"
 #include "Color.h"
 #include "Package.h"
 #include "Entity.h"
-extern EntityTree *entityTree;
+extern EntityData *entityData;
 
 enum class COLORMAP: int { sequential = 0, qualitative, divergent };
 

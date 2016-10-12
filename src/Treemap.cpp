@@ -3,15 +3,15 @@
 void
 treemapSingledimensional(vector<BaseEntity *> *pVector, double width, double height, double offset, double yOffset);
 
-Treemap::Treemap(EntityTree *et, double _width, double _height)
+Treemap::Treemap(EntityData *et, double _width, double _height)
 {
-	entityTree = et;
+	entityData = et;
 	width = _width;
 	height = _height;
 
 	// Take all first level BaseEntities and start treemapping algorithm
 	vector<BaseEntity*> data;
-	for (auto b : entityTree->sortedBaseEntities)
+	for (auto b : entityData->sortedBaseEntities)
 	{
 		if (b->getLevel() == 1 && b->getScore() != 0)
 		{
@@ -163,7 +163,7 @@ void Treemap::updateSize (double _width, double _height)
 	height = _height;
 
 	vector<BaseEntity*> data;
-	for (vector<BaseEntity*>::iterator b = entityTree->sortedBaseEntities.begin(); b != entityTree->sortedBaseEntities.end(); ++b)
+	for (vector<BaseEntity*>::iterator b = entityData->sortedBaseEntities.begin(); b != entityData->sortedBaseEntities.end(); ++b)
 	{
 		if ((*b)->getLevel() == 1 && (*b)->getScore() != 0)
 		{

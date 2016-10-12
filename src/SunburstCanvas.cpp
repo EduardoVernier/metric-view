@@ -4,13 +4,13 @@ template <typename T>
 bool inBounds(const T& value, const T& low, const T& high)
 {	return !(value < low) && !(high < value); }
 
-SunburstCanvas::SunburstCanvas (Point tl, Point br, EntityTree *et)
+SunburstCanvas::SunburstCanvas (Point tl, Point br, EntityData *et)
 {
 	setSize(tl, br);
-	entityTree = et;
+	entityData = et;
 
 	innerRadius = 30;
-	unitWidth = (2.0*PI)/(double)entityTree->entities.size();
+	unitWidth = (2.0*PI)/(double)entityData->entities.size();
 }
 
 void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
@@ -18,9 +18,9 @@ void SunburstCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
-	double unitWidth = (2.0*PI)/(double)entityTree->entities.size();
+	double unitWidth = (2.0*PI)/(double)entityData->entities.size();
 	double currentTheta = 0.0;
-	for (auto b : entityTree->sortedBaseEntities)
+	for (auto b : entityData->sortedBaseEntities)
 	{
 		if(b->getName()=="")
 			continue;
@@ -40,7 +40,7 @@ void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 	double y = yOff + currentHeight/2;
 
 	double shortSide = (currentWidth < currentHeight)? currentWidth : currentHeight;
-	double r = (shortSide/2 - innerRadius)/(entityTree->depth+1);
+	double r = (shortSide/2 - innerRadius)/(entityData->depth+1);
 	double r0 = b->getLevel()*r + innerRadius;
 	double r1 = (b->getLevel()+1)*r + innerRadius;
 
@@ -66,12 +66,12 @@ void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 
 
 	// Line around it
-	if(b == entityTree->hovered)
+	if(b == entityData->hovered)
 	{
 		glColor3f(colorHover.R, colorHover.G, colorHover.B);
 		glLineWidth(4.0f);
 	}
-	else if (find (entityTree->selected.begin(), entityTree->selected.end(), b) != entityTree->selected.end())
+	else if (find (entityData->selected.begin(), entityData->selected.end(), b) != entityData->selected.end())
 	{
 		glColor3f(colorSelection.R, colorSelection.G, colorSelection.B);
 		glLineWidth(4.0f);
@@ -100,9 +100,9 @@ void SunburstCanvas::drawSlice(BaseEntity* b, unsigned Rt, double currentTheta)
 
 void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlDown)
 {
-	entityTree->hovered = NULL;
+	entityData->hovered = NULL;
 	if (click && !ctrlDown)
-		entityTree->selected.clear();
+		entityData->selected.clear();
 
 	// Center x and y at middle of the frame
 	double normX = drag[0] - currentWidth/2.0;
@@ -119,9 +119,9 @@ void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlD
 	// Find element using construction algorithm
 	double shortSide = (currentWidth < currentHeight)? currentWidth : currentHeight;
 	double currentTheta = 0;
-	for (auto b : entityTree->sortedBaseEntities)
+	for (auto b : entityData->sortedBaseEntities)
 	{
-		double ru = (shortSide/2 - innerRadius)/(entityTree->depth+1);
+		double ru = (shortSide/2 - innerRadius)/(entityData->depth+1);
 		double r0 = b->getLevel()*ru + innerRadius;
 		double r1 = (b->getLevel()+1)*ru + innerRadius;
 
@@ -139,15 +139,15 @@ void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlD
 		if (inBounds(theta, theta0, theta1) && inBounds(r, r0, r1))
 		{
 			if (!click)
-				entityTree->hovered = b;
+				entityData->hovered = b;
 			else if (click)
 			{
 				if (b->isEntity())
 				{
-					if ((std::find(entityTree->selected.begin(), entityTree->selected.end(), b))!=entityTree->selected.end())
-						entityTree->selected.erase(std::find(entityTree->selected.begin(), entityTree->selected.end(), b));
+					if ((std::find(entityData->selected.begin(), entityData->selected.end(), b))!=entityData->selected.end())
+						entityData->selected.erase(std::find(entityData->selected.begin(), entityData->selected.end(), b));
 					else
-						entityTree->selected.push_back((Entity*)b);
+						entityData->selected.push_back((Entity*)b);
 				}
 				else if (b->isPackage())
 				{
@@ -164,14 +164,14 @@ void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlD
 
 							for (auto e : p->entityVector)
 							{
-								for (auto ep : entityTree->entities)
+								for (auto ep : entityData->entities)
 								{
 									if (e.getName() == ep->getName())
 									{
-										if ((std::find(entityTree->selected.begin(), entityTree->selected.end(), ep))!=entityTree->selected.end())
-											entityTree->selected.erase(std::find(entityTree->selected.begin(), entityTree->selected.end(), ep));
+										if ((std::find(entityData->selected.begin(), entityData->selected.end(), ep))!=entityData->selected.end())
+											entityData->selected.erase(std::find(entityData->selected.begin(), entityData->selected.end(), ep));
 										else
-											entityTree->selected.push_back(ep);
+											entityData->selected.push_back(ep);
 									}
 								}
 							}

@@ -1,6 +1,6 @@
 #include "../include/MetricRank.h"
 
-MetricRank::MetricRank(EntityTree *_et)
+MetricRank::MetricRank(EntityData *_et)
 {
 	et = _et;
 	explainingMetric.resize(et->metricVector.size());

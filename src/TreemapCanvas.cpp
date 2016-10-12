@@ -1,19 +1,19 @@
 #include "../include/TreemapCanvas.h"
 
-TreemapCanvas::TreemapCanvas (Point tl, Point br, EntityTree *et)
+TreemapCanvas::TreemapCanvas (Point tl, Point br, EntityData *et)
 {
 	setSize(tl, br);
-	entityTree = et;
+	entityData = et;
 }
 
 // Fill vector of pointers of the selected entities
-// For some strange reason, the entityTree member is always NULL in this method, so I'm passing it's pointer as arg
+// For some strange reason, the entityData member is always NULL in this method, so I'm passing it's pointer as arg
 void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, bool ctrlDown)
 {
 	if (click && !ctrlDown)
-		entityTree->selected.clear();
+		entityData->selected.clear();
 
-	for (vector<BaseEntity*>::iterator b = entityTree->sortedBaseEntities.begin(); b != entityTree->sortedBaseEntities.end(); ++b)
+	for (vector<BaseEntity*>::iterator b = entityData->sortedBaseEntities.begin(); b != entityData->sortedBaseEntities.end(); ++b)
 	{
 		if ((*b)->isEntity())
 		{
@@ -25,13 +25,13 @@ void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, bo
 			{
 				if (click)
 				{
-					if ((std::find(entityTree->selected.begin(), entityTree->selected.end(),(Entity*)*b))!= entityTree->selected.end())
-						entityTree->selected.erase(std::find(entityTree->selected.begin(),entityTree-> selected.end(),(Entity*)*b));
+					if ((std::find(entityData->selected.begin(), entityData->selected.end(),(Entity*)*b))!= entityData->selected.end())
+						entityData->selected.erase(std::find(entityData->selected.begin(),entityData-> selected.end(),(Entity*)*b));
 					else
-						entityTree->selected.push_back((Entity*)*b);
+						entityData->selected.push_back((Entity*)*b);
 				}
 				else
-					entityTree->hovered = (Entity*)*b;
+					entityData->hovered = (Entity*)*b;
 			}
 		}
 	}
@@ -40,7 +40,7 @@ void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, bo
 // First draw elements and then package borders
 void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
-	vector<BaseEntity*> items = entityTree->sortedBaseEntities;
+	vector<BaseEntity*> items = entityData->sortedBaseEntities;
 
 	// Scale initial aspect ratio by new
 	glPushMatrix();
@@ -49,20 +49,20 @@ void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glScaled(xRatio, yRatio, 1);
 
 	// Draw treemap class entities
-	for (vector<Entity*>::iterator it = entityTree->entities.begin(); it != entityTree->entities.end(); ++it)
+	for (vector<Entity*>::iterator it = entityData->entities.begin(); it != entityData->entities.end(); ++it)
 	{
 		drawEntity(*it, Rt, animationStep);
 	}
 
 	// Draw Package borders
-	for (vector<BaseEntity*>::iterator it = entityTree->sortedBaseEntities.begin(); it != entityTree->sortedBaseEntities.end(); ++it)
+	for (vector<BaseEntity*>::iterator it = entityData->sortedBaseEntities.begin(); it != entityData->sortedBaseEntities.end(); ++it)
 	{
 		if ((*it)->isPackage())
 		{
 			drawPackageFirstLayer(*it);
 		}
 	}
-	for (vector<BaseEntity*>::iterator it = entityTree->sortedBaseEntities.begin(); it != entityTree->sortedBaseEntities.end(); ++it)
+	for (vector<BaseEntity*>::iterator it = entityData->sortedBaseEntities.begin(); it != entityData->sortedBaseEntities.end(); ++it)
 	{
 		if ((*it)->isPackage())
 		{
@@ -70,11 +70,11 @@ void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 		}
 	}
 
-	for (vector<Entity*>::iterator it = entityTree->selected.begin(); it != entityTree->selected.end(); ++it)
+	for (vector<Entity*>::iterator it = entityData->selected.begin(); it != entityData->selected.end(); ++it)
 	{
 		drawSelected(*it);
 	}
-	drawHovered(entityTree->hovered);
+	drawHovered(entityData->hovered);
 	labelCells();
 
 	glPopMatrix();
@@ -181,11 +181,11 @@ void TreemapCanvas::computeRectangleSize(double *retCoords, Entity *e, unsigned 
 	{
 		ratio = sqrt(e->data[Rt][21]/e->getScore());
 		double prevRatio = sqrt(e->data[Rt][21]/e->getScore());
-		if (animationStep > 0 && Rt > 0 && Rt < entityTree->nRevisions)
+		if (animationStep > 0 && Rt > 0 && Rt < entityData->nRevisions)
 		{
 			prevRatio = sqrt(e->data[Rt-1][21]/e->getScore());
 		}
-		else if (animationStep < 0 && Rt < entityTree->nRevisions)
+		else if (animationStep < 0 && Rt < entityData->nRevisions)
 		{
 			animationStep*=-1;
 			prevRatio = sqrt(e->data[Rt+1][21]/e->getScore());
@@ -333,7 +333,7 @@ void TreemapCanvas::drawSelected(Entity *e)
 
 void TreemapCanvas::labelCells()
 {
-	for (vector<BaseEntity*>::iterator it = entityTree->sortedBaseEntities.begin(); it != entityTree->sortedBaseEntities.end(); ++it)
+	for (vector<BaseEntity*>::iterator it = entityData->sortedBaseEntities.begin(); it != entityData->sortedBaseEntities.end(); ++it)
 	{
 		if ((*it)->isEntity())
 		{
