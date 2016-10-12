@@ -8,4 +8,11 @@ void Canvas::setSize(Point tl, Point br)
 	xOff = tl.x;
 	currentWidth  = br.x - tl.x;
 	currentHeight = br.y - tl.y;
+
+	if(initialWidth == -1 && initialHeight == -1)
+	{
+		initialWidth = currentWidth;
+		initialHeight = currentHeight;
+	}
+
 }

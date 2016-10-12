@@ -4,10 +4,8 @@ ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityTree *et)
 {
 	setSize(tl, br);
 	entityTree = et;
-	int shortEdge = ((br.x-tl.x) < (br.y-tl.y))? (br.x-tl.x) : (br.y-tl.y);
-	entityTree->normalizeProjection(shortEdge-50);
-	initialWidth  = br.x - tl.x;
-	initialHeight = br.y - tl.y;
+	double shortEdge = min(currentHeight, currentWidth);
+	entityTree->normalizeProjection(shortEdge - 50);
 }
 
 // Mark entities as selected from projection pane interaction
@@ -21,10 +19,14 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
 
 	entityTree->hovered = NULL;
 
+	xRatio = currentWidth/initialWidth;
+	yRatio = currentHeight/initialHeight;
+	double minRatio = min(xRatio, yRatio);
+
 	for (auto b : entityTree->entities)
 	{
-		double bx = b->normalizedProjectionPoints[Rt].x * xRatio;
-		double by = b->normalizedProjectionPoints[Rt].y * yRatio;
+		double bx = b->normalizedProjectionPoints[Rt].x * minRatio;
+		double by = b->normalizedProjectionPoints[Rt].y * minRatio;
 		if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case point click (or hover of click = 0)
 		{
 			double distX = drag[0] - bx;
@@ -69,9 +71,10 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 	// Scale initial aspect ratio by new
 	glPushMatrix();
-	xRatio = double(currentWidth)/double(initialWidth);
-	yRatio = double(currentHeight)/double(initialHeight);
-	glScaled(xRatio, yRatio, 1);
+	xRatio = currentWidth/initialWidth;
+	yRatio = currentHeight/initialHeight;
+	double minRatio = min(xRatio, yRatio);
+	glScaled(minRatio, minRatio, 1.0);
 
 	glEnable(GL_LINE_SMOOTH);
 

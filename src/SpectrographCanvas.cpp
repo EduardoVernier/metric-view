@@ -1,9 +1,5 @@
 #include "../include/SpectrographCanvas.h"
 
-bool pairCompare(const std::pair<double, Entity*>& a, const std::pair<double, Entity*>& b) {
-	return a.first < b.first;
-}
-
 SpectrographCanvas::SpectrographCanvas() {}
 
 SpectrographCanvas& SpectrographCanvas::getInstance()
@@ -16,21 +12,17 @@ void SpectrographCanvas::init(Point tl, Point br, EntityTree *et)
 {
 	setSize(tl, br);
 	entityTree = et;
-	initialWidth  = br.x - tl.x;
-	initialHeight = br.y - tl.y;
 }
 
 double SpectrographCanvas::getHeight()
 {
-	double desiredHeight = entityTree->selected.size()*MAX_LINE_HEIGHT;
+	double desiredHeight = entityTree->selected.size() * MAX_LINE_HEIGHT;
 	return (desiredHeight < 500) ? desiredHeight : 500; // Set 500 as limit for now
 }
 
 void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
-
+	// Translate everything into frame
 	glPushMatrix();
 	glTranslated(top_left.x, top_left.y, 0);
 
@@ -79,17 +71,22 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 	}
 
 	// Draw current Rt "window"
-	glColor4f(1,1,1,0.8);
+	glColor4f(1,0,0,0.8);
 	glBegin(GL_LINE_STRIP);
 	double Rtp = (animationStep!=0.0 && animationStep > 0)? Rt+animationStep : (Rt+2) + (animationStep);
-	glVertex3d((Rtp-1)*cellWidth, 0, 0);
-	glVertex3d((Rtp-1)*cellWidth, currentHeight, 0);
-	glVertex3d((Rtp)*cellWidth, currentHeight, 0);
-	glVertex3d((Rtp)*cellWidth, 0, 0);
-	glVertex3d((Rtp-1)*cellWidth, 0, 0);
+	glVertex2d((Rtp-1)*cellWidth, 0);
+	glVertex2d((Rtp-1)*cellWidth, currentHeight);
+	glVertex2d((Rtp)*cellWidth, currentHeight);
+	glVertex2d((Rtp)*cellWidth, 0);
+	glVertex2d((Rtp-1)*cellWidth, 0);
 	glEnd();
 
 	glPopMatrix();
+}
+
+bool pairCompare(const std::pair<double, Entity*>& a, const std::pair<double, Entity*>& b)
+{
+	return a.first < b.first;
 }
 
 void SpectrographCanvas::updateLocalSelectedGroup()
@@ -116,10 +113,9 @@ void SpectrographCanvas::getEntitiesOnSpectrograph(int *drag, unsigned click, bo
 {
 	double y = drag[1] - top_left.y + 20;
 	double cellHeight = (getHeight()-10)/sortedSelectedEntities.size();
-	unsigned index = (unsigned) floor(y / cellHeight);
+	unsigned index = (unsigned) floor(y / cellHeight) - 1;
 	if (index >= 0 && index < sortedSelectedEntities.size())
 	{
 		entityTree->hovered = sortedSelectedEntities[index].second;
 	}
 }
-

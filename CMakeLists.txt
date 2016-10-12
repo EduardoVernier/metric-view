@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(metric_view)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -I/usr/X11R6/include -I include  -lXmu -lXext -lX11 -lXi -lm -lGLU -lGL -L/usr/X11R6/lib -lglut -L./lib -lglui -lGLU")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -I/usr/X11R6/include -I include  -lXmu -lXext -lX11 -lXi -lm -lGLU -lGL -L/usr/X11R6/lib -lglut -L./lib -lglui -lGLU")
 
 set(SOURCE_FILES
     include/GL/GLUI/include/GL/glui.h

@@ -211,7 +211,7 @@ void EntityTree::addProjection(string name, double x, double y, unsigned index)
 }
 
 // Normalize projection points to fit on canvas nicely
-void EntityTree::normalizeProjection(int shortEdge)
+void EntityTree::normalizeProjection(double shortEdge)
 {
 	for (auto b : entities)
 	{

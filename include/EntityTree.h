@@ -26,7 +26,7 @@ public:
 	double getMax() { return treeMax; };
 	Entity* getEntityByName(string prefix, string id);
 	void addProjection(string name, double x, double y, unsigned index);
-	void normalizeProjection(int shortEdge);
+	void normalizeProjection(double shortEdge);
 	void setColorMetric(int mIndex);
 	int getColorMetric() { return colorMetricIndex; };
 	float getCMMin() { return colorMetricMin; };

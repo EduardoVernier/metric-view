@@ -4,8 +4,6 @@ StreamgraphCanvas::StreamgraphCanvas(Point tl, Point br, EntityTree *et)
 {
 	setSize(tl, br);
 	entityTree = et;
-	initialWidth  = br.x - tl.x;
-	initialHeight = br.y - tl.y;
 }
 
 // Draw Canvas with fixed height

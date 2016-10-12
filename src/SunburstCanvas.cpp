@@ -8,8 +8,6 @@ SunburstCanvas::SunburstCanvas (Point tl, Point br, EntityTree *et)
 {
 	setSize(tl, br);
 	entityTree = et;
-	initialWidth  = br.x - tl.x;
-	initialHeight = br.y - tl.y;
 
 	innerRadius = 30;
 	unitWidth = (2.0*PI)/(double)entityTree->entities.size();

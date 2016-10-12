@@ -4,10 +4,6 @@ TreemapCanvas::TreemapCanvas (Point tl, Point br, EntityTree *et)
 {
 	setSize(tl, br);
 	entityTree = et;
-	initialWidth  = br.x - tl.x;
-	initialHeight = br.y - tl.y;
-	treemapXOff = xOff ;
-	treemapYOff = yOff;
 }
 
 // Fill vector of pointers of the selected entities
@@ -48,8 +44,8 @@ void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 	// Scale initial aspect ratio by new
 	glPushMatrix();
-	xRatio = double(currentWidth)/double(initialWidth);
-	yRatio = double(currentHeight)/double(initialHeight);
+	xRatio = currentWidth/initialWidth;
+	yRatio = currentHeight/initialHeight;
 	glScaled(xRatio, yRatio, 1);
 
 	// Draw treemap class entities
@@ -117,10 +113,10 @@ void TreemapCanvas::drawEntity(Entity *e, unsigned Rt, double animationStep)
 	if (controller.halo && e->showHalo) drawHalo(coords, animationStep);
 
 	// Draw line around full rectangle
-	x0 = e->getCoord(0) + treemapXOff;
-	y0 = e->getCoord(1) + treemapYOff;
-	x1 = e->getCoord(2) + treemapXOff;
-	y1 = e->getCoord(3) + treemapYOff;
+	x0 = e->getCoord(0) + xOff;
+	y0 = e->getCoord(1) + yOff;
+	x1 = e->getCoord(2) + xOff;
+	y1 = e->getCoord(3) + yOff;
 	glLineWidth(0.1f);
 	glColor3f(0.0f, 0.0f, 0.0f);
 	glBegin(GL_LINE_STRIP);
@@ -173,10 +169,10 @@ void TreemapCanvas::drawHalo(const double *coords, double animationStep)
 // Return an entitie's vertex coordinates on the treemap
 void TreemapCanvas::computeRectangleSize(double *retCoords, Entity *e, unsigned Rt, double animationStep)
 {
-	double x0 = e->getCoord(0)+  treemapXOff;
-	double y0 = e->getCoord(1) + treemapYOff;
-	double x1 = e->getCoord(2) + treemapXOff;
-	double y1 = e->getCoord(3) + treemapYOff;
+	double x0 = e->getCoord(0)+  xOff;
+	double y0 = e->getCoord(1) + yOff;
+	double x1 = e->getCoord(2) + xOff;
+	double y1 = e->getCoord(3) + yOff;
 	double ratio = 1;
 
 	// If we are dealing with a dynamic treemaps, we interpolate
@@ -205,10 +201,10 @@ void TreemapCanvas::computeRectangleSize(double *retCoords, Entity *e, unsigned 
 
 void TreemapCanvas::drawPackageFirstLayer(BaseEntity *e)
 {
-	double x0 = e->getCoord(0) + treemapXOff;
-	double y0 = e->getCoord(1) + treemapYOff;
-	double x1 = e->getCoord(2) + treemapXOff;
-	double y1 = e->getCoord(3) + treemapYOff;
+	double x0 = e->getCoord(0) + xOff;
+	double y0 = e->getCoord(1) + yOff;
+	double x1 = e->getCoord(2) + xOff;
+	double y1 = e->getCoord(3) + yOff;
 
 	glLineWidth(5.0f);
 	glColor3f(0.0f, 0.0f, 0.0f);
@@ -224,10 +220,10 @@ void TreemapCanvas::drawPackageFirstLayer(BaseEntity *e)
 
 void TreemapCanvas::drawPackageSecondLayer(BaseEntity *e)
 {
-	double x0 = e->getCoord(0) + treemapXOff;
-	double y0 = e->getCoord(1) + treemapYOff;
-	double x1 = e->getCoord(2) + treemapXOff;
-	double y1 = e->getCoord(3) + treemapYOff;
+	double x0 = e->getCoord(0) + xOff;
+	double y0 = e->getCoord(1) + yOff;
+	double x1 = e->getCoord(2) + xOff;
+	double y1 = e->getCoord(3) + yOff;
 
 	glLineWidth(3.0f);
 	glColor3f(1.0f, 1.0f, 1.0f);
@@ -251,10 +247,10 @@ void TreemapCanvas::drawHovered(BaseEntity *e)
 	if (e == NULL) return;
 
 	double padding = 3.0;
-	double x0 = e->getCoord(0)+ padding + treemapXOff;
-	double y0 = e->getCoord(1)+ padding + treemapYOff;
-	double x1 = e->getCoord(2)- padding + treemapXOff;
-	double y1 = e->getCoord(3)- padding + treemapYOff;
+	double x0 = e->getCoord(0)+ padding + xOff;
+	double y0 = e->getCoord(1)+ padding + yOff;
+	double x1 = e->getCoord(2)- padding + xOff;
+	double y1 = e->getCoord(3)- padding + yOff;
 
 	glLineWidth(6.0f);
 	glColor3f(colorHover.R, colorHover.G, colorHover.B);
@@ -271,10 +267,10 @@ void TreemapCanvas::drawHovered(BaseEntity *e)
 	glEnd();
 
 	padding = 0.0;
-	x0 = e->getCoord(0)+ padding + treemapXOff;
-	y0 = e->getCoord(1)+ padding + treemapYOff;
-	x1 = e->getCoord(2)- padding + treemapXOff;
-	y1 = e->getCoord(3)- padding + treemapYOff;
+	x0 = e->getCoord(0)+ padding + xOff;
+	y0 = e->getCoord(1)+ padding + yOff;
+	x1 = e->getCoord(2)- padding + xOff;
+	y1 = e->getCoord(3)- padding + yOff;
 
 	glLineWidth(1.0f);
 	glColor3f(1,1,1);
@@ -297,10 +293,10 @@ void TreemapCanvas::drawSelected(Entity *e)
 	else
 	{
 		double padding = 2.0;
-		double x0 = e->getCoord(0)+ padding + treemapXOff;
-		double y0 = e->getCoord(1)+ padding + treemapYOff;
-		double x1 = e->getCoord(2)- padding + treemapXOff;
-		double y1 = e->getCoord(3)- padding + treemapYOff;
+		double x0 = e->getCoord(0)+ padding + xOff;
+		double y0 = e->getCoord(1)+ padding + yOff;
+		double x1 = e->getCoord(2)- padding + xOff;
+		double y1 = e->getCoord(3)- padding + yOff;
 
 		glLineWidth(4.0f);
 		glColor3f(colorSelection.R, colorSelection.G, colorSelection.B);
@@ -317,10 +313,10 @@ void TreemapCanvas::drawSelected(Entity *e)
 		glEnd();
 
 		padding = 0.0;
-		x0 = e->getCoord(0)+ padding + treemapXOff;
-		y0 = e->getCoord(1)+ padding + treemapYOff;
-		x1 = e->getCoord(2)- padding + treemapXOff;
-		y1 = e->getCoord(3)- padding + treemapYOff;
+		x0 = e->getCoord(0)+ padding + xOff;
+		y0 = e->getCoord(1)+ padding + yOff;
+		x1 = e->getCoord(2)- padding + xOff;
+		y1 = e->getCoord(3)- padding + yOff;
 
 		glLineWidth(1.0f);
 		glColor3f(1,1,1);
@@ -341,10 +337,10 @@ void TreemapCanvas::labelCells()
 	{
 		if ((*it)->isEntity())
 		{
-			double x0 = (*it)->getCoord(0) + treemapXOff;
-			double y0 = (*it)->getCoord(1) + treemapYOff;
-			double x1 = (*it)->getCoord(2) + treemapXOff;
-			double y1 = (*it)->getCoord(3) + treemapYOff;
+			double x0 = (*it)->getCoord(0) + xOff;
+			double y0 = (*it)->getCoord(1) + yOff;
+			double x1 = (*it)->getCoord(2) + xOff;
+			double y1 = (*it)->getCoord(3) + yOff;
 
 			// Disregard very small cells
 			if ((x1-x0 > y1-y0 && x1-x0 < 50) || y1-y0 < 15)

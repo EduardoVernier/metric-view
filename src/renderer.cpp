@@ -105,7 +105,7 @@ void setCanvassesSizes(int W, int H)
 	}
 	else
 	{
-		// Define Streamgraph Canvas dimentions if necessary
+		// Define Streamgraph Canvas dimensions if necessary
 		if (controller.evolutionView == STREAMGRAPH)
 		{
 			pBR.y -= controller.streamgraphHeight;
