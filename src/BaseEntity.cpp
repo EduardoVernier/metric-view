@@ -10,5 +10,5 @@ void BaseEntity::setCoords(double *_coords)
 
 double BaseEntity::getCoord(int i)
 {
-		return coords[i];
+	return coords[i];
 }

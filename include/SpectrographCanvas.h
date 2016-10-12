@@ -17,11 +17,10 @@ class SpectrographCanvas : public Canvas
 {
 public:
 	static SpectrographCanvas& getInstance();
-	void init(Point tl, Point br, EntityData *et);
+	void init(Point tl, Point br, EntityData *ed);
 
 	void drawCanvas(unsigned Rt, double animationStep);
 	double getHeight();
-	void updateLocalSelectedGroup();
 	void getEntitiesOnSpectrograph(int *drag, unsigned click, bool ctrlDown);
 
 private:

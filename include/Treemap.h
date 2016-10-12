@@ -14,7 +14,7 @@ using namespace std;
 class Treemap
 {
 public:
-	Treemap(EntityData *et, double _width, double _height);
+	Treemap(EntityData *ed, double _width, double _height);
 	void updateSize(double _width, double _height);
 	EntityData* getTree() { return entityData; };
 
@@ -28,5 +28,5 @@ private:
 	int improvesRatio(vector<BaseEntity*> *currentRow, double nextEntity, int length);
 
 	EntityData *entityData;
-	int width, height;
+	double width, height;
 };

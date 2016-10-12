@@ -96,7 +96,7 @@ void controlCB(int control)
 void mouseClick(int button, int state, int x, int y)
 {
 	// Terrible way to avoid misclick - unfortunately necessary
-	unsigned queueSize = controller.windowQueue.size();
+	unsigned long queueSize = controller.windowQueue.size();
 	unsigned sum = 0;
 	while (!controller.windowQueue.empty())
 	{
@@ -120,11 +120,12 @@ void mouseClick(int button, int state, int x, int y)
 			else
 				sbCanvas->getEntitiesByPosition(drag, 1, controller.ctrlDown);
 			break;
+		default:break;
 	}
 
-	if (selected != entityData->selected) // Chage detected in the selected group
+	if (selected != entityData->selected) // Change detected in the selected group
 	{
-		SpectrographCanvas::getInstance().updateLocalSelectedGroup();
+		entityData->updateSelectedEntities();
 		mRank->computeLocalGroupMetric(Rt);
 	}
 
@@ -201,11 +202,12 @@ void keyboard(unsigned char key, int x, int y)
 				entityData->rankFastestChangingEntities(Rt, controller.animationDirection );
 			}
 			break;
+		default:break;
 	}
 }
 
 void keyboardMod(int key, int x, int y)
 {
 	if (key == (int)114) // Check for ctrl
-		controller.ctrlDown = (controller.ctrlDown == false)? true : false;
+		controller.ctrlDown = !controller.ctrlDown;
 }

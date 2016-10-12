@@ -24,7 +24,7 @@ struct MetricScore
 class MetricRank
 {
 public:
-	MetricRank(EntityData *_et);
+	MetricRank(EntityData *ed);
 	void computeLocalGroupMetric(unsigned Rt);
 
 	vector<MetricScore> explainingMetric;
@@ -33,5 +33,6 @@ private:
 	void computeMean(vector<Entity*> entityVector, unsigned Rt, vector<double> &meanVector);
 	void computeVar(vector<Entity*> entityVector, unsigned Rt, vector<double> &varVector);
 
-	EntityData *et;
+	EntityData *entityData;
+	;
 };

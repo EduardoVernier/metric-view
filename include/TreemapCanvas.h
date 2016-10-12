@@ -16,7 +16,7 @@ using namespace std;
 class TreemapCanvas : public Canvas
 {
 public:
-	TreemapCanvas (Point tl, Point br, EntityData *et);
+	TreemapCanvas (Point tl, Point br, EntityData *ed);
 	void getEntitiesByPositionOnTreemap(int *drag, unsigned click, bool ctrlDown);
 	void drawCanvas(unsigned Rt, double animationStep);
 

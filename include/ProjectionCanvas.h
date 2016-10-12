@@ -19,7 +19,7 @@ using namespace std;
 class ProjectionCanvas : public Canvas
 {
 public:
-	ProjectionCanvas(Point tl, Point br, EntityData *et);
+	ProjectionCanvas(Point tl, Point br, EntityData *ed);
 	void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, bool ctrlDown);
 	void drawCanvas(unsigned Rt, double animationStep);
 

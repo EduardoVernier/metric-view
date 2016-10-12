@@ -15,7 +15,7 @@ using namespace std;
 class StreamgraphCanvas : public Canvas
 {
 public:
-	StreamgraphCanvas(Point tl, Point br, EntityData* et);
+	StreamgraphCanvas(Point tl, Point br, EntityData *ed);
 	void drawCanvas(unsigned Rt, double animationStep);
 	void getEntitiesOnStreamgraph(int *drag, unsigned click, bool ctrlDown);
 

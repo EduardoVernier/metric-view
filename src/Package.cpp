@@ -5,8 +5,8 @@ void Package::addEntity(Entity ent)
 	sum+=ent.value;
 	numberOfEntities++;
 	entityVector.push_back(ent);
-	sort(entityVector.begin(), entityVector.end(), [](const Entity& e1, const Entity& e2)
-	{	return (e1.value > e2.value); });
+	sort(entityVector.begin(), entityVector.end(),
+		 [](const Entity& a, const Entity& b) { return (a.value > b.value); });
 }
 
 void Package::addChild(Package child)

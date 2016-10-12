@@ -8,10 +8,10 @@ SpectrographCanvas& SpectrographCanvas::getInstance()
  	return instance;
 }
 
-void SpectrographCanvas::init(Point tl, Point br, EntityData *et)
+void SpectrographCanvas::init(Point tl, Point br, EntityData *ed)
 {
 	setSize(tl, br);
-	entityData = et;
+	entityData = ed;
 }
 
 double SpectrographCanvas::getHeight()
@@ -26,14 +26,14 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glPushMatrix();
 	glTranslated(top_left.x, top_left.y, 0);
 
-	double cellHeight = (getHeight()-10)/sortedSelectedEntities.size();
+	double cellHeight = (getHeight()-10)/entityData->selected.size();
 	double cellWidth = currentWidth/getInstance().entityData->nRevisions;
 	int sMetric = controller.streamMetricIndex;
 
 	// Draw cells
-	for (unsigned i = 0; i < sortedSelectedEntities.size(); ++i)
+	for (unsigned i = 0; i < entityData->selected.size(); ++i)
 	{
-		Entity* e = sortedSelectedEntities[i].second;
+		Entity* e = entityData->selected[i];
 		for (unsigned j = 0; j < entityData->nRevisions; ++j)
 		{
 			double normCValue = e->normalizedData[j][sMetric];
@@ -58,7 +58,7 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 	// Draw separation
 	if (getHeight() < 450)
 	{
-		for (unsigned i = 1; i < sortedSelectedEntities.size(); ++i)
+		for (unsigned i = 1; i < entityData->selected.size(); ++i)
 		{
 			glColor4f(1,1,1,1);
 			glBegin(GL_LINES);
@@ -82,38 +82,13 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glPopMatrix();
 }
 
-bool pairCompare(const std::pair<double, Entity*>& a, const std::pair<double, Entity*>& b)
-{
-	return a.first < b.first;
-}
-
-void SpectrographCanvas::updateLocalSelectedGroup()
-{
-	sortedSelectedEntities.clear();
-
-	for (Entity* entity : entityData->selected)
-	{
-		double metricMean = 0.0;
-
-		for (unsigned i = 0; i < entityData->nRevisions; ++i)
-		{
-			metricMean += entity->data[i][controller.colorMetricIndex];
-		}
-
-		pair<double, Entity*> selectedPair =  std::make_pair(metricMean/entityData->nRevisions, entity);
-		sortedSelectedEntities.push_back(selectedPair);
-	}
-
-	sort(sortedSelectedEntities.begin(), sortedSelectedEntities.end(), pairCompare);
-}
-
 void SpectrographCanvas::getEntitiesOnSpectrograph(int *drag, unsigned click, bool ctrlDown)
 {
 	double y = drag[1] - top_left.y + 20;
-	double cellHeight = (getHeight()-10)/sortedSelectedEntities.size();
+	double cellHeight = (getHeight()-10)/entityData->selected.size();
 	unsigned index = (unsigned) floor(y / cellHeight) - 1;
-	if (index >= 0 && index < sortedSelectedEntities.size())
+	if (index >= 0 && index < entityData->selected.size())
 	{
-		entityData->hovered = sortedSelectedEntities[index].second;
+		entityData->hovered = entityData->selected[index];
 	}
 }

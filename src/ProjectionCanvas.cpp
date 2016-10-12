@@ -1,9 +1,9 @@
 #include "../include/ProjectionCanvas.h"
 
-ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityData *et)
+ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityData *ed)
 {
 	setSize(tl, br);
-	entityData = et;
+	entityData = ed;
 	double shortEdge = min(currentHeight, currentWidth);
 	entityData->normalizeProjection(shortEdge - 50);
 }

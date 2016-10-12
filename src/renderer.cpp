@@ -17,7 +17,7 @@ void display()
 	glFlush();
 }
 
-// Function called when window dimentions change
+// Function called when window dimensions change
 void reshape(int W, int H)
 {
 	calculateAnimationStep();

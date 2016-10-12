@@ -14,7 +14,7 @@ using namespace std;
 class CsvParser
 {
 public:
-	CsvParser(EntityData *et, string dataDir, string projectionDirName);
+	CsvParser(EntityData *ed, string dataDir, string projectionDirName);
 	EntityData* getEntityData() { return entityData; };
 
 private:

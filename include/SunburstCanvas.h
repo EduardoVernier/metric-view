@@ -16,7 +16,7 @@ using namespace std;
 class SunburstCanvas : public Canvas
 {
 public:
-	SunburstCanvas(Point tl, Point br, EntityData *et);
+	SunburstCanvas(Point tl, Point br, EntityData *ed);
 	void drawCanvas(unsigned Rt, double animationStep);
 	void getEntitiesByPosition(int *drag, unsigned click, bool ctrlDown);
 

@@ -1,9 +1,9 @@
 #include "../include/TreemapCanvas.h"
 
-TreemapCanvas::TreemapCanvas (Point tl, Point br, EntityData *et)
+TreemapCanvas::TreemapCanvas (Point tl, Point br, EntityData *ed)
 {
 	setSize(tl, br);
-	entityData = et;
+	entityData = ed;
 }
 
 // Fill vector of pointers of the selected entities

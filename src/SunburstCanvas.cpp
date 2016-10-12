@@ -2,12 +2,12 @@
 
 template <typename T>
 bool inBounds(const T& value, const T& low, const T& high)
-{	return !(value < low) && !(high < value); }
+{	return value >= low && high >= value; }
 
-SunburstCanvas::SunburstCanvas (Point tl, Point br, EntityData *et)
+SunburstCanvas::SunburstCanvas (Point tl, Point br, EntityData *ed)
 {
 	setSize(tl, br);
-	entityData = et;
+	entityData = ed;
 
 	innerRadius = 30;
 	unitWidth = (2.0*PI)/(double)entityData->entities.size();

@@ -1,8 +1,8 @@
 #include "../include/CsvParser.h"
 
-CsvParser::CsvParser(EntityData *et, string dataDirName, string projectionDirName)
+CsvParser::CsvParser(EntityData *ed, string dataDirName, string projectionDirName)
 {
-	entityData = et;
+	entityData = ed;
 
 	// Parse metric data
 	struct dirent *dDirent;
@@ -101,7 +101,7 @@ void CsvParser::parseLastMetricFile(string filename, unsigned nRevisions)
 	istringstream(line) >> nEntities;
 	getline(file,line); // number of attributes
 	istringstream(line) >> nAttributes;
-	entityData->nDimentions = (unsigned) nAttributes; // Save to entityData
+	entityData->nDimensions = (unsigned) nAttributes; // Save to entityData
 	getline(file,line); // name of attributes - flush
 
 	stringstream ss(line);

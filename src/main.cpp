@@ -13,7 +13,7 @@
 using namespace std;
 
 void initializeVisualization(int argc, char **argv);
-void buildEntityData(int argc, char **argv, EntityData *et);
+void buildEntityData(int argc, char **argv, EntityData *ed);
 void cleanUp();
 
 unsigned Rt = 0; // Current revision
@@ -35,7 +35,6 @@ int main(int argc, char **argv)
 	glutIdleFunc(idle);
 	glutMainLoop();
 
-	//delete entityData;
 	return 0;
 }
 
@@ -58,7 +57,7 @@ void initializeVisualization(int argc, char **argv)
 	glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
 }
 
-void buildEntityData(int argc, char **argv, EntityData *et)
+void buildEntityData(int argc, char **argv, EntityData *ed)
 {
 	// Check if a string was inputed
 	if (argc < 3)
@@ -67,6 +66,6 @@ void buildEntityData(int argc, char **argv, EntityData *et)
 		exit(1);
 	}
 
-	CsvParser parser (et, argv[1], argv[2]);
+	CsvParser parser (ed, argv[1], argv[2]);
 }
 

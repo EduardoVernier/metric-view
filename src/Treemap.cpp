@@ -3,9 +3,9 @@
 void
 treemapSingledimensional(vector<BaseEntity *> *pVector, double width, double height, double offset, double yOffset);
 
-Treemap::Treemap(EntityData *et, double _width, double _height)
+Treemap::Treemap(EntityData *ed, double _width, double _height)
 {
-	entityData = et;
+	entityData = ed;
 	width = _width;
 	height = _height;
 

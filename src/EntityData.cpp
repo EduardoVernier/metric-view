@@ -12,12 +12,12 @@ void EntityData::addEntity(Entity ent)
 	else
 	{
 		int found = 0;
-		for (vector<Package>::iterator pckg = packageVector.begin() ; pckg != packageVector.end(); ++pckg)
+		for (vector<Package>::iterator package = packageVector.begin() ; package != packageVector.end(); ++package)
 		{
-			if (pckg->getName() == ent.getPrefix())
+			if (package->getName() == ent.getPrefix())
 			{
 				found = 1;
-				pckg->addEntity(ent);
+				package->addEntity(ent);
 				break;
 			}
 		}
@@ -162,7 +162,8 @@ void EntityData::generateEntityVector()
 void EntityData::printTree()
 {
 	// Test printing
-	for (vector<BaseEntity*>::iterator baseEntity = sortedBaseEntities.begin() ; baseEntity != sortedBaseEntities.end(); ++baseEntity)
+	for (vector<BaseEntity*>::iterator baseEntity = sortedBaseEntities.begin();
+		 baseEntity != sortedBaseEntities.end(); ++baseEntity)
 	{
 		if ((*baseEntity)->getName() == "") continue; // Ignore root
 		for (int j = 0; j < (*baseEntity)->getLevel(); ++j)
@@ -184,11 +185,11 @@ void EntityData::addProjection(string name, double x, double y, unsigned index)
 	if (y < minY) minY = y;
 	if (y > maxY) maxY = y;
 
-	for (auto b : sortedBaseEntities)
+	for (auto baseEntity : sortedBaseEntities)
 	{
-		if (b->isEntity() && name == ((Entity*)b)->getPrefix()+'.'+b->getName())
+		if (baseEntity->isEntity() && name == ((Entity*)baseEntity)->getPrefix()+'.'+baseEntity->getName())
 		{
-			((Entity*)b)->addPointAtIndex({x, y}, index);
+			((Entity*)baseEntity)->addPointAtIndex({x, y}, index);
 		}
 	}
 }
@@ -212,11 +213,11 @@ void EntityData::normalizeProjection(double shortEdge)
 
 void EntityData::normalizeData()
 {
-	vector<double> maxMetricValue (nDimentions, DBL_MIN);
-	vector<double> minMetricValue (nDimentions, DBL_MAX);
+	vector<double> maxMetricValue (nDimensions, DBL_MIN);
+	vector<double> minMetricValue (nDimensions, DBL_MAX);
 
 	// Collect min and max values for each metric
-	for (unsigned metric = 0; metric < nDimentions; ++metric)
+	for (unsigned metric = 0; metric < nDimensions; ++metric)
 	{
 		for (Entity* entity : entities)
 		{
@@ -230,7 +231,7 @@ void EntityData::normalizeData()
 	}
 
 	// Normalized data
-	for (unsigned metric = 0; metric < nDimentions; ++metric)
+	for (unsigned metric = 0; metric < nDimensions; ++metric)
 	{
 		for (Entity* entity : entities)
 		{
@@ -242,8 +243,6 @@ void EntityData::normalizeData()
 			}
 		}
 	}
-
-
 }
 
 // Given a name and prefix, return corresponding entity pointer
@@ -279,5 +278,33 @@ void EntityData::rankFastestChangingEntities(unsigned Rt, int direction)
 	for(unsigned i = 0; i < K; ++i)
 	{
 		((Entity*)(rank[rank.size()-1-i].second))->showHalo = true;
+	}
+}
+
+void EntityData::updateSelectedEntities() {
+
+	vector<std::pair<double,Entity*>> sortedSelectedEntities;
+	sortedSelectedEntities.clear();
+
+	for (Entity* entity : selected)
+	{
+		double metricMean = 0.0;
+		for (unsigned i = 0; i < nRevisions; ++i)
+		{
+			metricMean += entity->data[i][controller.colorMetricIndex];
+		}
+
+		pair<double, Entity*> selectedPair =  std::make_pair(metricMean/nRevisions, entity);
+		sortedSelectedEntities.push_back(selectedPair);
+	}
+
+	sort(sortedSelectedEntities.begin(), sortedSelectedEntities.end(),
+		 [] (const std::pair<double, Entity*>& a, const std::pair<double, Entity*>& b)
+		 { return a.first < b.first; });
+
+	selected.clear();
+	for (pair<double, Entity *> & entityPair : sortedSelectedEntities)
+	{
+		selected.push_back(entityPair.second);
 	}
 }

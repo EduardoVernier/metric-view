@@ -1,9 +1,9 @@
 #include "../include/StreamgraphCanvas.h"
 
-StreamgraphCanvas::StreamgraphCanvas(Point tl, Point br, EntityData *et)
+StreamgraphCanvas::StreamgraphCanvas(Point tl, Point br, EntityData *ed)
 {
 	setSize(tl, br);
-	entityData = et;
+	entityData = ed;
 }
 
 // Draw Canvas with fixed height
@@ -11,6 +11,9 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
 	glColor3d(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
+
+	glPushMatrix();
+	glTranslated(xOff, yOff, 0);
 
 	int sMetric = controller.streamMetricIndex;
 	vector<double> normMetricValueSum;
@@ -56,12 +59,13 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	unsigned i = 0;
+	double cellWidth = currentWidth / (entityData->nRevisions - 1);
 	for (auto b : entityData->selected)
 	{
 		glBegin(GL_QUADS);
-		for(unsigned t = 0; t < entityData->nRevisions; ++t)
+		for(unsigned revision = 0; revision < entityData->nRevisions; ++revision)
 		{
-			double value = b->normalizedData[t][sMetric];
+			double value = b->normalizedData[revision][sMetric];
 			Color c (1,1,1);
 			switch (controller.sColormapIndex)
 			{
@@ -69,9 +73,9 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 					c = sequentialColormap(value);
 					break;
 				case 2:
-					if (t > 0)
+					if (revision > 0)
 					{
-						double pValue = b->normalizedData[t-1][sMetric];
+						double pValue = b->normalizedData[revision-1][sMetric];
 						c = divergentColormap(value-pValue);
 					}
 					break;
@@ -79,14 +83,14 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 			}
 
 			glColor3d(c.R,c.G,c.B);
-			if (t > 0)
+			if (revision > 0)
 			{
-				glVertex3d(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][i], 0);
-				glVertex3d(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][i+1], 0);
+				glVertex3d(revision * cellWidth, yPos[revision][i], 0);
+				glVertex3d(revision * cellWidth, yPos[revision][i + 1], 0);
 			}
 
-			glVertex3d(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][i+1], 0);
-			glVertex3d(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][i], 0);
+			glVertex3d(revision * cellWidth, yPos[revision][i + 1], 0);
+			glVertex3d(revision * cellWidth, yPos[revision][i], 0);
 		}
 		glEnd();
 		++i;
@@ -98,9 +102,9 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	{
 		glColor3f(0,0,0);
 		glBegin(GL_LINE_STRIP);
-		for (unsigned t = 0; t < entityData->nRevisions; ++t)
+		for (unsigned revision = 0; revision < entityData->nRevisions; ++revision)
 		{
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][i], 0);
+			glVertex3d(revision * cellWidth, + yPos[revision][i], 0);
 		}
 		glEnd();
 	}
@@ -109,17 +113,17 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	if (hoveredIndex != -1)
 	{
 		glLineWidth(3);
-		glColor3f(colorHover.R, colorHover.G, colorHover.B);
+		glColor3d(colorHover.R, colorHover.G, colorHover.B);
 		glBegin(GL_LINE_STRIP);
-		for (unsigned t = 0; t < entityData->nRevisions; ++t)
+		for (unsigned revision = 0; revision < entityData->nRevisions; ++revision)
 		{
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][hoveredIndex], 0);
+			glVertex3d(revision * cellWidth, yPos[revision][hoveredIndex], 0);
 		}
 		glEnd();
 		glBegin(GL_LINE_STRIP);
-		for (unsigned t = 0; t < entityData->nRevisions; ++t)
+		for (unsigned revision = 0; revision < entityData->nRevisions; ++revision)
 		{
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][hoveredIndex+1], 0);
+			glVertex3d(revision * cellWidth, yPos[revision][hoveredIndex + 1], 0);
 		}
 		glEnd();
 		glLineWidth(1);
@@ -128,23 +132,23 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	// Paint highlighted
 	if (hoveredIndex != -1)
 	{
-		glColor4f(colorHover.R, colorHover.G, colorHover.B, 0.2);
+		glColor4d(colorHover.R, colorHover.G, colorHover.B, 0.2);
 		glBegin(GL_QUAD_STRIP);
-		for (unsigned t = 0; t < entityData->nRevisions; ++t)
+		for (unsigned revision = 0; revision < entityData->nRevisions; ++revision)
 		{
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][hoveredIndex], 0);
-			glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y + yPos[t][hoveredIndex+1], 0);
+			glVertex3d(revision * cellWidth, yPos[revision][hoveredIndex], 0);
+			glVertex3d(revision * cellWidth, yPos[revision][hoveredIndex + 1], 0);
 		}
 		glEnd();
 	}
 
 	// Draw vertical lines
 	glColor4f(0,0,0,0.1);
-	for (unsigned t = 0; t < entityData->nRevisions; ++t)
+	for (unsigned revision = 0; revision < entityData->nRevisions; ++revision)
 	{
 		glBegin(GL_LINE_STRIP);
-		glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y, 0);
-		glVertex3f(top_left.x + t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), bottom_right.y, 0);
+		glVertex3d(revision * cellWidth, 0, 0);
+		glVertex3d(revision * cellWidth, currentHeight, 0);
 		glEnd();
 	}
 	glDisable(GL_BLEND);
@@ -153,10 +157,12 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glColor4f(1,0,0,0.8);
 	glBegin(GL_LINE_STRIP);
 	double Rtp = (animationStep!=0.0 && animationStep > 0)? Rt+animationStep : (Rt+2) + (animationStep);
-	glVertex3f(top_left.x + (Rtp)*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), top_left.y, 0);
-	glVertex3f(top_left.x + (Rtp)*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1)), bottom_right.y, 0);
+	Rtp -= 1;
+	glVertex3d(Rtp * cellWidth, 0, 0);
+	glVertex3d(Rtp * cellWidth, currentHeight, 0);
 	glEnd();
 
+	glPopMatrix();
 }
 
 
@@ -168,13 +174,13 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, bool
 	vector<double> normMetricValueSum;
 
 	// Filling vector
-	unsigned maxSum = 0;
-	for (unsigned i = 0; i < entityData->nRevisions; ++i)
+	double maxSum = 0;
+	for (unsigned revision = 0; revision < entityData->nRevisions; ++revision)
 	{
 		double sum = 0;
 		for (auto e : entityData->selected)
 		{
-			sum += ((Entity*)e)->data[i][sMetric];
+			sum += e->data[revision][sMetric];
 		}
 		normMetricValueSum.push_back(sum);
 		if (sum > maxSum)
@@ -189,29 +195,29 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, bool
 
 	// Compute y coords for each line for each member
 	double yPos [entityData->nRevisions][entityData->selected.size()+1];
-	for (unsigned t = 0; t < entityData->nRevisions; ++t)
+	for (unsigned revision = 0; revision < entityData->nRevisions; ++revision)
 	{
-		yPos[t][0] = controller.streamgraphHeight/2 - normMetricValueSum[t]/2;
+		yPos[revision][0] = controller.streamgraphHeight/2 - normMetricValueSum[revision]/2;
 		int i = 1;
 		for (auto e : entityData->selected)
 		{
-			yPos[t][i] = yPos[t][i-1] + e->data[t][sMetric]*((0.90*controller.streamgraphHeight)/maxSum);
+			yPos[revision][i] = yPos[revision][i-1] + e->data[revision][sMetric]*((0.90*controller.streamgraphHeight)/maxSum);
 			++i;
 		}
 	}
 
 	// Find Ti and Tj
 	int Ti = -1, Tj = -1;
-	double p;
-	for (int t = 0; t < (int) entityData->nRevisions; ++t)
+	double p = 0;
+	for (unsigned revision = 0; revision < entityData->nRevisions; ++revision)
 	{
-		float t0 = t*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1));
-		float t1 = (t+1)*(float(bottom_right.x - top_left.x)/float(entityData->nRevisions-1));
+		double t0 = revision * ((currentWidth)/(entityData->nRevisions-1));
+		double t1 = (revision + 1)*((currentWidth)/(entityData->nRevisions-1));
 		if (x > t0 && x < t1)
 		{
 			p = (x - t0)/(t1-t0);
-			Ti = t;
-			Tj = t+1;
+			Ti = revision;
+			Tj = revision+1;
 			break;
 		}
 	}
@@ -219,7 +225,7 @@ void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, bool
 	// Find hovered entity
 	if (Ti != -1)
 	{
-		for (int i = 0; i < (int)entityData->selected.size(); ++i)
+		for (unsigned i = 0; i < entityData->selected.size(); ++i)
 		{
 			if ((y > (1-p)*yPos[Ti][i] + p*yPos[Tj][i]) && (y < (1-p)*yPos[Ti][i+1] + p*yPos[Tj][i+1]))
 			{

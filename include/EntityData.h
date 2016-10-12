@@ -9,6 +9,9 @@
 #include "BaseEntity.h"
 #include "Entity.h"
 #include "Package.h"
+#include "Controller.h"
+
+extern Controller controller;
 
 using namespace std;
 
@@ -26,6 +29,7 @@ public:
 	void normalizeData();
 	void normalizeProjection(double shortEdge);
 	void rankFastestChangingEntities(unsigned Rt, int direction);
+	void updateSelectedEntities();
 
 	vector<string> metricVector;
 	vector<Entity*> selected;
@@ -35,7 +39,7 @@ public:
 	vector<Entity*> entities; // Contains only Entities ordered by score
 	int depth = 0;
 	unsigned nRevisions = 0;
-	unsigned nDimentions = 0;
+	unsigned nDimensions = 0;
 
 private:
 	void sortPackages(Package *p);
