@@ -14,7 +14,6 @@ using namespace std;
 
 void initializeVisualization(int argc, char **argv);
 void buildEntityData(int argc, char **argv, EntityData *ed);
-void cleanUp();
 
 unsigned Rt = 0; // Current revision
 EntityData *entityData = new EntityData();

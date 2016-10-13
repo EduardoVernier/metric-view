@@ -11,6 +11,8 @@ class Controller
 public:
 	int winWidth = 1920, winHeight = 1056;
 	int mainWindow;
+	bool displayControlWindow = true;
+	int viewportXOffset = 0;
 	int hierarchicalView = TREEMAP;
 	int evolutionView = HIDE;
 
@@ -19,7 +21,7 @@ public:
 	int streamMetricIndex = 21;
 	int colormapIndex = 0;
 	int sColormapIndex = 2;
-	int accelerationRatioIndex = 1;
+	int accelerationRatioIndex = 3;
 
 	int deltaPie = 0;
 	bool ctrlDown = false;

@@ -5,7 +5,9 @@ GLUI *glui;
 
 void initializeUI()
 {
-	glui = GLUI_Master.create_glui("GLUI");
+	glui = GLUI_Master.create_glui_subwindow(controller.mainWindow, GLUI_SUBWINDOW_LEFT);
+	glui->set_main_gfx_window(controller.mainWindow);
+
 	// Metric listboxes
 	glui->add_statictext("Color Metric");
 	GLUI_Listbox *colorLB = glui->add_listbox("", &controller.colorMetricIndex, COLORMETRIC_LB);
@@ -57,6 +59,10 @@ void initializeUI()
 	glui->add_checkbox("Display delta pie slice", &controller.deltaPie);
 	glui->add_checkbox("Dynamic Treemap", &controller.dynamicTreemap);
 	glui->add_checkbox("Enable halos", &controller.halo);
+
+	GLUI_Master.auto_set_viewport();
+	glui->sync_live();
+
 }
 
 // Callback handling
@@ -68,16 +74,16 @@ void controlCB(int control)
 			switch (controller.accelerationRatioIndex)
 			{
 				case 0:
-					controller.accelerationRatio = 1;
-					break;
-				case 1:
 					controller.accelerationRatio = 10;
 					break;
-				case 2:
+				case 1:
 					controller.accelerationRatio = 5;
 					break;
-				case 3:
+				case 2:
 					controller.accelerationRatio = 2;
+					break;
+				case 3:
+					controller.accelerationRatio = 1;
 					break;
 				case 4:
 					controller.accelerationRatio = 0.75;
@@ -88,6 +94,10 @@ void controlCB(int control)
 				case 6:
 					controller.accelerationRatio = 0.1;
 					break;
+				case 7:
+					controller.accelerationRatio = 0.05;
+					break;
+
 			}
 			break;
 	}
@@ -202,8 +212,29 @@ void keyboard(unsigned char key, int x, int y)
 				entityData->rankFastestChangingEntities(Rt, controller.animationDirection );
 			}
 			break;
+		case 'c':
+			toggleControlWindowVisibility();
+			break;
 		default:break;
 	}
+}
+
+
+void toggleControlWindowVisibility() {
+	controller.displayControlWindow = !controller.displayControlWindow;
+	if (controller.displayControlWindow)
+	{
+		glui->show();
+		int vx, vy, vw, vh;
+		GLUI_Master.get_viewport_area(&vx, &vy, &vw, &vh);
+		controller.viewportXOffset = vx;
+	}
+	else
+	{
+		glui->hide();
+		controller.viewportXOffset = 0;
+	}
+	reshape(controller.winWidth - controller.viewportXOffset, controller.winHeight);
 }
 
 void keyboardMod(int key, int x, int y)

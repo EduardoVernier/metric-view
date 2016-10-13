@@ -1,4 +1,5 @@
 #include "../include/renderer.h"
+#include "../include/GL/glui.h"
 
 // Singletons
 shared_ptr<Mouse> mouse = std::make_shared<Mouse>();
@@ -22,7 +23,7 @@ void reshape(int W, int H)
 {
 	calculateAnimationStep();
 	glShadeModel(GL_SMOOTH);
-	glViewport(0, 0, W, H);
+	glViewport(controller.viewportXOffset, 0, W, H);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	// Map abstract coords directly to window coords.
@@ -36,13 +37,15 @@ void reshape(int W, int H)
 void idle()
 {
 	// Ugly fix for misclicks
-	if (controller.windowQueue.size() < 5)
-		controller.windowQueue.push((short)glutGetWindow());
-	else
-	{
-		controller.windowQueue.pop();
-		controller.windowQueue.push((short)glutGetWindow());
-	}
+//	if (controller.windowQueue.size() < 5)
+//		controller.windowQueue.push((short)glutGetWindow());
+//	else
+//	{
+//		controller.windowQueue.pop();
+//		controller.windowQueue.push((short)glutGetWindow());
+//	}
+	if ( glutGetWindow() != controller.mainWindow )
+		glutSetWindow(controller.mainWindow);
 	glutPostRedisplay();
 }
 
@@ -66,7 +69,6 @@ void render()
 	{
 		SpectrographCanvas::getInstance().drawCanvas(Rt, controller.animationStep);
 	}
-
 
 	drawHoveringLabel();
 

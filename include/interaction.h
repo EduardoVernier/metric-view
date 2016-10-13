@@ -5,6 +5,7 @@
 #include <GL/glui.h>
 #include <queue>
 
+#include "renderer.h"
 #include "Mouse.h"
 #include "Treemap.h"
 #include "TreemapCanvas.h"
@@ -47,3 +48,4 @@ void mousePassive(int x, int y);
 void mouseUpdate(int x, int y);
 void keyboard(unsigned char key, int x, int y);
 void keyboardMod(int key, int x, int y);
+void toggleControlWindowVisibility();
