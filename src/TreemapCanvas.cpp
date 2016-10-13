@@ -40,13 +40,12 @@ void TreemapCanvas::getEntitiesByPositionOnTreemap(int *drag, unsigned click, bo
 // First draw elements and then package borders
 void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
-	vector<BaseEntity*> items = entityData->sortedBaseEntities;
-
 	// Scale initial aspect ratio by new
 	glPushMatrix();
+	glTranslated(xOff, yOff, 0.0);
 	xRatio = currentWidth/initialWidth;
 	yRatio = currentHeight/initialHeight;
-	glScaled(xRatio, yRatio, 1);
+	glScaled(xRatio, yRatio, 1.0);
 
 	// Draw treemap class entities
 	for (vector<Entity*>::iterator it = entityData->entities.begin(); it != entityData->entities.end(); ++it)
@@ -88,7 +87,7 @@ void TreemapCanvas::drawEntity(Entity *e, unsigned Rt, double animationStep)
 
 	// Draw colored rect
 	Color c = getColor(controller.colormapIndex, e, Rt);
-	glColor3f(c.R, c.G, c.B);
+	glColor3d(c.R, c.G, c.B);
 	glRectd(coords[0],coords[1],coords[2],coords[3]);
 
 	// Draw darker border
@@ -97,7 +96,7 @@ void TreemapCanvas::drawEntity(Entity *e, unsigned Rt, double animationStep)
 	double x1 = coords[2];
 	double y1 = coords[3];
 	glLineWidth(0.1f);
-	glColor3f(c.R*0.6, c.G*0.6, c.B*0.6);
+	glColor3d(c.R*0.6, c.G*0.6, c.B*0.6);
 	glBegin(GL_LINE_STRIP);
 	glVertex2d(x0,y0);
 	glVertex2d(x0,y0);
@@ -113,10 +112,10 @@ void TreemapCanvas::drawEntity(Entity *e, unsigned Rt, double animationStep)
 	if (controller.halo && e->showHalo) drawHalo(coords, animationStep);
 
 	// Draw line around full rectangle
-	x0 = e->getCoord(0) + xOff;
-	y0 = e->getCoord(1) + yOff;
-	x1 = e->getCoord(2) + xOff;
-	y1 = e->getCoord(3) + yOff;
+	x0 = e->getCoord(0);
+	y0 = e->getCoord(1);
+	x1 = e->getCoord(2);
+	y1 = e->getCoord(3);
 	glLineWidth(0.1f);
 	glColor3f(0.0f, 0.0f, 0.0f);
 	glBegin(GL_LINE_STRIP);
@@ -144,7 +143,7 @@ void TreemapCanvas::drawHalo(const double *coords, double animationStep)
 		double yc = (y1+y0)/2.0;
 
 		animationStep = (animationStep < 0)? animationStep*(-1) : animationStep;
-		float opacity = (animationStep < 0.5)? 2*animationStep : 1 - (animationStep-0.5)*2;
+		double opacity = (animationStep < 0.5)? 2*animationStep : 1 - (animationStep-0.5)*2;
 
 		glEnable(GL_BLEND);
 		glEnable(GL_SMOOTH);
@@ -152,14 +151,14 @@ void TreemapCanvas::drawHalo(const double *coords, double animationStep)
 
 
 		glBegin(GL_TRIANGLE_FAN);
-		glColor4f(0,0,0,0);
-		glVertex3f(xc, yc, 0);
-		glColor4f(0.2,0.2,0.2,opacity);
-		glVertex3f(x0, y0, 0);
-		glVertex3f(x0, y1, 0);
-		glVertex3f(x1, y1, 0);
-		glVertex3f(x1, y0, 0);
-		glVertex3f(x0, y0, 0);
+		glColor4d(0,0,0,0);
+		glVertex3d(xc, yc, 0);
+		glColor4d(0.2,0.2,0.2,opacity);
+		glVertex3d(x0, y0, 0);
+		glVertex3d(x0, y1, 0);
+		glVertex3d(x1, y1, 0);
+		glVertex3d(x1, y0, 0);
+		glVertex3d(x0, y0, 0);
 		glEnd();
 		glDisable(GL_BLEND);
 	}
@@ -169,10 +168,10 @@ void TreemapCanvas::drawHalo(const double *coords, double animationStep)
 // Return an entitie's vertex coordinates on the treemap
 void TreemapCanvas::computeRectangleSize(double *retCoords, Entity *e, unsigned Rt, double animationStep)
 {
-	double x0 = e->getCoord(0)+  xOff;
-	double y0 = e->getCoord(1) + yOff;
-	double x1 = e->getCoord(2) + xOff;
-	double y1 = e->getCoord(3) + yOff;
+	double x0 = e->getCoord(0);
+	double y0 = e->getCoord(1);
+	double x1 = e->getCoord(2);
+	double y1 = e->getCoord(3);
 	double ratio = 1;
 
 	// If we are dealing with a dynamic treemaps, we interpolate
@@ -201,10 +200,10 @@ void TreemapCanvas::computeRectangleSize(double *retCoords, Entity *e, unsigned 
 
 void TreemapCanvas::drawPackageFirstLayer(BaseEntity *e)
 {
-	double x0 = e->getCoord(0) + xOff;
-	double y0 = e->getCoord(1) + yOff;
-	double x1 = e->getCoord(2) + xOff;
-	double y1 = e->getCoord(3) + yOff;
+	double x0 = e->getCoord(0);
+	double y0 = e->getCoord(1);
+	double x1 = e->getCoord(2);
+	double y1 = e->getCoord(3);
 
 	glLineWidth(5.0f);
 	glColor3f(0.0f, 0.0f, 0.0f);
@@ -220,10 +219,10 @@ void TreemapCanvas::drawPackageFirstLayer(BaseEntity *e)
 
 void TreemapCanvas::drawPackageSecondLayer(BaseEntity *e)
 {
-	double x0 = e->getCoord(0) + xOff;
-	double y0 = e->getCoord(1) + yOff;
-	double x1 = e->getCoord(2) + xOff;
-	double y1 = e->getCoord(3) + yOff;
+	double x0 = e->getCoord(0);
+	double y0 = e->getCoord(1);
+	double x1 = e->getCoord(2);
+	double y1 = e->getCoord(3);
 
 	glLineWidth(3.0f);
 	glColor3f(1.0f, 1.0f, 1.0f);
@@ -247,13 +246,13 @@ void TreemapCanvas::drawHovered(BaseEntity *e)
 	if (e == NULL) return;
 
 	double padding = 3.0;
-	double x0 = e->getCoord(0)+ padding + xOff;
-	double y0 = e->getCoord(1)+ padding + yOff;
-	double x1 = e->getCoord(2)- padding + xOff;
-	double y1 = e->getCoord(3)- padding + yOff;
+	double x0 = e->getCoord(0)+ padding;
+	double y0 = e->getCoord(1)+ padding;
+	double x1 = e->getCoord(2)- padding;
+	double y1 = e->getCoord(3)- padding;
 
 	glLineWidth(6.0f);
-	glColor3f(colorHover.R, colorHover.G, colorHover.B);
+	glColor3d(colorHover.R, colorHover.G, colorHover.B);
 	glBegin(GL_LINE_STRIP);
 	glVertex2d(x0,y0-padding);
 	glVertex2d(x0,y0);
@@ -266,11 +265,10 @@ void TreemapCanvas::drawHovered(BaseEntity *e)
 	glVertex2d(x0,y0);
 	glEnd();
 
-	padding = 0.0;
-	x0 = e->getCoord(0)+ padding + xOff;
-	y0 = e->getCoord(1)+ padding + yOff;
-	x1 = e->getCoord(2)- padding + xOff;
-	y1 = e->getCoord(3)- padding + yOff;
+	x0 = e->getCoord(0);
+	y0 = e->getCoord(1);
+	x1 = e->getCoord(2);
+	y1 = e->getCoord(3);
 
 	glLineWidth(1.0f);
 	glColor3f(1,1,1);
@@ -285,49 +283,38 @@ void TreemapCanvas::drawHovered(BaseEntity *e)
 
 void TreemapCanvas::drawSelected(Entity *e)
 {
-	int showHierarchy = 0;
-	if (showHierarchy)
-	{
-		return;
-	}
-	else
-	{
-		double padding = 2.0;
-		double x0 = e->getCoord(0)+ padding + xOff;
-		double y0 = e->getCoord(1)+ padding + yOff;
-		double x1 = e->getCoord(2)- padding + xOff;
-		double y1 = e->getCoord(3)- padding + yOff;
+	double padding = 2.0;
+	double x0 = e->getCoord(0) + padding;
+	double y0 = e->getCoord(1) + padding;
+	double x1 = e->getCoord(2) - padding;
+	double y1 = e->getCoord(3) - padding;
+	glLineWidth(4.0f);
+	glColor3d(colorSelection.R, colorSelection.G, colorSelection.B);
+	glBegin(GL_LINE_STRIP);
+	glVertex2d(x0, y0 - padding);
+	glVertex2d(x0, y0);
+	glVertex2d(x0, y1 + padding);
+	glVertex2d(x0, y1);
+	glVertex2d(x1 + padding, y1);
+	glVertex2d(x1, y1);
+	glVertex2d(x1, y0 - padding);
+	glVertex2d(x1, y0);
+	glVertex2d(x0, y0);
+	glEnd();
 
-		glLineWidth(4.0f);
-		glColor3f(colorSelection.R, colorSelection.G, colorSelection.B);
-		glBegin(GL_LINE_STRIP);
-		glVertex2d(x0,y0-padding);
-		glVertex2d(x0,y0);
-		glVertex2d(x0,y1+padding);
-		glVertex2d(x0,y1);
-		glVertex2d(x1+padding,y1);
-		glVertex2d(x1,y1);
-		glVertex2d(x1,y0-padding);
-		glVertex2d(x1,y0);
-		glVertex2d(x0,y0);
-		glEnd();
-
-		padding = 0.0;
-		x0 = e->getCoord(0)+ padding + xOff;
-		y0 = e->getCoord(1)+ padding + yOff;
-		x1 = e->getCoord(2)- padding + xOff;
-		y1 = e->getCoord(3)- padding + yOff;
-
-		glLineWidth(1.0f);
-		glColor3f(1,1,1);
-		glBegin(GL_LINE_STRIP);
-		glVertex2d(x0,y0);
-		glVertex2d(x0,y1);
-		glVertex2d(x1,y1);
-		glVertex2d(x1,y0);
-		glVertex2d(x0,y0);
-		glEnd();
-	}
+	x0 = e->getCoord(0);
+	y0 = e->getCoord(1);
+	x1 = e->getCoord(2);
+	y1 = e->getCoord(3);
+	glLineWidth(1.0f);
+	glColor3f(1, 1, 1);
+	glBegin(GL_LINE_STRIP);
+	glVertex2d(x0, y0);
+	glVertex2d(x0, y1);
+	glVertex2d(x1, y1);
+	glVertex2d(x1, y0);
+	glVertex2d(x0, y0);
+	glEnd();
 
 }
 
@@ -337,10 +324,10 @@ void TreemapCanvas::labelCells()
 	{
 		if ((*it)->isEntity())
 		{
-			double x0 = (*it)->getCoord(0) + xOff;
-			double y0 = (*it)->getCoord(1) + yOff;
-			double x1 = (*it)->getCoord(2) + xOff;
-			double y1 = (*it)->getCoord(3) + yOff;
+			double x0 = (*it)->getCoord(0);
+			double y0 = (*it)->getCoord(1);
+			double x1 = (*it)->getCoord(2);
+			double y1 = (*it)->getCoord(3);
 
 			// Disregard very small cells
 			if ((x1-x0 > y1-y0 && x1-x0 < 50) || y1-y0 < 15)
@@ -367,7 +354,7 @@ void TreemapCanvas::labelCells()
 			// Test for horizontal fit
 			if (x1-x0 > width*0.12 + 200*0.12)
 			{
-				glTranslatef(x0+3, y0+15, 0);
+				glTranslated(x0+3, y0+15, 0);
 				glScalef(0.12f,-0.1f,0);
 
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -383,7 +370,7 @@ void TreemapCanvas::labelCells()
 			}
 			else if (y1-y0 > width*0.12 + 200*0.12) // Test for vertical fit
 			{
-				glTranslatef(x0+13, y1-3, 0);
+				glTranslated(x0+13, y1-3, 0);
 				glScalef(0.1f,-0.12f,0);
 				glRotated(90, 0, 0, 1);
 
@@ -400,7 +387,7 @@ void TreemapCanvas::labelCells()
 			}
 			else if (x1-x0 > y1-y0) // Fit all that's possible on horizontal plane
 			{
-				glTranslatef(x0+3, y0+15, 0);
+				glTranslated(x0+3, y0+15, 0);
 				glScalef(0.12f,-0.1f,0);
 
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -424,7 +411,7 @@ void TreemapCanvas::labelCells()
 			}
 			else if (y1-y0 > x1-x0) // Fit all that's possible on vertical plane
 			{
-				glTranslatef(x0+13, y1-3, 0);
+				glTranslated(x0+13, y1-3, 0);
 				glScalef(0.1f,-0.12f,0);
 				glRotated(90, 0, 0, 1);
 

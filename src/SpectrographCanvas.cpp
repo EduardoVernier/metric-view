@@ -46,12 +46,14 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 		}
 		// Draw hover indication
 		if(entityData->hovered != NULL)
-			if (e->getName() == entityData->hovered->getName())
 		{
-			glColor3d(colorHover.R, colorHover.G, colorHover.B);
+			if (e->getName() == entityData->hovered->getName())
+			{
+				glColor3d(colorHover.R, colorHover.G, colorHover.B);
 
-			glRectd(-2, i*cellHeight,
-					-9, (i+1)*cellHeight);
+				glRectd(-2, i*cellHeight,
+						-9, (i+1)*cellHeight);
+			}
 		}
 	}
 
