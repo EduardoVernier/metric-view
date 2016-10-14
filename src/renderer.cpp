@@ -1,12 +1,13 @@
 #include "../include/renderer.h"
 #include "../include/GL/glui.h"
+#include "../include/interaction.h"
 
 // Singletons
 shared_ptr<Mouse> mouse = std::make_shared<Mouse>();
-shared_ptr<Canvas> pCanvas = nullptr;
-shared_ptr<Canvas> tCanvas = nullptr;
-shared_ptr<Canvas> sbCanvas = nullptr;
-shared_ptr<Canvas> stCanvas = nullptr;
+shared_ptr<ProjectionCanvas> pCanvas = nullptr;
+shared_ptr<TreemapCanvas> tCanvas = nullptr;
+shared_ptr<SunburstCanvas> sbCanvas = nullptr;
+shared_ptr<StreamgraphCanvas> stCanvas = nullptr;
 shared_ptr<MetricRank> mRank = nullptr;
 unique_ptr<Entity> hover = nullptr; // Drawing of hovering label
 
@@ -16,22 +17,6 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	render();
 	glFlush();
-}
-
-// Function called when window dimensions change
-void reshape(int W, int H)
-{
-	calculateAnimationStep();
-	glShadeModel(GL_SMOOTH);
-	glViewport(controller.viewportXOffset, 0, W, H);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	// Map abstract coords directly to window coords.
-	glOrtho(0, W, 0, H, -1, 1);
-	glScalef(1, -1, 1);
-	glTranslatef(0, -H, 0);
-	// Update canvasses sizes
-	setCanvassesSizes(W, H);
 }
 
 void idle()
@@ -77,11 +62,27 @@ void render()
 	drawRt();
 }
 
+// Function called when window dimensions change
+void reshape(int W, int H)
+{
+	calculateAnimationStep();
+	glShadeModel(GL_SMOOTH);
+	glViewport(controller.viewportXOffset, 0, W - controller.viewportXOffset, H);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	// Map abstract coords directly to window coords.
+	glOrtho(0, W, 0, H, -1, 1);
+	glScalef(1, -1, 1);
+	glTranslatef(0, -H, 0);
+	// Update canvasses sizes
+	controller.winWidth = W;
+	controller.winHeight = H;
+	setCanvassesSizes(W, H);
+}
+
 // Update objects when window size changes
 void setCanvassesSizes(int W, int H)
 {
-	controller.winWidth = W;
-	controller.winHeight = H;
 
 	// Let mouse object know that window has changed size
 	mouse->setWindowSize(W, H);
@@ -94,7 +95,7 @@ void setCanvassesSizes(int W, int H)
 	Point tTL {20 + (W-30)/2.0, 10};
 	Point tBR {W - 10.0, H - 10.0};
 
-
+	// TODO: Move this setup stuff from here
 	// Instantiate if it's the first call, else just update size
 	if (pCanvas == nullptr && tCanvas == nullptr)
 	{
@@ -132,13 +133,14 @@ void setCanvassesSizes(int W, int H)
 
 void drawHoveringLabel()
 {
-	if (hover!=NULL)
+
+	if (entityData->hovered!=NULL)
 	{
 		string s;
-		if (hover->isEntity())
-			s = hover->getPrefix() + "." + hover->getName();
+		if (entityData->hovered->isEntity())
+			s = ((Entity*)(entityData->hovered))->getPrefix() + "." + entityData->hovered->getName();
 		else
-			s = hover->getName();
+			s = entityData->hovered->getName();
 
 		glEnable (GL_BLEND);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

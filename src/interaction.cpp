@@ -60,9 +60,8 @@ void initializeUI()
 	glui->add_checkbox("Dynamic Treemap", &controller.dynamicTreemap);
 	glui->add_checkbox("Enable halos", &controller.halo);
 
-	GLUI_Master.auto_set_viewport();
 	glui->sync_live();
-
+	toggleControlWindowVisibility();
 }
 
 // Callback handling
@@ -156,7 +155,6 @@ void mousePassive (int x, int y)
 		{
 			SpectrographCanvas::getInstance().getEntitiesOnSpectrograph(drag, 0, controller.ctrlDown);
 		}
-		hover = entityData->hovered;
 	}
 	else if (mouse->canvas == 2) // Hovering treemap
 	{
@@ -165,18 +163,15 @@ void mousePassive (int x, int y)
 			tCanvas->getEntitiesByPositionOnTreemap(drag, 0, controller.ctrlDown);
 		else
 			sbCanvas->getEntitiesByPosition(drag, 0, controller.ctrlDown);
-		hover = entityData->hovered;
 	}
 	else if (mouse->canvas == 1) // Hovering projection
 	{
 		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
 		pCanvas->getEntitiesByPositionOnProjection(drag, Rt, 0, controller.ctrlDown);
-		hover = entityData->hovered;
 	}
 	else
 	{
 		entityData->hovered = NULL;
-		hover = NULL;
 	}
 }
 
@@ -222,19 +217,21 @@ void keyboard(unsigned char key, int x, int y)
 
 void toggleControlWindowVisibility() {
 	controller.displayControlWindow = !controller.displayControlWindow;
+	int vx, vy, vw, vh;
 	if (controller.displayControlWindow)
 	{
 		glui->show();
-		int vx, vy, vw, vh;
 		GLUI_Master.get_viewport_area(&vx, &vy, &vw, &vh);
 		controller.viewportXOffset = vx;
 	}
 	else
 	{
 		glui->hide();
+		GLUI_Master.get_viewport_area(&vx, &vy, &vw, &vh);
 		controller.viewportXOffset = 0;
 	}
-	reshape(controller.winWidth - controller.viewportXOffset, controller.winHeight);
+
+	reshape(controller.winWidth, controller.winHeight);
 }
 
 void keyboardMod(int key, int x, int y)

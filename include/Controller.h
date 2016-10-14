@@ -11,7 +11,7 @@ class Controller
 public:
 	int winWidth = 1920, winHeight = 1056;
 	int mainWindow;
-	bool displayControlWindow = true;
+	bool displayControlWindow = false;
 	int viewportXOffset = 0;
 	int hierarchicalView = TREEMAP;
 	int evolutionView = HIDE;

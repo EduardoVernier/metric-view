@@ -18,8 +18,7 @@
 
 extern Controller controller;
 extern shared_ptr<Mouse> mouse;
-extern EntityData *entityData;
-extern BaseEntity *hover;
+extern EntityData* entityData;
 extern unsigned Rt;
 extern shared_ptr<TreemapCanvas> tCanvas;
 extern shared_ptr<SunburstCanvas> sbCanvas;
