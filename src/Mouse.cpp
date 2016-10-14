@@ -14,26 +14,32 @@ Mouse::Mouse()
 
 int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 {
+	double xMult;
+	if(controller.displayControlWindow)
+		xMult = ((double)W_/(double)(W_-controller.viewportXOffset))*0.985; // God that's awful
+	else
+		xMult = 1;
+
 	button = _button;
 	state = _state;
-	rawX = _x;
+	rawX = (_x - controller.viewportXOffset) * xMult;
 	rawY = _y;
 	lastCanvas = canvas;
 
 	if (controller.evolutionView == HIDE)
 	{
-		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
+		if (rawX > pCanvas->top_left.x && rawX < pCanvas->bottom_right.x &&
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
 		{
 				canvas = P;
-				x = _x-pCanvas->top_left.x;
+				x = rawX-pCanvas->top_left.x;
 				y = _y-pCanvas->top_left.y;
 		}
-		else if (_x > tCanvas->top_left.x && _x < tCanvas->bottom_right.x &&
+		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
 				canvas = T;
-				x = _x-tCanvas->top_left.x;
+				x = rawX-tCanvas->top_left.x;
 				y = _y-tCanvas->top_left.y;
 		}
 		else
@@ -45,25 +51,25 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 	}
 	else
 	{
-		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
+		if (rawX > pCanvas->top_left.x && rawX < pCanvas->bottom_right.x &&
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
 		{
 				canvas = P;
-				x = _x-pCanvas->top_left.x;
+				x = rawX-pCanvas->top_left.x;
 				y = _y-pCanvas->top_left.y;
 		}
-		else if (_x > tCanvas->top_left.x && _x < tCanvas->bottom_right.x &&
+		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
 				canvas = T;
-				x = _x-tCanvas->top_left.x;
+				x = rawX-tCanvas->top_left.x;
 				y = _y-tCanvas->top_left.y;
 		}
-		else if (_x > stCanvas->top_left.x && _x < stCanvas->bottom_right.x &&
+		else if (rawX > stCanvas->top_left.x && rawX < stCanvas->bottom_right.x &&
 				_y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
 		{
 				canvas = S;
-				x = _x-stCanvas->top_left.x;
+				x = rawX-stCanvas->top_left.x;
 				y = _y-stCanvas->top_left.y;
 		}
 		else
@@ -76,7 +82,7 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 
 	if (button == 0 && state == 0)
 	{
-		rawLastX = _x;
+		rawLastX = rawX;
 		rawLastY = _y;
 		lastX = x;
 		lastY = y;
@@ -114,23 +120,30 @@ void Mouse::setWindowSize(int W, int H)
 
 void Mouse::updateMouse(int _x, int _y)
 {
-	rawX = _x;
+
+	double xMult;
+	if(controller.displayControlWindow)
+		xMult = ((double)W_/(double)(W_-controller.viewportXOffset))*0.985; // God that's awful
+	else
+		xMult = 1;
+
+	rawX = (_x - controller.viewportXOffset)*xMult;
 	rawY = _y;
 
 	if (controller.evolutionView == HIDE)
 	{
-		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
+		if (rawX > pCanvas->top_left.x && rawX < pCanvas->bottom_right.x &&
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
 		{
 				canvas = P;
-				x = _x-pCanvas->top_left.x;
+				x = rawX -pCanvas->top_left.x;
 				y = _y-pCanvas->top_left.y;
 		}
-		else if (_x > tCanvas->top_left.x && _x < tCanvas->bottom_right.x &&
+		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
 				canvas = T;
-				x = _x-tCanvas->top_left.x;
+				x = rawX -tCanvas->top_left.x;
 				y = _y-tCanvas->top_left.y;
 		}
 		else
@@ -142,25 +155,25 @@ void Mouse::updateMouse(int _x, int _y)
 	}
 	else
 	{
-		if (_x > pCanvas->top_left.x && _x < pCanvas->bottom_right.x &&
+		if (rawX > pCanvas->top_left.x && rawX < pCanvas->bottom_right.x &&
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
 		{
 				canvas = P;
-				x = _x-pCanvas->top_left.x;
+				x = rawX -pCanvas->top_left.x;
 				y = _y-pCanvas->top_left.y;
 		}
-		else if (_x > tCanvas->top_left.x && _x < tCanvas->bottom_right.x &&
+		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
 				canvas = T;
-				x = _x-tCanvas->top_left.x;
+				x = rawX -tCanvas->top_left.x;
 				y = _y-tCanvas->top_left.y;
 		}
-		else if (_x > stCanvas->top_left.x && _x < stCanvas->bottom_right.x &&
+		else if (rawX > stCanvas->top_left.x && rawX < stCanvas->bottom_right.x &&
 				_y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
 		{
 				canvas = S;
-				x = _x-stCanvas->top_left.x;
+				x = rawX -stCanvas->top_left.x;
 				y = _y-stCanvas->top_left.y;
 		}
 		else

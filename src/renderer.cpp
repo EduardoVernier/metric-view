@@ -85,7 +85,7 @@ void setCanvassesSizes(int W, int H)
 {
 
 	// Let mouse object know that window has changed size
-	mouse->setWindowSize(W, H);
+	mouse->setWindowSize(W - controller.viewportXOffset, H);
 
 	// Vertices Top-Left and Bottom-Right of Projection canvas
 	Point pTL {10, 10};
@@ -175,6 +175,7 @@ void drawSelectionBox()
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor4f(0, 0, 0, 0.4);
 	glRecti(mouse->rawLastX, mouse->rawLastY, mouse->rawX, mouse->rawY);
+	//glRecti(mouse->rawX-10, mouse->rawY-10, mouse->rawX+10, mouse->rawY+10);
 	glDisable (GL_BLEND);
 }
 

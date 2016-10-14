@@ -14,9 +14,7 @@
   <component name="ChangeListManager">
     <list default="true" id="eb203fb0-5ef9-483a-8571-69f69f12325d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Controller.h" afterPath="$PROJECT_DIR$/include/Controller.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/interaction.h" afterPath="$PROJECT_DIR$/include/interaction.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/interaction.cpp" afterPath="$PROJECT_DIR$/src/interaction.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Mouse.cpp" afterPath="$PROJECT_DIR$/src/Mouse.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer.cpp" afterPath="$PROJECT_DIR$/src/renderer.cpp" />
     </list>
     <ignored path="metric-view.iws" />
@@ -49,11 +47,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="renderer.cpp" pinned="false" current-in-tab="true">
+          <file leaf-file-name="renderer.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/renderer.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="557">
-                  <caret line="57" column="22" selection-start-line="57" selection-start-column="22" selection-end-line="57" selection-end-column="22" />
+                <state relative-caret-position="150">
+                  <caret line="176" column="4" selection-start-line="176" selection-start-column="4" selection-end-line="176" selection-end-column="4" />
                   <folding>
                     <element signature="e#0#32#0" expanded="true" />
                   </folding>
@@ -61,11 +59,21 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="EntityData.h" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/include/EntityData.h">
+          <file leaf-file-name="Mouse.cpp" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/Mouse.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="276">
-                  <caret line="35" column="14" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="14" />
+                <state relative-caret-position="234">
+                  <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Mouse.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/include/Mouse.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="240">
+                  <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
                   <folding />
                 </state>
               </provider>
@@ -78,7 +86,7 @@
           <file leaf-file-name="interaction.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/interaction.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="309">
+                <state relative-caret-position="444">
                   <caret line="63" column="36" selection-start-line="63" selection-start-column="36" selection-end-line="63" selection-end-column="36" />
                   <folding />
                 </state>
@@ -139,8 +147,10 @@
         <option value="$PROJECT_DIR$/include/renderer.h" />
         <option value="$PROJECT_DIR$/include/Controller.h" />
         <option value="$PROJECT_DIR$/include/interaction.h" />
-        <option value="$PROJECT_DIR$/src/renderer.cpp" />
         <option value="$PROJECT_DIR$/src/interaction.cpp" />
+        <option value="$PROJECT_DIR$/include/Mouse.h" />
+        <option value="$PROJECT_DIR$/src/renderer.cpp" />
+        <option value="$PROJECT_DIR$/src/Mouse.cpp" />
       </list>
     </option>
   </component>
@@ -459,12 +469,12 @@
       <workItem from="1476069515246" duration="1177000" />
       <workItem from="1476190732832" duration="21572000" />
       <workItem from="1476329388141" duration="6601000" />
-      <workItem from="1476420699231" duration="2511000" />
+      <workItem from="1476420699231" duration="5714000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49666000" />
+    <option name="totallyTimeSpent" value="52869000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -479,7 +489,7 @@
     <frame x="0" y="21" width="1920" height="1059" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13691416" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0895208" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32987553" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2219917" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32987553" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -530,10 +540,17 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/Mouse.cpp</url>
+          <line>84</line>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="54" />
+      <option name="time" value="55" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
@@ -542,22 +559,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/SpectrographCanvas.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ProjectionCanvas.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="915">
-          <caret line="61" column="1" selection-start-line="61" selection-start-column="1" selection-end-line="61" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Canvas.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -895,10 +896,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/interaction.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="63" column="36" selection-start-line="63" selection-start-column="36" selection-end-line="63" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/include/EntityData.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="35" column="14" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="14" />
+        <state relative-caret-position="60">
+          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
           <folding />
         </state>
       </provider>
@@ -911,20 +920,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/include/Mouse.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/renderer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="557">
-          <caret line="57" column="22" selection-start-line="57" selection-start-column="22" selection-end-line="57" selection-end-column="22" />
+        <state relative-caret-position="150">
+          <caret line="176" column="4" selection-start-line="176" selection-start-column="4" selection-end-line="176" selection-end-column="4" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/interaction.cpp">
+    <entry file="file://$PROJECT_DIR$/src/Mouse.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="63" column="36" selection-start-line="63" selection-start-column="36" selection-end-line="63" selection-end-column="36" />
+        <state relative-caret-position="234">
+          <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
           <folding />
         </state>
       </provider>
