@@ -22,7 +22,7 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 
 	button = _button;
 	state = _state;
-	rawX = (_x - controller.viewportXOffset) * xMult;
+	rawX = (int) ((_x - controller.viewportXOffset) * xMult);
 	rawY = _y;
 	lastCanvas = canvas;
 
@@ -32,15 +32,15 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
 		{
 				canvas = P;
-				x = rawX-pCanvas->top_left.x;
-				y = _y-pCanvas->top_left.y;
+				x = (int) (rawX - pCanvas->top_left.x);
+				y = (int) (_y - pCanvas->top_left.y);
 		}
 		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
 				canvas = T;
-				x = rawX-tCanvas->top_left.x;
-				y = _y-tCanvas->top_left.y;
+				x = (int) (rawX - tCanvas->top_left.x);
+				y = (int) (_y - tCanvas->top_left.y);
 		}
 		else
 		{
@@ -55,22 +55,22 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
 		{
 				canvas = P;
-				x = rawX-pCanvas->top_left.x;
-				y = _y-pCanvas->top_left.y;
+				x = (int) (rawX - pCanvas->top_left.x);
+				y = (int) (_y - pCanvas->top_left.y);
 		}
 		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
 				canvas = T;
-				x = rawX-tCanvas->top_left.x;
-				y = _y-tCanvas->top_left.y;
+				x = (int) (rawX - tCanvas->top_left.x);
+				y = (int) (_y - tCanvas->top_left.y);
 		}
 		else if (rawX > stCanvas->top_left.x && rawX < stCanvas->bottom_right.x &&
 				_y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
 		{
 				canvas = S;
-				x = rawX-stCanvas->top_left.x;
-				y = _y-stCanvas->top_left.y;
+				x = (int) (rawX - stCanvas->top_left.x);
+				y = (int) (_y - stCanvas->top_left.y);
 		}
 		else
 		{
@@ -127,7 +127,7 @@ void Mouse::updateMouse(int _x, int _y)
 	else
 		xMult = 1;
 
-	rawX = (_x - controller.viewportXOffset)*xMult;
+	rawX = (int) ((_x - controller.viewportXOffset) * xMult);
 	rawY = _y;
 
 	if (controller.evolutionView == HIDE)
@@ -136,15 +136,15 @@ void Mouse::updateMouse(int _x, int _y)
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
 		{
 				canvas = P;
-				x = rawX -pCanvas->top_left.x;
-				y = _y-pCanvas->top_left.y;
+				x = (int) (rawX - pCanvas->top_left.x);
+				y = (int) (_y - pCanvas->top_left.y);
 		}
 		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
 				canvas = T;
-				x = rawX -tCanvas->top_left.x;
-				y = _y-tCanvas->top_left.y;
+				x = (int) (rawX - tCanvas->top_left.x);
+				y = (int) (_y - tCanvas->top_left.y);
 		}
 		else
 		{
@@ -159,22 +159,22 @@ void Mouse::updateMouse(int _x, int _y)
 				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
 		{
 				canvas = P;
-				x = rawX -pCanvas->top_left.x;
-				y = _y-pCanvas->top_left.y;
+				x = (int) (rawX - pCanvas->top_left.x);
+				y = (int) (_y - pCanvas->top_left.y);
 		}
 		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
 				canvas = T;
-				x = rawX -tCanvas->top_left.x;
-				y = _y-tCanvas->top_left.y;
+				x = (int) (rawX - tCanvas->top_left.x);
+				y = (int) (_y - tCanvas->top_left.y);
 		}
 		else if (rawX > stCanvas->top_left.x && rawX < stCanvas->bottom_right.x &&
 				_y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
 		{
 				canvas = S;
-				x = rawX -stCanvas->top_left.x;
-				y = _y-stCanvas->top_left.y;
+				x = (int) (rawX - stCanvas->top_left.x);
+				y = (int) (_y - stCanvas->top_left.y);
 		}
 		else
 		{

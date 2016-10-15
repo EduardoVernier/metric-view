@@ -263,13 +263,11 @@ void EntityData::rankFastestChangingEntities(unsigned Rt, int direction)
 	unsigned K = 10; // Number of shadowed elements
 	vector<pair<double,Entity*>> rank;
 
-	// Compute distances and rank
+	// Compute distances on nD and rank
 	for (auto e : entities)
 	{
 		e->showHalo = false;
-		Point pFrom = e->normalizedProjectionPoints[Rt-direction];
-		Point pTo = e->normalizedProjectionPoints[Rt];
-		double v = sqrt(pow(pTo.x - pFrom.x, 2) + pow(pTo.y - pFrom.y, 2));
+		double v = nDEuclidianDistance(e->normalizedData[Rt - direction], e->normalizedData[Rt]);
 		rank.push_back(make_pair(v, e));
 	}
 	sort(rank.begin(), rank.end());
@@ -277,8 +275,29 @@ void EntityData::rankFastestChangingEntities(unsigned Rt, int direction)
 	// Turn on drawShadow flag on K fastest changing elements
 	for(unsigned i = 0; i < K; ++i)
 	{
-		((Entity*)(rank[rank.size()-1-i].second))->showHalo = true;
+		(rank[rank.size()-1-i].second)->showHalo = true;
 	}
+}
+
+
+double EntityData::nDEuclidianDistance(vector<double> &a, vector<double> &b) {
+
+	double sumOfSquaredDiff = 0.0;
+
+	if (a.size() == b.size())
+	{
+		unsigned nDimensions = (unsigned) a.size();
+		for (unsigned i = 0; i < nDimensions; ++i)
+		{
+			sumOfSquaredDiff += pow(a[i] - b[i], 2);
+		}
+		return sqrt(sumOfSquaredDiff);
+	}
+	else
+	{
+		return 0;
+	}
+
 }
 
 void EntityData::updateSelectedEntities() {
