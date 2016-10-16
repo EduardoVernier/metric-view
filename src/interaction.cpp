@@ -133,7 +133,7 @@ void mouseClick(int button, int state, int x, int y)
 	switch (mouse->click(button, state, x, y, drag))
 	{
 		case 1:
-			pCanvas->getEntitiesByPositionOnProjection(drag, Rt, 1, controller.ctrlDown);
+			ProjectionCanvas::getInstance().getEntitiesByPositionOnProjection(drag, Rt, 1, controller.ctrlDown);
 			break;
 		case 2:
 			if (controller.hierarchicalView == TREEMAP)
@@ -179,7 +179,7 @@ void mousePassive (int x, int y)
 	else if (mouse->canvas == 1) // Hovering projection
 	{
 		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
-		pCanvas->getEntitiesByPositionOnProjection(drag, Rt, 0, controller.ctrlDown);
+		ProjectionCanvas::getInstance().getEntitiesByPositionOnProjection(drag, Rt, 0, controller.ctrlDown);
 	}
 	else
 	{

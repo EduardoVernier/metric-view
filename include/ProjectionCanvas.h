@@ -19,11 +19,16 @@ using namespace std;
 class ProjectionCanvas : public Canvas
 {
 public:
-	ProjectionCanvas(Point tl, Point br, EntityData *ed);
+	static ProjectionCanvas& getInstance();
+	void init (Point tl, Point br, EntityData *ed);
 	void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, bool ctrlDown);
 	void drawCanvas(unsigned Rt, double animationStep);
+	double getMinRatio() const;
 
 private:
+	ProjectionCanvas();
+	ProjectionCanvas(ProjectionCanvas const&);
+	void operator=(ProjectionCanvas const&);
 	void drawEntity(double x, double y, double radius, double delta, Color c, int action);
 	void drawHalo(double x, double y, double radius, double animationStep);
 	void drawSolidEntity(double x, double y, double radius, Color c, int action);
@@ -31,4 +36,5 @@ private:
 	Point getPoint(Entity *e, unsigned Rt, double animationStep);
 
 	EntityData *entityData;
+	double minRatio;
 };

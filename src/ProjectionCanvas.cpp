@@ -1,12 +1,20 @@
 #include "../include/ProjectionCanvas.h"
 
-ProjectionCanvas::ProjectionCanvas(Point tl, Point br, EntityData *ed)
+ProjectionCanvas::ProjectionCanvas() {}
+
+ProjectionCanvas &ProjectionCanvas::getInstance()
+{
+	static ProjectionCanvas instance {};
+	return instance;
+}
+
+void ProjectionCanvas::init(Point tl, Point br, EntityData *ed)
 {
 	setSize(tl, br);
 	entityData = ed;
 	double shortEdge = min(currentHeight, currentWidth);
 	entityData->normalizeProjection(shortEdge - 50);
-}
+};
 
 // Mark entities as selected from projection pane interaction
 void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, bool ctrlDown)
@@ -21,7 +29,7 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
 
 	xRatio = currentWidth/initialWidth;
 	yRatio = currentHeight/initialHeight;
-	double minRatio = min(xRatio, yRatio);
+	minRatio = min(xRatio, yRatio);
 
 	for (auto entity : entityData->entities)
 	{
@@ -368,4 +376,9 @@ Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep)
 					+ animationStep  *b->normalizedProjectionPoints[Rt].y;
 	}
 	return p;
+}
+
+double ProjectionCanvas::getMinRatio() const
+{
+	return minRatio;
 }

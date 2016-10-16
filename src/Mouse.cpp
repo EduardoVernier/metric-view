@@ -26,14 +26,16 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 	rawY = _y;
 	lastCanvas = canvas;
 
+	ProjectionCanvas &pCanvas = ProjectionCanvas::getInstance();
+
 	if (controller.evolutionView == HIDE)
 	{
-		if (rawX > pCanvas->top_left.x && rawX < pCanvas->bottom_right.x &&
-				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
+		if (rawX > pCanvas.top_left.x && rawX < pCanvas.bottom_right.x &&
+				_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
 		{
 				canvas = P;
-				x = (int) (rawX - pCanvas->top_left.x);
-				y = (int) (_y - pCanvas->top_left.y);
+				x = (int) (rawX - pCanvas.top_left.x);
+				y = (int) (_y - pCanvas.top_left.y);
 		}
 		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
@@ -51,12 +53,12 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 	}
 	else
 	{
-		if (rawX > pCanvas->top_left.x && rawX < pCanvas->bottom_right.x &&
-				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
+		if (rawX > pCanvas.top_left.x && rawX < pCanvas.bottom_right.x &&
+				_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
 		{
 				canvas = P;
-				x = (int) (rawX - pCanvas->top_left.x);
-				y = (int) (_y - pCanvas->top_left.y);
+				x = (int) (rawX - pCanvas.top_left.x);
+				y = (int) (_y - pCanvas.top_left.y);
 		}
 		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
@@ -120,7 +122,6 @@ void Mouse::setWindowSize(int W, int H)
 
 void Mouse::updateMouse(int _x, int _y)
 {
-
 	double xMult;
 	if(controller.displayControlWindow)
 		xMult = ((double)W_/(double)(W_-controller.viewportXOffset))*0.985; // God that's awful
@@ -130,14 +131,16 @@ void Mouse::updateMouse(int _x, int _y)
 	rawX = (int) ((_x - controller.viewportXOffset) * xMult);
 	rawY = _y;
 
+	ProjectionCanvas &pCanvas = ProjectionCanvas::getInstance();
+
 	if (controller.evolutionView == HIDE)
 	{
-		if (rawX > pCanvas->top_left.x && rawX < pCanvas->bottom_right.x &&
-				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
+		if (rawX > pCanvas.top_left.x && rawX < pCanvas.bottom_right.x &&
+				_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
 		{
 				canvas = P;
-				x = (int) (rawX - pCanvas->top_left.x);
-				y = (int) (_y - pCanvas->top_left.y);
+				x = (int) (rawX - pCanvas.top_left.x);
+				y = (int) (_y - pCanvas.top_left.y);
 		}
 		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
@@ -155,12 +158,12 @@ void Mouse::updateMouse(int _x, int _y)
 	}
 	else
 	{
-		if (rawX > pCanvas->top_left.x && rawX < pCanvas->bottom_right.x &&
-				_y > pCanvas->top_left.y && _y < pCanvas->bottom_right.y)
+		if (rawX > pCanvas.top_left.x && rawX < pCanvas.bottom_right.x &&
+				_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
 		{
 				canvas = P;
-				x = (int) (rawX - pCanvas->top_left.x);
-				y = (int) (_y - pCanvas->top_left.y);
+				x = (int) (rawX - pCanvas.top_left.x);
+				y = (int) (_y - pCanvas.top_left.y);
 		}
 		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
 				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)

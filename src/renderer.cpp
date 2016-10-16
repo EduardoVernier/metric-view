@@ -3,7 +3,6 @@
 
 // "Singletons"
 shared_ptr<Mouse> mouse = std::make_shared<Mouse>();
-shared_ptr<ProjectionCanvas> pCanvas = nullptr;
 shared_ptr<TreemapCanvas> tCanvas = nullptr;
 shared_ptr<SunburstCanvas> sbCanvas = nullptr;
 shared_ptr<StreamgraphCanvas> stCanvas = nullptr;
@@ -38,7 +37,8 @@ void render()
 {
 	calculateAnimationStep();
 	setCanvassesSizes(controller.winWidth, controller.winHeight);
-	pCanvas->drawCanvas(Rt, controller.animationStep);
+
+	ProjectionCanvas::getInstance().drawCanvas(Rt, controller.animationStep);
 
 	if(controller.hierarchicalView == TREEMAP)
 	{
@@ -105,9 +105,9 @@ void setCanvassesSizes(int W, int H)
 
 	// TODO: Move this setup stuff from here
 	// Instantiate if it's the first call, else just update size
-	if (pCanvas == nullptr && tCanvas == nullptr)
+	if (tCanvas == nullptr)
 	{
-		pCanvas = std::make_shared<ProjectionCanvas> (pTL, pBR, entityData);
+		ProjectionCanvas::getInstance().init(pTL, pBR, entityData);
 		tCanvas = std::make_shared<TreemapCanvas> (tTL, tBR, entityData);
 		sbCanvas = std::make_shared<SunburstCanvas> (tTL, tBR, entityData);
 		stCanvas = std::make_shared<StreamgraphCanvas> (Point {0,0}, Point {0,0}, entityData);
@@ -159,7 +159,7 @@ void setCanvassesSizes(int W, int H)
 			LegendCanvas::getInstance().setSize(lTL, lBR);
 		}
 
-		pCanvas->setSize(pTL, pBR);
+		ProjectionCanvas::getInstance().setSize(pTL, pBR);
 		tCanvas->setSize(tTL, tBR);
 		sbCanvas->setSize(tTL, tBR);
 	}
@@ -209,16 +209,15 @@ void drawSelectionBox()
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor4f(0, 0, 0, 0.4);
 	glRecti(mouse->rawLastX, mouse->rawLastY, mouse->rawX, mouse->rawY);
-	//glRecti(mouse->rawX-10, mouse->rawY-10, mouse->rawX+10, mouse->rawY+10);
 	glDisable (GL_BLEND);
+
 }
 
 void drawRt()
 {
 	string str = to_string(Rt);
 	glColor3d(0, 0, 0);
-	int x = controller.winWidth/2 - 30;
-	glRasterPos2i(x, 35);
+	glRasterPos2i(20, 35);
 	const unsigned char* s = reinterpret_cast<const unsigned char *>(str.c_str());
 	glutBitmapString(GLUT_BITMAP_HELVETICA_18, s);
 }
