@@ -37,6 +37,8 @@ public:
 	vector<Package> packageVector; // Entity tree is a collection of Packages
 	vector<BaseEntity*> sortedBaseEntities; // Contains both Packages and Entities ordered by score
 	vector<Entity*> entities; // Contains only Entities ordered by score
+	vector<double> maxMetricValue;
+	vector<double> minMetricValue;
 	int depth = 0;
 	unsigned nRevisions = 0;
 	unsigned nDimensions = 0;

@@ -14,11 +14,15 @@
   <component name="ChangeListManager">
     <list default="true" id="eb203fb0-5ef9-483a-8571-69f69f12325d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+<<<<<<< Updated upstream
+=======
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/EntityData.h" afterPath="$PROJECT_DIR$/include/EntityData.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/LegendCanvas.h" afterPath="$PROJECT_DIR$/include/LegendCanvas.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/ProjectionCanvas.h" afterPath="$PROJECT_DIR$/include/ProjectionCanvas.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Mouse.cpp" afterPath="$PROJECT_DIR$/src/Mouse.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ProjectionCanvas.cpp" afterPath="$PROJECT_DIR$/src/ProjectionCanvas.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/interaction.cpp" afterPath="$PROJECT_DIR$/src/interaction.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/EntityData.cpp" afterPath="$PROJECT_DIR$/src/EntityData.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/LegendCanvas.cpp" afterPath="$PROJECT_DIR$/src/LegendCanvas.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer.cpp" afterPath="$PROJECT_DIR$/src/renderer.cpp" />
+>>>>>>> Stashed changes
     </list>
     <ignored path="metric-view.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,23 +44,29 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="renderer.cpp" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/renderer.cpp">
+          <file leaf-file-name="LegendCanvas.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/include/LegendCanvas.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-97">
+<<<<<<< Updated upstream
+                <state relative-caret-position="2415">
                   <caret line="161" column="40" selection-start-line="161" selection-start-column="40" selection-end-line="161" selection-end-column="40" />
                   <folding>
                     <element signature="e#0#32#0" expanded="true" />
                   </folding>
+=======
+                <state relative-caret-position="270">
+                  <caret line="18" column="55" selection-start-line="18" selection-start-column="55" selection-end-line="18" selection-end-column="55" />
+                  <folding />
+>>>>>>> Stashed changes
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="LegendCanvas.h" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/include/LegendCanvas.h">
+          <file leaf-file-name="renderer.cpp" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/renderer.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="240">
-                  <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
+                <state relative-caret-position="495">
+                  <caret line="133" column="36" selection-start-line="133" selection-start-column="36" selection-end-line="133" selection-end-column="36" />
                   <folding />
                 </state>
               </provider>
@@ -65,8 +75,37 @@
           <file leaf-file-name="LegendCanvas.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/LegendCanvas.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="120">
-                  <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+                <state relative-caret-position="315">
+                  <caret line="21" column="59" selection-start-line="21" selection-start-column="59" selection-end-line="21" selection-end-column="59" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+<<<<<<< Updated upstream
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="interaction.cpp" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/interaction.cpp">
+=======
+          <file leaf-file-name="EntityData.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/include/EntityData.h">
+>>>>>>> Stashed changes
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="480">
+                  <caret line="41" column="4" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="EntityData.cpp" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/EntityData.cpp">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="357">
+                  <caret line="216" column="26" selection-start-line="216" selection-start-column="26" selection-end-line="216" selection-end-column="26" />
                   <folding />
                 </state>
               </provider>
@@ -79,30 +118,13 @@
           <file leaf-file-name="interaction.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/interaction.cpp">
               <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
+                <state relative-caret-position="585">
+                  <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+=======
                 <state relative-caret-position="196">
                   <caret line="178" column="12" selection-start-line="178" selection-start-column="12" selection-end-line="178" selection-end-column="12" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="SpectrographCanvas.h" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/include/SpectrographCanvas.h">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="225">
-                  <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
-                  <folding>
-                    <element signature="e#14#34#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="StreamgraphCanvas.cpp" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/StreamgraphCanvas.cpp">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-1845">
-                  <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+>>>>>>> Stashed changes
                   <folding />
                 </state>
               </provider>
@@ -111,18 +133,8 @@
           <file leaf-file-name="Mouse.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Mouse.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1395">
+                <state relative-caret-position="1845">
                   <caret line="123" column="1" selection-start-line="123" selection-start-column="1" selection-end-line="123" selection-end-column="1" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="SpectrographCanvas.cpp" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/SpectrographCanvas.cpp">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="240">
-                  <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
                   <folding />
                 </state>
               </provider>
@@ -131,7 +143,8 @@
           <file leaf-file-name="ProjectionCanvas.h" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/include/ProjectionCanvas.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="405">
+<<<<<<< Updated upstream
+                <state relative-caret-position="540">
                   <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
                   <folding />
                 </state>
@@ -141,8 +154,12 @@
           <file leaf-file-name="ProjectionCanvas.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ProjectionCanvas.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="818">
+                <state relative-caret-position="5730">
                   <caret line="382" column="4" selection-start-line="382" selection-start-column="4" selection-end-line="382" selection-end-column="4" />
+=======
+                <state relative-caret-position="255">
+                  <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+>>>>>>> Stashed changes
                   <folding />
                 </state>
               </provider>
@@ -183,21 +200,21 @@
         <option value="$PROJECT_DIR$/src/main.cpp" />
         <option value="$PROJECT_DIR$/include/interaction.h" />
         <option value="$PROJECT_DIR$/include/Mouse.h" />
-        <option value="$PROJECT_DIR$/src/EntityData.cpp" />
-        <option value="$PROJECT_DIR$/include/EntityData.h" />
         <option value="$PROJECT_DIR$/include/Colormap.h" />
         <option value="$PROJECT_DIR$/src/SpectrographCanvas.cpp" />
-        <option value="$PROJECT_DIR$/include/Controller.h" />
         <option value="$PROJECT_DIR$/include/SpectrographCanvas.h" />
-        <option value="$PROJECT_DIR$/include/LegendCanvas.h" />
         <option value="$PROJECT_DIR$/src/StreamgraphCanvas.cpp" />
         <option value="$PROJECT_DIR$/include/renderer.h" />
-        <option value="$PROJECT_DIR$/src/LegendCanvas.cpp" />
-        <option value="$PROJECT_DIR$/src/renderer.cpp" />
         <option value="$PROJECT_DIR$/src/ProjectionCanvas.cpp" />
-        <option value="$PROJECT_DIR$/include/ProjectionCanvas.h" />
         <option value="$PROJECT_DIR$/src/Mouse.cpp" />
         <option value="$PROJECT_DIR$/src/interaction.cpp" />
+        <option value="$PROJECT_DIR$/include/ProjectionCanvas.h" />
+        <option value="$PROJECT_DIR$/include/EntityData.h" />
+        <option value="$PROJECT_DIR$/src/EntityData.cpp" />
+        <option value="$PROJECT_DIR$/include/Controller.h" />
+        <option value="$PROJECT_DIR$/include/LegendCanvas.h" />
+        <option value="$PROJECT_DIR$/src/LegendCanvas.cpp" />
+        <option value="$PROJECT_DIR$/src/renderer.cpp" />
       </list>
     </option>
   </component>
@@ -309,7 +326,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/bin/runner" />
-    <property name="SearchEverywhereHistoryKey" value="re&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/renderer.cpp&#10;proje&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/ProjectionCanvas.h&#10;ren&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/renderer.h&#10;stream&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/StreamgraphCanvas.cpp&#10;spectr&#9;null&#9;null&#10;inter&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/interaction.cpp&#10;intera&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/interaction.h&#10;interac&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/interaction.cpp&#10;colorm&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/Colormap.cpp&#10;drawHo&#9;null&#9;null&#10;Tree&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/TreemapCanvas.cpp&#10;popmatri&#9;null&#9;null&#10;spec&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/SpectrographCanvas.h" />
+    <property name="SearchEverywhereHistoryKey" value="re&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/renderer.cpp&#10;contr&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/Controller.h&#10;proje&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/ProjectionCanvas.h&#10;ren&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/renderer.h&#10;stream&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/StreamgraphCanvas.cpp&#10;spectr&#9;null&#9;null&#10;inter&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/interaction.cpp&#10;intera&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/interaction.h&#10;interac&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/interaction.cpp&#10;colorm&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/Colormap.cpp&#10;drawHo&#9;null&#9;null&#10;Tree&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/TreemapCanvas.cpp&#10;popmatri&#9;null&#9;null&#10;spec&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/SpectrographCanvas.h" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C/C++" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
@@ -518,12 +535,22 @@
       <workItem from="1476329388141" duration="6601000" />
       <workItem from="1476420699231" duration="5811000" />
       <workItem from="1476453190358" duration="267000" />
+<<<<<<< Updated upstream
       <workItem from="1476559154293" duration="17040000" />
+      <workItem from="1476650801073" duration="122000" />
+      <workItem from="1476650942153" duration="655000" />
+=======
+      <workItem from="1476559154293" duration="19549000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="70273000" />
+<<<<<<< Updated upstream
+    <option name="totallyTimeSpent" value="71050000" />
+=======
+    <option name="totallyTimeSpent" value="72782000" />
+>>>>>>> Stashed changes
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -543,7 +570,6 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22095436" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32987553" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32987553" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43879667" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31846473" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -555,6 +581,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32987553" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -761,7 +788,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="206">
           <caret line="323" column="54" selection-start-line="323" selection-start-column="54" selection-end-line="323" selection-end-column="54" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -769,13 +795,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="17" column="52" selection-start-line="17" selection-start-column="52" selection-end-line="17" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetricRank.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="35" column="43" selection-start-line="35" selection-start-column="43" selection-end-line="35" selection-end-column="43" />
         </state>
       </provider>
     </entry>
@@ -847,7 +866,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -859,27 +877,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/EntityData.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/EntityData.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="284" column="31" selection-start-line="284" selection-start-column="31" selection-end-line="284" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/Colormap.h">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
+        <state relative-caret-position="570">
+          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+=======
         <state relative-caret-position="75">
           <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
           <folding />
+>>>>>>> Stashed changes
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StreamgraphCanvas.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
+        <state relative-caret-position="315">
+          <caret line="284" column="31" selection-start-line="284" selection-start-column="31" selection-end-line="284" selection-end-column="31" />
+=======
+        <state relative-caret-position="-1845">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding />
+>>>>>>> Stashed changes
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/renderer.h">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
+        <state relative-caret-position="75">
+          <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+=======
+        <state relative-caret-position="120">
+          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SpectrographCanvas.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
+          <folding />
+>>>>>>> Stashed changes
         </state>
       </provider>
     </entry>
@@ -893,66 +934,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/StreamgraphCanvas.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1845">
-          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/Controller.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/renderer.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/SpectrographCanvas.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/LegendCanvas.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ProjectionCanvas.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="818">
-          <caret line="382" column="4" selection-start-line="382" selection-start-column="4" selection-end-line="382" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/ProjectionCanvas.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+<<<<<<< Updated upstream
+        <state relative-caret-position="585">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+=======
+        <state relative-caret-position="338">
+          <caret line="218" column="0" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
+>>>>>>> Stashed changes
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Mouse.cpp">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
+        <state relative-caret-position="240">
+          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+=======
         <state relative-caret-position="1395">
           <caret line="123" column="1" selection-start-line="123" selection-start-column="1" selection-end-line="123" selection-end-column="1" />
+          <folding />
+>>>>>>> Stashed changes
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/ProjectionCanvas.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -965,20 +976,81 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer.cpp">
+    <entry file="file://$PROJECT_DIR$/include/EntityData.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-97">
-          <caret line="161" column="40" selection-start-line="161" selection-start-column="40" selection-end-line="161" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="480">
+          <caret line="41" column="4" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetricRank.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
+        <state relative-caret-position="5730">
+          <caret line="382" column="4" selection-start-line="382" selection-start-column="4" selection-end-line="382" selection-end-column="4" />
+=======
+        <state relative-caret-position="525">
+          <caret line="35" column="43" selection-start-line="35" selection-start-column="43" selection-end-line="35" selection-end-column="43" />
+>>>>>>> Stashed changes
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EntityData.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
+        <state relative-caret-position="540">
+          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+=======
+        <state relative-caret-position="357">
+          <caret line="216" column="26" selection-start-line="216" selection-start-column="26" selection-end-line="216" selection-end-column="26" />
+>>>>>>> Stashed changes
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/Controller.h">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
+        <state relative-caret-position="1845">
+          <caret line="123" column="1" selection-start-line="123" selection-start-column="1" selection-end-line="123" selection-end-column="1" />
+=======
+        <state relative-caret-position="540">
+          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+>>>>>>> Stashed changes
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/include/LegendCanvas.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
+        <state relative-caret-position="270">
+          <caret line="18" column="55" selection-start-line="18" selection-start-column="55" selection-end-line="18" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/LegendCanvas.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
+        <state relative-caret-position="2415">
+          <caret line="161" column="40" selection-start-line="161" selection-start-column="40" selection-end-line="161" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+=======
+        <state relative-caret-position="315">
+          <caret line="21" column="59" selection-start-line="21" selection-start-column="59" selection-end-line="21" selection-end-column="59" />
+          <folding />
+>>>>>>> Stashed changes
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="133" column="36" selection-start-line="133" selection-start-column="36" selection-end-line="133" selection-end-column="36" />
           <folding />
         </state>
       </provider>

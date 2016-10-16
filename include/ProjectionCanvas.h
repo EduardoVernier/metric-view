@@ -20,7 +20,7 @@ class ProjectionCanvas : public Canvas
 {
 public:
 	static ProjectionCanvas& getInstance();
-	void init (Point tl, Point br, EntityData *ed);
+	void init(Point tl, Point br, EntityData *ed);
 	void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, bool ctrlDown);
 	void drawCanvas(unsigned Rt, double animationStep);
 	double getMinRatio() const;

@@ -4,6 +4,12 @@
 
 #include "Canvas.h"
 #include "EntityData.h"
+#include "ProjectionCanvas.h"
+#include "Controller.h"
+extern Controller controller;
+
+#define MIN_RADIUS 3
+#define MAX_RADIUS 23
 
 class LegendCanvas : public Canvas
 {

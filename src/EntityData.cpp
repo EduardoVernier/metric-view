@@ -213,8 +213,8 @@ void EntityData::normalizeProjection(double shortEdge)
 
 void EntityData::normalizeData()
 {
-	vector<double> maxMetricValue (nDimensions, DBL_MIN);
-	vector<double> minMetricValue (nDimensions, DBL_MAX);
+	maxMetricValue.assign(nDimensions, DBL_MIN);
+	minMetricValue.assign(nDimensions, DBL_MAX);
 
 	// Collect min and max values for each metric
 	for (unsigned metric = 0; metric < nDimensions; ++metric)

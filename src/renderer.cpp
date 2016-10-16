@@ -153,7 +153,9 @@ void setCanvassesSizes(int W, int H)
 				case SPECTROGRAPH:
 					heightDeficit = SpectrographCanvas::getInstance().getHeight();
 					break;
-				default:break;
+				default:
+					heightDeficit = 0;
+					break;
 			}
 			Point lTL {tBR.x + 10, 10}, lBR {W-10.0, H - 10 - heightDeficit};
 			LegendCanvas::getInstance().setSize(lTL, lBR);
