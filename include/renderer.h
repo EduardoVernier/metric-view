@@ -6,6 +6,7 @@
 #include <GL/glui.h>
 #include <queue>
 
+#include "interaction.h"
 #include "Treemap.h"
 #include "TreemapCanvas.h"
 #include "SunburstCanvas.h"

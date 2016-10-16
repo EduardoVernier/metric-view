@@ -70,6 +70,7 @@ void initializeUI()
 	glui->add_checkbox("Display delta pie slice", &controller.deltaPie);
 	glui->add_checkbox("Dynamic Treemap", &controller.dynamicTreemap);
 	glui->add_checkbox("Enable halos", &controller.halo);
+	glui->add_checkbox("Show metric legend", &controller.metricLegend);
 
 	glui->sync_live();
 	toggleControlWindowVisibility();

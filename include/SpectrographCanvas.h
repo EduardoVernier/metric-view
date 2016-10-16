@@ -28,6 +28,5 @@ private:
 	SpectrographCanvas(SpectrographCanvas const&);
 	void operator=(SpectrographCanvas const&);
 
-	vector<std::pair<double,Entity*>> sortedSelectedEntities;
 	EntityData *entityData;
 };

@@ -27,6 +27,7 @@ public:
 	bool ctrlDown = false;
 	int dynamicTreemap = 0;
 	int halo = 0;
+	int metricLegend = 0;
 
 	int streamgraphHeight = 250;
 

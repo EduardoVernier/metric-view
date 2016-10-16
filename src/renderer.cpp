@@ -1,8 +1,7 @@
 #include "../include/renderer.h"
-#include "../include/GL/glui.h"
-#include "../include/interaction.h"
+#include "../include/LegendCanvas.h"
 
-// Singletons
+// "Singletons"
 shared_ptr<Mouse> mouse = std::make_shared<Mouse>();
 shared_ptr<ProjectionCanvas> pCanvas = nullptr;
 shared_ptr<TreemapCanvas> tCanvas = nullptr;
@@ -42,9 +41,13 @@ void render()
 	pCanvas->drawCanvas(Rt, controller.animationStep);
 
 	if(controller.hierarchicalView == TREEMAP)
+	{
 		tCanvas->drawCanvas(Rt, controller.animationStep);
+	}
 	else if (controller.hierarchicalView == SUNBURST)
+	{
 		sbCanvas->drawCanvas(Rt, controller.animationStep);
+	}
 
 	if (controller.evolutionView == STREAMGRAPH)
 	{
@@ -53,6 +56,11 @@ void render()
 	else if (controller.evolutionView == SPECTROGRAPH)
 	{
 		SpectrographCanvas::getInstance().drawCanvas(Rt, controller.animationStep);
+	}
+
+	if (controller.metricLegend)
+	{
+		LegendCanvas::getInstance().drawCanvas(Rt, controller.animationStep);
 	}
 
 	drawHoveringLabel();
@@ -102,8 +110,9 @@ void setCanvassesSizes(int W, int H)
 		pCanvas = std::make_shared<ProjectionCanvas> (pTL, pBR, entityData);
 		tCanvas = std::make_shared<TreemapCanvas> (tTL, tBR, entityData);
 		sbCanvas = std::make_shared<SunburstCanvas> (tTL, tBR, entityData);
-		stCanvas = std::make_shared<StreamgraphCanvas> (pTL, pBR, entityData);
-		SpectrographCanvas::getInstance().init(pTL, pBR, entityData);
+		stCanvas = std::make_shared<StreamgraphCanvas> (Point {0,0}, Point {0,0}, entityData);
+		SpectrographCanvas::getInstance().init({0,0}, {0,0}, entityData);
+		LegendCanvas::getInstance().init({0,0}, {0,0}, entityData);
 		mRank = std::make_shared<MetricRank>(entityData);
 	}
 	else
@@ -123,6 +132,31 @@ void setCanvassesSizes(int W, int H)
 			tBR.y -= spectroHeight;
 			Point sTL {10, pBR.y + 10}, sBR {W-10.0, H-10.0};
 			SpectrographCanvas::getInstance().setSize(sTL, sBR);
+		}
+
+		if (controller.metricLegend)
+		{
+			double legendWidth = 120;
+			pBR.x -= legendWidth;
+			tTL.x -= legendWidth;
+			tBR.x -= legendWidth;
+
+			double heightDeficit;
+			switch (controller.evolutionView)
+			{
+				case HIDE:
+					heightDeficit = 0;
+					break;
+				case STREAMGRAPH:
+					heightDeficit = controller.streamgraphHeight; // TODO: Fix this
+					break;
+				case SPECTROGRAPH:
+					heightDeficit = SpectrographCanvas::getInstance().getHeight();
+					break;
+				default:break;
+			}
+			Point lTL {tBR.x + 10, 10}, lBR {W-10.0, H - 10 - heightDeficit};
+			LegendCanvas::getInstance().setSize(lTL, lBR);
 		}
 
 		pCanvas->setSize(pTL, pBR);

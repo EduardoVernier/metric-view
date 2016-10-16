@@ -13,13 +13,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb203fb0-5ef9-483a-8571-69f69f12325d" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/include/LegendCanvas.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/LegendCanvas.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Colormap.h" afterPath="$PROJECT_DIR$/include/Colormap.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Controller.h" afterPath="$PROJECT_DIR$/include/Controller.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/EntityData.h" afterPath="$PROJECT_DIR$/include/EntityData.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/SpectrographCanvas.cpp" afterPath="$PROJECT_DIR$/src/SpectrographCanvas.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/SpectrographCanvas.h" afterPath="$PROJECT_DIR$/include/SpectrographCanvas.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/renderer.h" afterPath="$PROJECT_DIR$/include/renderer.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/StreamgraphCanvas.cpp" afterPath="$PROJECT_DIR$/src/StreamgraphCanvas.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/interaction.cpp" afterPath="$PROJECT_DIR$/src/interaction.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer.cpp" afterPath="$PROJECT_DIR$/src/renderer.cpp" />
     </list>
     <ignored path="metric-view.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,58 +41,100 @@
     <favorites_list name="metric-view" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="interaction.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/interaction.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="52" column="26" selection-start-line="52" selection-start-column="26" selection-end-line="52" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Colormap.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/Colormap.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SpectrographCanvas.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/SpectrographCanvas.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Controller.h" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/include/Controller.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StreamgraphCanvas.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/StreamgraphCanvas.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="76" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="renderer.cpp" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/renderer.cpp">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="308">
+                  <caret line="145" column="13" selection-start-line="145" selection-start-column="13" selection-end-line="145" selection-end-column="13" />
+                  <folding>
+                    <element signature="e#0#32#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Controller.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/include/Controller.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="240">
+                  <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="renderer.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/include/renderer.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="120">
+                  <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LegendCanvas.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/include/LegendCanvas.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="180">
+                  <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LegendCanvas.cpp" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/LegendCanvas.cpp">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="315">
+                  <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="SpectrographCanvas.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/include/SpectrographCanvas.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="225">
+                  <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+                  <folding>
+                    <element signature="e#14#34#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="StreamgraphCanvas.cpp" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/StreamgraphCanvas.cpp">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-1845">
+                  <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SpectrographCanvas.cpp" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/SpectrographCanvas.cpp">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="630">
+                  <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -120,21 +165,23 @@
         <option value="$PROJECT_DIR$/src/MetricRank.cpp" />
         <option value="$PROJECT_DIR$/src/CsvParser.cpp" />
         <option value="$PROJECT_DIR$/include/StreamgraphCanvas.h" />
-        <option value="$PROJECT_DIR$/src/StreamgraphCanvas.cpp" />
-        <option value="$PROJECT_DIR$/include/SpectrographCanvas.h" />
         <option value="$PROJECT_DIR$/src/TreemapCanvas.cpp" />
         <option value="$PROJECT_DIR$/src/main.cpp" />
-        <option value="$PROJECT_DIR$/include/renderer.h" />
         <option value="$PROJECT_DIR$/include/interaction.h" />
         <option value="$PROJECT_DIR$/include/Mouse.h" />
-        <option value="$PROJECT_DIR$/src/renderer.cpp" />
         <option value="$PROJECT_DIR$/src/Mouse.cpp" />
         <option value="$PROJECT_DIR$/src/EntityData.cpp" />
         <option value="$PROJECT_DIR$/include/EntityData.h" />
-        <option value="$PROJECT_DIR$/src/interaction.cpp" />
         <option value="$PROJECT_DIR$/include/Colormap.h" />
-        <option value="$PROJECT_DIR$/include/Controller.h" />
         <option value="$PROJECT_DIR$/src/SpectrographCanvas.cpp" />
+        <option value="$PROJECT_DIR$/src/interaction.cpp" />
+        <option value="$PROJECT_DIR$/include/Controller.h" />
+        <option value="$PROJECT_DIR$/include/SpectrographCanvas.h" />
+        <option value="$PROJECT_DIR$/include/LegendCanvas.h" />
+        <option value="$PROJECT_DIR$/src/StreamgraphCanvas.cpp" />
+        <option value="$PROJECT_DIR$/include/renderer.h" />
+        <option value="$PROJECT_DIR$/src/renderer.cpp" />
+        <option value="$PROJECT_DIR$/src/LegendCanvas.cpp" />
       </list>
     </option>
   </component>
@@ -146,8 +193,7 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="1920" />
-    <option name="y" value="-1059" />
+    <option name="y" value="21" />
     <option name="width" value="1920" />
     <option name="height" value="1059" />
   </component>
@@ -247,8 +293,8 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/bin/runner" />
-    <property name="SearchEverywhereHistoryKey" value="inter&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/interaction.cpp&#10;intera&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/interaction.h&#10;interac&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/interaction.cpp&#10;colorm&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/Colormap.cpp&#10;drawHo&#9;null&#9;null&#10;Tree&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/TreemapCanvas.cpp&#10;popmatri&#9;null&#9;null&#10;spec&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/SpectrographCanvas.h" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="SearchEverywhereHistoryKey" value="ren&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/renderer.h&#10;stream&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/StreamgraphCanvas.cpp&#10;spectr&#9;null&#9;null&#10;inter&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/interaction.cpp&#10;intera&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/interaction.h&#10;interac&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/interaction.cpp&#10;colorm&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/Colormap.cpp&#10;drawHo&#9;null&#9;null&#10;Tree&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/src/TreemapCanvas.cpp&#10;popmatri&#9;null&#9;null&#10;spec&#9;FILE&#9;file:///home/eduardo/ClionProjects/metric-view/include/SpectrographCanvas.h" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C/C++" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RunManager" selected="Application.metric_view">
@@ -456,12 +502,12 @@
       <workItem from="1476329388141" duration="6601000" />
       <workItem from="1476420699231" duration="5811000" />
       <workItem from="1476453190358" duration="267000" />
-      <workItem from="1476559154293" duration="8107000" />
+      <workItem from="1476559154293" duration="14006000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="61340000" />
+    <option name="totallyTimeSpent" value="67239000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -473,7 +519,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="-1059" width="1920" height="1059" extended-state="6" />
+    <frame x="0" y="21" width="1920" height="1059" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1269089" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -483,9 +529,9 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32987553" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43879667" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31846473" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31846473" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2406639" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2406639" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26452282" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -539,20 +585,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Canvas.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="8" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/Canvas.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="6" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/Point.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -766,13 +798,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/SpectrographCanvas.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Treemap.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1065">
@@ -802,13 +827,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/renderer.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/include/c++/5/bits/unique_ptr.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="241">
@@ -821,16 +839,6 @@
         <state relative-caret-position="240">
           <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -874,14 +882,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/interaction.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="52" column="26" selection-start-line="52" selection-start-column="26" selection-end-line="52" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/Colormap.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -890,26 +890,78 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SpectrographCanvas.cpp">
+    <entry file="file://$PROJECT_DIR$/src/interaction.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+        <state relative-caret-position="300">
+          <caret line="48" column="56" selection-start-line="48" selection-start-column="56" selection-end-line="48" selection-end-column="56" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/SpectrographCanvas.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+          <folding>
+            <element signature="e#14#34#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/StreamgraphCanvas.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="76" selection-end-column="21" />
+        <state relative-caret-position="-1845">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SpectrographCanvas.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="145" column="13" selection-start-line="145" selection-start-column="13" selection-end-line="145" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/include/Controller.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
+        <state relative-caret-position="240">
+          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/renderer.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/LegendCanvas.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/LegendCanvas.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding />
         </state>
       </provider>
