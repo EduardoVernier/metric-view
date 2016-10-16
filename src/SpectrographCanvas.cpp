@@ -28,26 +28,43 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 
 	double cellHeight = (getHeight()-10)/entityData->selected.size();
 	double cellWidth = currentWidth/getInstance().entityData->nRevisions;
-	int sMetric = controller.streamMetricIndex;
+	int sMetric = controller.evolutionMetricIndex;
 
 	// Draw cells
 	for (unsigned i = 0; i < entityData->selected.size(); ++i)
 	{
-		Entity* e = entityData->selected[i];
-		for (unsigned j = 0; j < entityData->nRevisions; ++j)
+		Entity* entity = entityData->selected[i];
+		for (unsigned revision = 0; revision < entityData->nRevisions; ++revision)
 		{
-			double normCValue = e->normalizedData[j][sMetric];
-			Color c = sequentialColormap(normCValue);
+			double value = entity->normalizedData[revision][sMetric];
+
+			Color c {1,1,1};
+			if (controller.evolutionColormapIndex == (int) COLORMAP::sequential)
+			{
+				c = sequentialColormap(value);
+			}
+			else if (controller.evolutionColormapIndex == (int) COLORMAP::divergent)
+			{
+				if (revision > 0)
+				{
+					double pValue = entity->normalizedData[revision - 1][sMetric];
+					c = divergentColormap(value - pValue);
+				}
+				else
+				{
+					c = divergentColormap(0.0);
+				}
+			}
 			glColor3d(c.R,c.G,c.B);
 
-			glRectd(j*cellWidth, i*cellHeight,
-					(j+1)*cellWidth, (i+1)*cellHeight);
+			glRectd(revision*cellWidth, i*cellHeight,
+					(revision+1)*cellWidth, (i+1)*cellHeight);
 
 		}
 		// Draw hover indication
 		if(entityData->hovered != NULL)
 		{
-			if (e->getName() == entityData->hovered->getName())
+			if (entity->getName() == entityData->hovered->getName())
 			{
 				glColor3d(colorHover.R, colorHover.G, colorHover.B);
 

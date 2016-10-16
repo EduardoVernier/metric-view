@@ -15,7 +15,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glPushMatrix();
 	glTranslated(xOff, yOff, 0);
 
-	int sMetric = controller.streamMetricIndex;
+	int sMetric = controller.evolutionMetricIndex;
 	vector<double> normMetricValueSum;
 
 	// Filling vector
@@ -67,7 +67,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 		{
 			double value = b->normalizedData[revision][sMetric];
 			Color c (1,1,1);
-			switch (controller.sColormapIndex)
+			switch (controller.evolutionColormapIndex)
 			{
 				case 0:
 					c = sequentialColormap(value);
@@ -170,7 +170,7 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep)
 void StreamgraphCanvas::getEntitiesOnStreamgraph(int *drag, unsigned click, bool ctrlDown)
 {
 	int x = drag[0], y = drag[1];
-	int sMetric = controller.streamMetricIndex;
+	int sMetric = controller.evolutionMetricIndex;
 	vector<double> normMetricValueSum;
 
 	// Filling vector

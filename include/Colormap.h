@@ -7,7 +7,7 @@
 #include "Entity.h"
 extern EntityData *entityData;
 
-enum class COLORMAP: int { sequential = 0, qualitative, divergent };
+enum class COLORMAP : int { sequential = 0, qualitative, divergent };
 
 extern Color divergent[5];
 extern Color sequential[5];

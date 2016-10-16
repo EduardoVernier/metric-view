@@ -18,9 +18,9 @@ public:
 
 	int radiusMetricIndex = 21;
 	int colorMetricIndex = 21;
-	int streamMetricIndex = 21;
+	int evolutionMetricIndex = 21;
 	int colormapIndex = 0;
-	int sColormapIndex = 2;
+	int evolutionColormapIndex = 0;
 	int accelerationRatioIndex = 3;
 
 	int deltaPie = 0;

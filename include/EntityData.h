@@ -45,9 +45,9 @@ private:
 	void sortPackages(Package *p);
 	void setHierarchicalLevel(Package *p, int level);
 	void setFirstLevelId(Package *p, int level);
+	double nDEuclidianDistance(vector<double> &a, vector<double> &b);
 
 	double minX = DBL_MAX, maxX = DBL_MIN, minY = DBL_MAX, maxY = DBL_MIN; // Used in the projection normalizationF
 	int firstLevelGlobalCounter = 0;
 
-	double nDEuclidianDistance(vector<double> &a, vector<double> &b);
 };

@@ -9,12 +9,32 @@ void initializeUI()
 	glui->set_main_gfx_window(controller.mainWindow);
 
 	// Metric listboxes
-	glui->add_statictext("Color Metric");
+	glui->add_statictext("Projection and Hierarchical");
+	glui->add_statictext("View Color Metric");
 	GLUI_Listbox *colorLB = glui->add_listbox("", &controller.colorMetricIndex, COLORMETRIC_LB);
+
+	// Colormap listbox
+	glui->add_statictext("Colormap");
+	GLUI_Listbox *colormapLB = glui->add_listbox("", &controller.colormapIndex, COLORMAP_LB, controlCB);
+	colormapLB->add_item(0, "Sequential Colormap");
+	colormapLB->add_item(1, "Qualitative Colormap");
+	colormapLB->add_item(2, "Divergent Colormap");
+
+	glui->add_statictext("Hierarchical View");
+	GLUI_Listbox *hierarchicalLB = glui->add_listbox("", &controller.hierarchicalView, HIERARCHICAL_LB, controlCB);
+	hierarchicalLB->add_item(TREEMAP, "Treemap");
+	hierarchicalLB->add_item(SUNBURST, "Sunburst");
+
+	glui->add_separator();
+
+
 	glui->add_statictext("Radius Metric");
 	GLUI_Listbox *radiusLB = glui->add_listbox("", &controller.radiusMetricIndex, RADIUSMETRIC_LB);
+	glui->add_separator();
+
+
 	glui->add_statictext("Evolution View Metric");
-	GLUI_Listbox *streamLB = glui->add_listbox("", &controller.streamMetricIndex, STREAMMETRIC_LB);
+	GLUI_Listbox *streamLB = glui->add_listbox("", &controller.evolutionMetricIndex, STREAMMETRIC_LB);
 	for (unsigned i = 0; i < entityData->metricVector.size(); ++i)
 	{
 		colorLB->add_item(i, entityData->metricVector[i].c_str());
@@ -22,39 +42,30 @@ void initializeUI()
 		streamLB->add_item(i, entityData->metricVector[i].c_str());
 	}
 
-	glui->add_statictext("Hierarchical View");
-	GLUI_Listbox *hierarchicalLB = glui->add_listbox("", &controller.hierarchicalView, HIERARCHICAL_LB, controlCB);
-	hierarchicalLB->add_item(TREEMAP, "Treemap");
-	hierarchicalLB->add_item(SUNBURST, "Sunburst");
-
 	glui->add_statictext("Evolution View");
 	GLUI_Listbox *evolutionLB = glui->add_listbox("", &controller.evolutionView, HIERARCHICAL_LB, controlCB);
 	evolutionLB->add_item(HIDE, "None");
 	evolutionLB->add_item(STREAMGRAPH, "Streamgraph");
 	evolutionLB->add_item(SPECTROGRAPH, "Spectrograph");
 
-	// Colormap listbox
-	glui->add_statictext("Projection and Treemap Colormap");
-	GLUI_Listbox *colormapLB = glui->add_listbox("", &controller.colormapIndex, COLORMAP_LB, controlCB);
-	colormapLB->add_item(0, "Sequential Colormap");
-	colormapLB->add_item(1, "Qualitative Colormap (Hierarchy)");
-	colormapLB->add_item(2, "Divergent Colormap");
-
-	glui->add_statictext("Streamgraph Colormap");
-	GLUI_Listbox *sColormapLB = glui->add_listbox("", &controller.sColormapIndex, SCOLORMAP_LB, controlCB);
-	sColormapLB->add_item(2, "Divergent Colormap");
+	glui->add_statictext("Evolution View Colormap");
+	GLUI_Listbox *sColormapLB = glui->add_listbox("", &controller.evolutionColormapIndex, SCOLORMAP_LB, controlCB);
 	sColormapLB->add_item(0, "Sequential Colormap");
+	sColormapLB->add_item(2, "Divergent Colormap");
+	glui->add_separator();
+
 
 	// Animation speed listbox
 	glui->add_statictext("Animation Speed");
 	GLUI_Listbox *accelerationLB = glui->add_listbox("", &controller.accelerationRatioIndex, ACCELERATION_LB, controlCB);
-	accelerationLB->add_item(0,"1x");
-	accelerationLB->add_item(1,"10x");
-	accelerationLB->add_item(2,"5x");
-	accelerationLB->add_item(3,"2x");
+	accelerationLB->add_item(0,"10x");
+	accelerationLB->add_item(1,"5x");
+	accelerationLB->add_item(2,"2x");
+	accelerationLB->add_item(3,"1x");
 	accelerationLB->add_item(4,"0.75x");
 	accelerationLB->add_item(5,"0.5x");
 	accelerationLB->add_item(6,"0.1x");
+	accelerationLB->add_item(7,"0.05x");
 
 	glui->add_checkbox("Display delta pie slice", &controller.deltaPie);
 	glui->add_checkbox("Dynamic Treemap", &controller.dynamicTreemap);
