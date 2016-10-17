@@ -1,6 +1,8 @@
 #pragma once
 
 #define PI 3.14159265359
+#define MIN_RADIUS 3
+#define MAX_RADIUS 23
 
 #include <vector>
 #include <iostream>
@@ -37,4 +39,8 @@ private:
 
 	EntityData *entityData;
 	double minRatio;
+
+	void displayRadiusLegend();
+
+	void displayColorbar();
 };

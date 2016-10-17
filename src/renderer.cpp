@@ -58,10 +58,6 @@ void render()
 		SpectrographCanvas::getInstance().drawCanvas(Rt, controller.animationStep);
 	}
 
-	if (controller.metricLegend)
-	{
-		LegendCanvas::getInstance().drawCanvas(Rt, controller.animationStep);
-	}
 
 	drawHoveringLabel();
 
@@ -112,7 +108,6 @@ void setCanvassesSizes(int W, int H)
 		sbCanvas = std::make_shared<SunburstCanvas> (tTL, tBR, entityData);
 		stCanvas = std::make_shared<StreamgraphCanvas> (Point {0,0}, Point {0,0}, entityData);
 		SpectrographCanvas::getInstance().init({0,0}, {0,0}, entityData);
-		LegendCanvas::getInstance().init({0,0}, {0,0}, entityData);
 		mRank = std::make_shared<MetricRank>(entityData);
 	}
 	else
@@ -132,33 +127,6 @@ void setCanvassesSizes(int W, int H)
 			tBR.y -= spectroHeight;
 			Point sTL {10, pBR.y + 10}, sBR {W-10.0, H-10.0};
 			SpectrographCanvas::getInstance().setSize(sTL, sBR);
-		}
-
-		if (controller.metricLegend)
-		{
-			double legendWidth = 120;
-			pBR.x -= legendWidth;
-			tTL.x -= legendWidth;
-			tBR.x -= legendWidth;
-
-			double heightDeficit;
-			switch (controller.evolutionView)
-			{
-				case HIDE:
-					heightDeficit = 0;
-					break;
-				case STREAMGRAPH:
-					heightDeficit = controller.streamgraphHeight; // TODO: Fix this
-					break;
-				case SPECTROGRAPH:
-					heightDeficit = SpectrographCanvas::getInstance().getHeight();
-					break;
-				default:
-					heightDeficit = 0;
-					break;
-			}
-			Point lTL {tBR.x + 10, 10}, lBR {W-10.0, H - 10 - heightDeficit};
-			LegendCanvas::getInstance().setSize(lTL, lBR);
 		}
 
 		ProjectionCanvas::getInstance().setSize(pTL, pBR);

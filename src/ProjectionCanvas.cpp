@@ -1,3 +1,4 @@
+#include <iomanip>
 #include "../include/ProjectionCanvas.h"
 
 ProjectionCanvas::ProjectionCanvas() {}
@@ -74,6 +75,12 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
 // Draw scaled Canvas
 void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
+	if (controller.metricLegend)
+	{
+		// Clear space for colorbar
+		setSize(top_left, {bottom_right.x - 40, bottom_right.y});
+	}
+
 	glColor3d(1.0f, 1.0f, 1.0f);
 	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
@@ -163,8 +170,16 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
 		double delta = (Rt > 1) ? (b->data[Rt][rMetric] - b->data[Rt-1][rMetric])/b->data[Rt][rMetric]: 0;
 		drawEntity(p.x, p.y, radius, delta, c, 0);
 	}
+
+
 	glDisable(GL_LINE_SMOOTH);
 	glPopMatrix();
+
+	if (controller.metricLegend)
+	{
+		displayRadiusLegend();
+		displayColorbar();
+	}
 }
 
 // Draw shadow
@@ -378,7 +393,111 @@ Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep)
 	return p;
 }
 
-double ProjectionCanvas::getMinRatio() const
+
+void ProjectionCanvas::displayRadiusLegend()
 {
-	return minRatio;
+	glEnable(GL_BLEND);
+	double radiusMaxMetricValue = entityData->maxMetricValue[controller.radiusMetricIndex];
+	double radiusMinMetricValue = entityData->minMetricValue[controller.radiusMetricIndex];
+
+	// Format and print min/max metric values
+	stringstream stream;
+	stream << fixed << setprecision(2) << radiusMinMetricValue;
+	string min = stream.str();
+	min.replace(min.find(".00"), 3, "");
+
+	stream.str(""); // Clear stream
+	stream << fixed << setprecision(2) << radiusMaxMetricValue;
+	string max = stream.str();
+	max.replace(max.find(".00"), 3, "");
+
+	string range = min + " - " + max;
+
+	glColor3d(0, 0, 0);
+	glRasterPos2d(currentWidth - (range.length()+1)*9, 30);
+	const unsigned char* s = reinterpret_cast<const unsigned char *>(range.c_str());
+	glutBitmapString(GLUT_BITMAP_9_BY_15, s);
+
+	// Draw min max radius circles
+	int triangleAmount = 360; //# of triangles/degrees used to draw circle
+	double radians = 2.0f * PI;
+	double radius = MAX_RADIUS * minRatio;
+	double x = currentWidth - radius;
+	double y = 60;
+	glBegin(GL_LINE_STRIP);
+	for (int i = 0; i <= triangleAmount; ++i)
+	{
+		glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
+				   y + (radius * sin(i * radians / triangleAmount)), 0);
+	}
+	glEnd();
+
+	radius = MIN_RADIUS * minRatio;
+	x -= 50;
+	glBegin(GL_LINE_STRIP);
+	for (int i = 0; i <= triangleAmount; ++i)
+	{
+		glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
+				   y + (radius * sin(i * radians / triangleAmount)), 0);
+	}
+	glEnd();
+
+	glColor4d(0,0,0,0.1);
+	glRectd(currentWidth + 10, 10, currentWidth - 100*minRatio, 90*minRatio);
+	glDisable(GL_BLEND);
+}
+
+void ProjectionCanvas::displayColorbar()
+{
+	double colorMaxMetricValue = entityData->maxMetricValue[controller.colorMetricIndex];
+	double colorMinMetricValue = entityData->minMetricValue[controller.colorMetricIndex];
+
+	double stepSize = currentHeight/256;
+	double l = 0;
+	for (unsigned i = 0; i < 256; ++i)
+	{
+		double value = double (i)/256;
+
+		Color c {1,1,1};
+		if (controller.evolutionColormapIndex == (int) COLORMAP::sequential)
+		{
+			c = sequentialColormap(value);
+		}
+		else if (controller.evolutionColormapIndex == (int) COLORMAP::divergent)
+		{
+			c = divergentColormap(value - 0.5);
+		}
+		glColor3d(c.R,c.G,c.B);
+
+		glRectd(bottom_right.x + 10, bottom_right.y - l, bottom_right.x + 35, bottom_right.y - l - stepSize);
+		l += stepSize;
+	}
+
+	glColor3d(0,0,0);
+	glPushMatrix();
+	glTranslated(currentWidth + 39, currentHeight, 0);
+	glScalef(0.15f,-0.15f,0);
+	glRotated(90, 0, 0, 1);
+
+	stringstream stream;
+	stream << fixed << setprecision(2) << colorMinMetricValue;
+	string min = stream.str();
+	min.replace(min.find(".00"), 3, "");
+	const unsigned char *s = reinterpret_cast<const unsigned char *>(min.c_str());
+	glutStrokeString(GLUT_STROKE_ROMAN , s);
+	glPopMatrix();
+
+	stream.str("");
+	stream << fixed << setprecision(2) << colorMaxMetricValue;
+	string max = stream.str();
+	max.replace(max.find(".00"), 3, "");
+	s = reinterpret_cast<const unsigned char *>(max.c_str());
+	glColor3d(0,0,0);
+	glPushMatrix();
+	glTranslated(currentWidth + 39, max.length()*16 + 2, 0);
+	glScalef(0.15f,-0.15f,0);
+	glRotated(90, 0, 0, 1);
+
+	glutStrokeString(GLUT_STROKE_ROMAN , s);
+	glPopMatrix();
 }
