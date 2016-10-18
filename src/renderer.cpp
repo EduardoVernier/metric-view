@@ -151,13 +151,13 @@ void drawHoveringLabel()
 
 		if (mouse->rawX > 0.7*controller.winWidth)
 		{
-			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX - 9*(s.length()), mouse->rawY+2);
+			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX - 10*(s.length()), mouse->rawY+2);
 			glDisable (GL_BLEND);
-			renderHoverString(mouse->rawX - 9*(s.length()), mouse->rawY, s);
+			renderHoverString(mouse->rawX - 10*(s.length()), mouse->rawY, s);
 		}
 		else
 		{
-			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX + 9*(s.length()), mouse->rawY+2);
+			glRecti(mouse->rawX, mouse->rawY-10, mouse->rawX + 10*(s.length()), mouse->rawY+2);
 			glDisable (GL_BLEND);
 			renderHoverString(mouse->rawX, mouse->rawY, s);
 		}
