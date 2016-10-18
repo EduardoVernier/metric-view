@@ -443,7 +443,7 @@ void ProjectionCanvas::displayRadiusLegend()
 	glEnd();
 
 	glColor4d(0,0,0,0.1);
-	glRectd(currentWidth + 10, 10, currentWidth - 100*minRatio, 90*minRatio);
+	glRectd(currentWidth + 10, 10, currentWidth - 100, 90);
 	glDisable(GL_BLEND);
 }
 

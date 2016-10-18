@@ -29,4 +29,6 @@ private:
 	void operator=(SpectrographCanvas const&);
 
 	EntityData *entityData;
+
+	void displayColorbar();
 };

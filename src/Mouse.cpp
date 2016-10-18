@@ -70,10 +70,18 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 		else if (rawX > stCanvas->top_left.x && rawX < stCanvas->bottom_right.x &&
 				_y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
 		{
-				canvas = S;
+				canvas = E;
 				x = (int) (rawX - stCanvas->top_left.x);
 				y = (int) (_y - stCanvas->top_left.y);
 		}
+		else if (rawX > SpectrographCanvas::getInstance().top_left.x && rawX < SpectrographCanvas::getInstance().bottom_right.x &&
+				 _y > SpectrographCanvas::getInstance().top_left.y && _y < SpectrographCanvas::getInstance().bottom_right.y)
+		{
+			canvas = E;
+			x = (int) (rawX - stCanvas->top_left.x);
+			y = (int) (_y - stCanvas->top_left.y);
+		}
+
 		else
 		{
 				canvas = NONE;
@@ -175,9 +183,16 @@ void Mouse::updateMouse(int _x, int _y)
 		else if (rawX > stCanvas->top_left.x && rawX < stCanvas->bottom_right.x &&
 				_y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
 		{
-				canvas = S;
+				canvas = E;
 				x = (int) (rawX - stCanvas->top_left.x);
 				y = (int) (_y - stCanvas->top_left.y);
+		}
+		else if (rawX > SpectrographCanvas::getInstance().top_left.x && rawX < SpectrographCanvas::getInstance().bottom_right.x &&
+				 _y > SpectrographCanvas::getInstance().top_left.y && _y < SpectrographCanvas::getInstance().bottom_right.y)
+		{
+			canvas = E;
+			x = (int) (rawX - stCanvas->top_left.x);
+			y = (int) (_y - stCanvas->top_left.y);
 		}
 		else
 		{
@@ -186,4 +201,6 @@ void Mouse::updateMouse(int _x, int _y)
 				y = -1;
 		}
 	}
+
+	cout << canvas << endl;
 }

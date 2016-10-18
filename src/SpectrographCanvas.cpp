@@ -1,3 +1,4 @@
+#include <iomanip>
 #include "../include/SpectrographCanvas.h"
 
 SpectrographCanvas::SpectrographCanvas() {}
@@ -22,6 +23,11 @@ double SpectrographCanvas::getHeight()
 
 void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 {
+	if (controller.metricLegend)
+	{
+		setSize(top_left, {bottom_right.x - 40, bottom_right.y});
+	}
+
 	// Translate everything into frame
 	glPushMatrix();
 	glTranslated(top_left.x, top_left.y, 0);
@@ -99,6 +105,11 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep)
 	glEnd();
 
 	glPopMatrix();
+
+	if (controller.metricLegend)
+	{
+		displayColorbar();
+	}
 }
 
 void SpectrographCanvas::getEntitiesOnSpectrograph(int *drag, unsigned click, bool ctrlDown)
@@ -110,4 +121,59 @@ void SpectrographCanvas::getEntitiesOnSpectrograph(int *drag, unsigned click, bo
 	{
 		entityData->hovered = entityData->selected[index];
 	}
+}
+
+void SpectrographCanvas::displayColorbar()
+{
+	double colorMaxMetricValue = entityData->maxMetricValue[controller.evolutionMetricIndex];
+	double colorMinMetricValue = entityData->minMetricValue[controller.evolutionMetricIndex];
+
+	double stepSize = currentHeight/256;
+	double l = 0;
+	for (unsigned i = 0; i < 256; ++i)
+	{
+		double value = double (i)/256;
+
+		Color c {1,1,1};
+		if (controller.evolutionColormapIndex == (int) COLORMAP::sequential)
+		{
+			c = sequentialColormap(value);
+		}
+		else if (controller.evolutionColormapIndex == (int) COLORMAP::divergent)
+		{
+			c = divergentColormap(value - 0.5);
+		}
+		glColor3d(c.R,c.G,c.B);
+
+		glRectd(bottom_right.x + 10, bottom_right.y - l, bottom_right.x + 35, bottom_right.y - l - stepSize);
+		l += stepSize;
+	}
+
+	glColor3d(0,0,0);
+	glPushMatrix();
+	glTranslated(currentWidth + 39, yOff + currentHeight, 0);
+	glScalef(0.15f,-0.15f,0);
+	glRotated(90, 0, 0, 1);
+
+	stringstream stream;
+	stream << fixed << setprecision(2) << colorMinMetricValue;
+	string min = stream.str();
+	min.replace(min.find(".00"), 3, "");
+	const unsigned char *s = reinterpret_cast<const unsigned char *>(min.c_str());
+	glutStrokeString(GLUT_STROKE_ROMAN , s);
+	glPopMatrix();
+
+	stream.str("");
+	stream << fixed << setprecision(2) << colorMaxMetricValue;
+	string max = stream.str();
+	max.replace(max.find(".00"), 3, "");
+	s = reinterpret_cast<const unsigned char *>(max.c_str());
+	glColor3d(0,0,0);
+	glPushMatrix();
+	glTranslated(currentWidth + 39, yOff + max.length()*16 - 5, 0);
+	glScalef(0.15f,-0.15f,0);
+	glRotated(90, 0, 0, 1);
+
+	glutStrokeString(GLUT_STROKE_ROMAN , s);
+	glPopMatrix();
 }

@@ -5,12 +5,13 @@
 #include "TreemapCanvas.h"
 #include "ProjectionCanvas.h"
 #include "StreamgraphCanvas.h"
+#include "SpectrographCanvas.h"
 #include "Controller.h"
 
 #define NONE 0;
 #define P 1;
 #define T 2;
-#define S 3;
+#define E 3;
 
 using namespace std;
 

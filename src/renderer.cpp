@@ -1,5 +1,4 @@
 #include "../include/renderer.h"
-#include "../include/LegendCanvas.h"
 
 // "Singletons"
 shared_ptr<Mouse> mouse = std::make_shared<Mouse>();
@@ -58,11 +57,11 @@ void render()
 		SpectrographCanvas::getInstance().drawCanvas(Rt, controller.animationStep);
 	}
 
-
 	drawHoveringLabel();
 
 	if (mouse->state == 0) // If mouse is being clicked
 		drawSelectionBox();
+
 	drawRt();
 }
 
