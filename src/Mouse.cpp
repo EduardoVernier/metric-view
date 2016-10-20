@@ -12,11 +12,11 @@ Mouse::Mouse()
 	button = 0, state = 1;
 }
 
-int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
+int Mouse::click(int _button, int _state, int _x, int _y, int *pos)
 {
 	double xMult;
-	if(controller.displayControlWindow)
-		xMult = ((double)W_/(double)(W_-controller.viewportXOffset))*0.985; // God that's awful
+	if (controller.displayControlWindow)
+		xMult = ((double) W_ / (double) (W_ - controller.viewportXOffset)) * 0.985; // God that's awful
 	else
 		xMult = 1;
 
@@ -31,62 +31,56 @@ int Mouse::click (int _button, int _state, int _x, int _y, int *pos)
 	if (controller.evolutionView == HIDE)
 	{
 		if (rawX > pCanvas.top_left.x && rawX < pCanvas.bottom_right.x &&
-				_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
+			_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
 		{
-				canvas = P;
-				x = (int) (rawX - pCanvas.top_left.x);
-				y = (int) (_y - pCanvas.top_left.y);
-		}
-		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
-				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
+			canvas = P;
+			x = (int) (rawX - pCanvas.top_left.x);
+			y = (int) (_y - pCanvas.top_left.y);
+		} else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
+				   _y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
-				canvas = T;
-				x = (int) (rawX - tCanvas->top_left.x);
-				y = (int) (_y - tCanvas->top_left.y);
-		}
-		else
+			canvas = T;
+			x = (int) (rawX - tCanvas->top_left.x);
+			y = (int) (_y - tCanvas->top_left.y);
+		} else
 		{
-				canvas = NONE;
-				x = -1;
-				y = -1;
+			canvas = NONE;
+			x = -1;
+			y = -1;
 		}
-	}
-	else
+	} else
 	{
 		if (rawX > pCanvas.top_left.x && rawX < pCanvas.bottom_right.x &&
-				_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
+			_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
 		{
-				canvas = P;
-				x = (int) (rawX - pCanvas.top_left.x);
-				y = (int) (_y - pCanvas.top_left.y);
-		}
-		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
-				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
+			canvas = P;
+			x = (int) (rawX - pCanvas.top_left.x);
+			y = (int) (_y - pCanvas.top_left.y);
+		} else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
+				   _y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
-				canvas = T;
-				x = (int) (rawX - tCanvas->top_left.x);
-				y = (int) (_y - tCanvas->top_left.y);
-		}
-		else if (rawX > stCanvas->top_left.x && rawX < stCanvas->bottom_right.x &&
-				_y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
-		{
-				canvas = E;
-				x = (int) (rawX - stCanvas->top_left.x);
-				y = (int) (_y - stCanvas->top_left.y);
-		}
-		else if (rawX > SpectrographCanvas::getInstance().top_left.x && rawX < SpectrographCanvas::getInstance().bottom_right.x &&
-				 _y > SpectrographCanvas::getInstance().top_left.y && _y < SpectrographCanvas::getInstance().bottom_right.y)
+			canvas = T;
+			x = (int) (rawX - tCanvas->top_left.x);
+			y = (int) (_y - tCanvas->top_left.y);
+		} else if (rawX > stCanvas->top_left.x && rawX < stCanvas->bottom_right.x &&
+				   _y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
 		{
 			canvas = E;
 			x = (int) (rawX - stCanvas->top_left.x);
 			y = (int) (_y - stCanvas->top_left.y);
-		}
-
-		else
+		} else if (rawX > SpectrographCanvas::getInstance().top_left.x &&
+				   rawX < SpectrographCanvas::getInstance().bottom_right.x &&
+				   _y > SpectrographCanvas::getInstance().top_left.y &&
+				   _y < SpectrographCanvas::getInstance().bottom_right.y)
 		{
-				canvas = NONE;
-				x = -1;
-				y = -1;
+			canvas = E;
+			x = (int) (rawX - stCanvas->top_left.x);
+			y = (int) (_y - stCanvas->top_left.y);
+		} else
+		{
+			canvas = NONE;
+			x = -1;
+			y = -1;
 		}
 	}
 
@@ -131,8 +125,8 @@ void Mouse::setWindowSize(int W, int H)
 void Mouse::updateMouse(int _x, int _y)
 {
 	double xMult;
-	if(controller.displayControlWindow)
-		xMult = ((double)W_/(double)(W_-controller.viewportXOffset))*0.985; // God that's awful
+	if (controller.displayControlWindow)
+		xMult = ((double) W_ / (double) (W_ - controller.viewportXOffset)) * 0.985; // God that's awful
 	else
 		xMult = 1;
 
@@ -140,67 +134,64 @@ void Mouse::updateMouse(int _x, int _y)
 	rawY = _y;
 
 	ProjectionCanvas &pCanvas = ProjectionCanvas::getInstance();
+	SpectrographCanvas &spCanvas = SpectrographCanvas::getInstance();
 
 	if (controller.evolutionView == HIDE)
 	{
 		if (rawX > pCanvas.top_left.x && rawX < pCanvas.bottom_right.x &&
-				_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
+			_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
 		{
-				canvas = P;
-				x = (int) (rawX - pCanvas.top_left.x);
-				y = (int) (_y - pCanvas.top_left.y);
-		}
-		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
-				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
+			canvas = P;
+			x = (int) (rawX - pCanvas.top_left.x);
+			y = (int) (_y - pCanvas.top_left.y);
+		} else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
+				   _y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
-				canvas = T;
-				x = (int) (rawX - tCanvas->top_left.x);
-				y = (int) (_y - tCanvas->top_left.y);
-		}
-		else
+			canvas = T;
+			x = (int) (rawX - tCanvas->top_left.x);
+			y = (int) (_y - tCanvas->top_left.y);
+		} else
 		{
-				canvas = NONE;
-				x = -1;
-				y = -1;
+			canvas = NONE;
+			x = -1;
+			y = -1;
 		}
-	}
-	else
+	} else
 	{
 		if (rawX > pCanvas.top_left.x && rawX < pCanvas.bottom_right.x &&
-				_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
+			_y > pCanvas.top_left.y && _y < pCanvas.bottom_right.y)
 		{
-				canvas = P;
-				x = (int) (rawX - pCanvas.top_left.x);
-				y = (int) (_y - pCanvas.top_left.y);
-		}
-		else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
-				_y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
+			canvas = P;
+			x = (int) (rawX - pCanvas.top_left.x);
+			y = (int) (_y - pCanvas.top_left.y);
+		} else if (rawX > tCanvas->top_left.x && rawX < tCanvas->bottom_right.x &&
+				   _y > tCanvas->top_left.y && _y < tCanvas->bottom_right.y)
 		{
-				canvas = T;
-				x = (int) (rawX - tCanvas->top_left.x);
-				y = (int) (_y - tCanvas->top_left.y);
-		}
-		else if (rawX > stCanvas->top_left.x && rawX < stCanvas->bottom_right.x &&
-				_y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
-		{
-				canvas = E;
-				x = (int) (rawX - stCanvas->top_left.x);
-				y = (int) (_y - stCanvas->top_left.y);
-		}
-		else if (rawX > SpectrographCanvas::getInstance().top_left.x && rawX < SpectrographCanvas::getInstance().bottom_right.x &&
-				 _y > SpectrographCanvas::getInstance().top_left.y && _y < SpectrographCanvas::getInstance().bottom_right.y)
+			canvas = T;
+			x = (int) (rawX - tCanvas->top_left.x);
+			y = (int) (_y - tCanvas->top_left.y);
+		} else if (rawX > stCanvas->top_left.x && rawX < stCanvas->bottom_right.x &&
+				   _y > stCanvas->top_left.y && _y < stCanvas->bottom_right.y)
 		{
 			canvas = E;
 			x = (int) (rawX - stCanvas->top_left.x);
 			y = (int) (_y - stCanvas->top_left.y);
-		}
-		else
+		} else
 		{
+			if (rawX > spCanvas.top_left.x &&
+				rawX < spCanvas.bottom_right.x &&
+				_y > spCanvas.top_left.y &&
+				_y < spCanvas.bottom_right.y)
+			{
+				canvas = E;
+				x = (int) (rawX - stCanvas->top_left.x);
+				y = (int) (_y - stCanvas->top_left.y);
+			} else
+			{
 				canvas = NONE;
 				x = -1;
 				y = -1;
+			}
 		}
 	}
-
-	cout << canvas << endl;
 }

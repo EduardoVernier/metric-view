@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cfloat>
 #include <cmath>
+#include <map>
 
 #include "BaseEntity.h"
 #include "Entity.h"
@@ -30,6 +31,7 @@ public:
 	void normalizeProjection(double shortEdge);
 	void rankFastestChangingEntities(unsigned Rt, int direction);
 	void updateSelectedEntities();
+	void computeMostSimilarPairs(unsigned Rt);
 
 	vector<string> metricVector;
 	vector<Entity*> selected;

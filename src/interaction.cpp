@@ -57,15 +57,16 @@ void initializeUI()
 
 	// Animation speed listbox
 	glui->add_statictext("Animation Speed");
-	GLUI_Listbox *accelerationLB = glui->add_listbox("", &controller.accelerationRatioIndex, ACCELERATION_LB, controlCB);
-	accelerationLB->add_item(0,"10x");
-	accelerationLB->add_item(1,"5x");
-	accelerationLB->add_item(2,"2x");
-	accelerationLB->add_item(3,"1x");
-	accelerationLB->add_item(4,"0.75x");
-	accelerationLB->add_item(5,"0.5x");
-	accelerationLB->add_item(6,"0.1x");
-	accelerationLB->add_item(7,"0.05x");
+	GLUI_Listbox *accelerationLB = glui->add_listbox("", &controller.accelerationRatioIndex, ACCELERATION_LB,
+													 controlCB);
+	accelerationLB->add_item(0, "10x");
+	accelerationLB->add_item(1, "5x");
+	accelerationLB->add_item(2, "2x");
+	accelerationLB->add_item(3, "1x");
+	accelerationLB->add_item(4, "0.75x");
+	accelerationLB->add_item(5, "0.5x");
+	accelerationLB->add_item(6, "0.1x");
+	accelerationLB->add_item(7, "0.05x");
 
 	glui->add_checkbox("Display delta pie slice", &controller.deltaPie);
 	glui->add_checkbox("Dynamic Treemap", &controller.dynamicTreemap);
@@ -127,9 +128,9 @@ void mouseClick(int button, int state, int x, int y)
 	if (sum > queueSize)
 		return;
 
-	vector<Entity*> selected = entityData->selected;
+	vector<Entity *> selected = entityData->selected;
 	// Find selected entities on entityData
-	int drag[4] = {0,0,0,0};
+	int drag[4] = {0, 0, 0, 0};
 	switch (mouse->click(button, state, x, y, drag))
 	{
 		case 1:
@@ -141,7 +142,8 @@ void mouseClick(int button, int state, int x, int y)
 			else
 				sbCanvas->getEntitiesByPosition(drag, 1, controller.ctrlDown);
 			break;
-		default:break;
+		default:
+			break;
 	}
 
 	if (selected != entityData->selected) // Change detected in the selected group
@@ -153,35 +155,31 @@ void mouseClick(int button, int state, int x, int y)
 	mouse->updateMouse(x, y);
 }
 
-void mousePassive (int x, int y)
+void mousePassive(int x, int y)
 {
 	mouse->updateMouse(x, y);
 	if (mouse->canvas == 3) // Hovering streamgraph
 	{
-		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
+		int drag[4] = {mouse->x, mouse->y, mouse->x, mouse->y};
 		if (controller.evolutionView == STREAMGRAPH)
 		{
 			stCanvas->getEntitiesOnStreamgraph(drag, 0, controller.ctrlDown);
-		}
-		else if (controller.evolutionView == SPECTROGRAPH)
+		} else if (controller.evolutionView == SPECTROGRAPH)
 		{
 			SpectrographCanvas::getInstance().getEntitiesOnSpectrograph(drag, 0, controller.ctrlDown);
 		}
-	}
-	else if (mouse->canvas == 2) // Hovering treemap
+	} else if (mouse->canvas == 2) // Hovering treemap
 	{
-		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
+		int drag[4] = {mouse->x, mouse->y, mouse->x, mouse->y};
 		if (controller.hierarchicalView == TREEMAP)
 			tCanvas->getEntitiesByPositionOnTreemap(drag, 0, controller.ctrlDown);
 		else
 			sbCanvas->getEntitiesByPosition(drag, 0, controller.ctrlDown);
-	}
-	else if (mouse->canvas == 1) // Hovering projection
+	} else if (mouse->canvas == 1) // Hovering projection
 	{
-		int drag[4] = {mouse->x,mouse->y,mouse->x,mouse->y};
+		int drag[4] = {mouse->x, mouse->y, mouse->x, mouse->y};
 		ProjectionCanvas::getInstance().getEntitiesByPositionOnProjection(drag, Rt, 0, controller.ctrlDown);
-	}
-	else
+	} else
 	{
 		entityData->hovered = NULL;
 	}
@@ -206,28 +204,32 @@ void keyboard(unsigned char key, int x, int y)
 				controller.animationDirection = -1;
 				controller.animationStep = 0.0;
 				mRank->computeLocalGroupMetric(Rt);
-				entityData->rankFastestChangingEntities(Rt, controller.animationDirection );
+				entityData->rankFastestChangingEntities(Rt, controller.animationDirection);
+				entityData->computeMostSimilarPairs(Rt);
 			}
 			break;
 		case 'x':
-			if (Rt < entityData->nRevisions-1)
+			if (Rt < entityData->nRevisions - 1)
 			{
 				++Rt;
 				controller.animationDirection = 1;
 				controller.animationStep = 0.0;
 				mRank->computeLocalGroupMetric(Rt);
-				entityData->rankFastestChangingEntities(Rt, controller.animationDirection );
+				entityData->rankFastestChangingEntities(Rt, controller.animationDirection);
+				entityData->computeMostSimilarPairs(Rt);
 			}
 			break;
 		case 'c':
 			toggleControlWindowVisibility();
 			break;
-		default:break;
+		default:
+			break;
 	}
 }
 
 
-void toggleControlWindowVisibility() {
+void toggleControlWindowVisibility()
+{
 	controller.displayControlWindow = !controller.displayControlWindow;
 	int vx, vy, vw, vh;
 	if (controller.displayControlWindow)
@@ -235,8 +237,7 @@ void toggleControlWindowVisibility() {
 		glui->show();
 		GLUI_Master.get_viewport_area(&vx, &vy, &vw, &vh);
 		controller.viewportXOffset = vx;
-	}
-	else
+	} else
 	{
 		glui->hide();
 		GLUI_Master.get_viewport_area(&vx, &vy, &vw, &vh);
@@ -248,6 +249,6 @@ void toggleControlWindowVisibility() {
 
 void keyboardMod(int key, int x, int y)
 {
-	if (key == (int)114) // Check for ctrl
+	if (key == (int) 114) // Check for ctrl
 		controller.ctrlDown = !controller.ctrlDown;
 }
