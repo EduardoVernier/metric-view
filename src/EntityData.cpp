@@ -339,7 +339,10 @@ void EntityData::computeMostSimilarPairs(unsigned Rt)
 		}
 	}
 
-
+	// Fill a sorted vector with most similar entities on first indexes
+	similarityRank.clear();
 	for (auto it = multimap.begin(); it != multimap.end(); ++it)
-		std::cout << (*it).first << " => " << (*it).second.first->getName() << ", "<< (*it).second.second->getName()<< '\n';
+	{
+		similarityRank.push_back(make_pair((*it).second.first, (*it).second.second));
+	}
 }

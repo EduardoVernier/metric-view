@@ -32,4 +32,8 @@ private:
 
 	EntityData *entityData;
 	double treemapXOff, treemapYOff;
+
+	void drawSimilar();
+
+	void linkEntities(Entity *a, Entity *b);
 };

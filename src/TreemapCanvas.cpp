@@ -73,6 +73,7 @@ void TreemapCanvas::drawCanvas(unsigned Rt, double animationStep)
 	{
 		drawSelected(*it);
 	}
+	drawSimilar();
 	drawHovered(entityData->hovered);
 	labelCells();
 
@@ -437,3 +438,29 @@ void TreemapCanvas::labelCells()
 		}
 	}
 }
+
+void TreemapCanvas::drawSimilar()
+{
+	unsigned nLinks = (unsigned) (entityData->similarityRank.size() * 0.01); // One percent most similar entities
+	for (unsigned i = 0; i < nLinks; ++i)
+	{
+		linkEntities(entityData->similarityRank[i].first, entityData->similarityRank[i].second);
+	}
+}
+
+void TreemapCanvas::linkEntities(Entity *a, Entity *b)
+{
+	double aX = (a->getCoord(0) + a->getCoord(2))/2.0;
+	double aY = (a->getCoord(1) + a->getCoord(3))/2.0;
+
+	double bX = (b->getCoord(0) + b->getCoord(2))/2.0;
+	double bY = (b->getCoord(1) + b->getCoord(3))/2.0;
+
+	glColor3d(0,0,0);
+	glBegin(GL_LINE_STRIP);
+	glVertex3d(aX, aY, 0);
+	glVertex3d(bX, bY, 0);
+	glEnd();
+}
+
+

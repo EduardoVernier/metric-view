@@ -27,7 +27,6 @@ void initializeUI()
 
 	glui->add_separator();
 
-
 	glui->add_statictext("Radius Metric");
 	GLUI_Listbox *radiusLB = glui->add_listbox("", &controller.radiusMetricIndex, RADIUSMETRIC_LB);
 	glui->add_separator();
@@ -72,6 +71,7 @@ void initializeUI()
 	glui->add_checkbox("Dynamic Treemap", &controller.dynamicTreemap);
 	glui->add_checkbox("Enable halos", &controller.halo);
 	glui->add_checkbox("Show metric legend", &controller.metricLegend);
+	glui->add_checkbox("Graph similarity on treemap", &controller.similarityGraph);
 
 	glui->sync_live();
 	toggleControlWindowVisibility();
@@ -117,17 +117,6 @@ void controlCB(int control)
 
 void mouseClick(int button, int state, int x, int y)
 {
-	// Terrible way to avoid misclick - unfortunately necessary
-	unsigned long queueSize = controller.windowQueue.size();
-	unsigned sum = 0;
-	while (!controller.windowQueue.empty())
-	{
-		sum += controller.windowQueue.front();
-		controller.windowQueue.pop();
-	}
-	if (sum > queueSize)
-		return;
-
 	vector<Entity *> selected = entityData->selected;
 	// Find selected entities on entityData
 	int drag[4] = {0, 0, 0, 0};

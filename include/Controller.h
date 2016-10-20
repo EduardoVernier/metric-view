@@ -34,6 +34,6 @@ public:
 	int animationDirection = 0;
 	double animationStep = 1.0;
 	double accelerationRatio = 1;
+	int similarityGraph = 0;
 
-	queue<short> windowQueue;
 };

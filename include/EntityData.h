@@ -41,6 +41,7 @@ public:
 	vector<Entity*> entities; // Contains only Entities ordered by score
 	vector<double> maxMetricValue;
 	vector<double> minMetricValue;
+	vector<pair<Entity*, Entity*>> similarityRank;
 	int depth = 0;
 	unsigned nRevisions = 0;
 	unsigned nDimensions = 0;
