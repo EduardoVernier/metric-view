@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cmath>
 #include <functional>
+#include <iomanip>
 
 #include "Canvas.h"
 #include "Entity.h"
@@ -25,22 +26,21 @@ public:
 	void init(Point tl, Point br, EntityData *ed);
 	void getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, bool ctrlDown);
 	void drawCanvas(unsigned Rt, double animationStep);
-	double getMinRatio() const;
 
 private:
 	ProjectionCanvas();
 	ProjectionCanvas(ProjectionCanvas const&);
 	void operator=(ProjectionCanvas const&);
-	void drawEntity(double x, double y, double radius, double delta, Color c, int action);
+	void drawEntity(double x, double y, double radius, double delta, Color color, int action);
 	void drawHalo(double x, double y, double radius, double animationStep);
 	void drawSolidEntity(double x, double y, double radius, Color c, int action);
 	void drawPieEntity(double x, double y, double radius, double delta, Color c, int action);
+	void drawCircle(double x, double y, double z, double radius, Color color);
 	Point getPoint(Entity *e, unsigned Rt, double animationStep);
+	void displayRadiusLegend();
+	void displayColorbar();
 
 	EntityData *entityData;
 	double minRatio;
 
-	void displayRadiusLegend();
-
-	void displayColorbar();
 };

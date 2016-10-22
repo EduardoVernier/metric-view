@@ -1,503 +1,472 @@
-#include <iomanip>
 #include "../include/ProjectionCanvas.h"
 
 ProjectionCanvas::ProjectionCanvas() {}
 
-ProjectionCanvas &ProjectionCanvas::getInstance()
-{
-	static ProjectionCanvas instance {};
-	return instance;
+ProjectionCanvas &ProjectionCanvas::getInstance() {
+
+    static ProjectionCanvas instance{};
+    return instance;
 }
 
-void ProjectionCanvas::init(Point tl, Point br, EntityData *ed)
-{
-	setSize(tl, br);
-	entityData = ed;
-	double shortEdge = min(currentHeight, currentWidth);
-	entityData->normalizeProjection(shortEdge - 50);
+void ProjectionCanvas::init(Point tl, Point br, EntityData *ed) {
+
+    setSize(tl, br);
+    entityData = ed;
+    double shortEdge = min(currentHeight, currentWidth);
+    entityData->normalizeProjection(shortEdge - 50);
 };
 
 // Mark entities as selected from projection pane interaction
-void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, bool ctrlDown)
-{
-	Entity *closest = NULL;
-	double smallerDist = FLT_MAX;
+void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt, unsigned click, bool ctrlDown) {
 
-	if (click && !ctrlDown)
-		entityData->selected.clear();
+    Entity *closest = NULL;
+    double smallerDist = FLT_MAX;
 
-	entityData->hovered = NULL;
+    if (click && !ctrlDown)
+        entityData->selected.clear();
 
-	xRatio = currentWidth/initialWidth;
-	yRatio = currentHeight/initialHeight;
-	minRatio = min(xRatio, yRatio);
+    entityData->hovered = NULL;
 
-	for (auto entity : entityData->entities)
-	{
-		double bx = entity->normalizedProjectionPoints[Rt].x * minRatio;
-		double by = entity->normalizedProjectionPoints[Rt].y * minRatio;
-		if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case point click (or hover of click = 0)
-		{
-			double distX = drag[0] - bx;
-			double distY = drag[1] - by;
-			double dist = sqrt(pow(distX,2) + pow(distY,2));
-			if (dist < 10 && dist < smallerDist) // If click is close enough
-			{
-				if (click)
-				{
-					smallerDist = dist;
-					closest = entity;
-				}
-				else
-				{
-					smallerDist = dist;
-					entityData->hovered = entity;
-				}
-			}
-		}
-		else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) // If inside selection box
-		{
-			if ((std::find(entityData->selected.begin(), entityData->selected.end(),entity))!= entityData->selected.end())
-				entityData->selected.erase(std::find(entityData->selected.begin(), entityData->selected.end(),entity));
-			else
-				entityData->selected.push_back(entity);
-		}
-	}
-	if (click == 1 && closest != NULL)
-	{
-		if ((std::find(entityData->selected.begin(), entityData->selected.end(),closest))!=entityData->selected.end())
-			entityData->selected.erase(std::find(entityData->selected.begin(), entityData->selected.end(),closest));
-		else
-			entityData->selected.push_back(closest);
-	}
+    xRatio = currentWidth / initialWidth;
+    yRatio = currentHeight / initialHeight;
+    minRatio = min(xRatio, yRatio);
+
+    for (auto entity : entityData->entities) {
+        double bx = entity->normalizedProjectionPoints[Rt].x * minRatio;
+        double by = entity->normalizedProjectionPoints[Rt].y * minRatio;
+        if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case point click (or hover of click = 0)
+        {
+            double distX = drag[0] - bx;
+            double distY = drag[1] - by;
+            double dist = sqrt(pow(distX, 2) + pow(distY, 2));
+            if (dist < 10 && dist < smallerDist) // If click is close enough
+            {
+                if (click) {
+                    smallerDist = dist;
+                    closest = entity;
+                } else {
+                    smallerDist = dist;
+                    entityData->hovered = entity;
+                }
+            }
+        } else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) // If inside selection box
+        {
+            if ((std::find(entityData->selected.begin(), entityData->selected.end(), entity)) !=
+                entityData->selected.end()) {
+                entityData->selected.erase(std::find(entityData->selected.begin(), entityData->selected.end(), entity));
+            } else {
+                entityData->selected.push_back(entity);
+            }
+        }
+    }
+    if (click == 1 && closest != NULL) {
+        if ((std::find(entityData->selected.begin(), entityData->selected.end(), closest)) !=
+            entityData->selected.end()) {
+            entityData->selected.erase(std::find(entityData->selected.begin(), entityData->selected.end(), closest));
+        } else {
+            entityData->selected.push_back(closest);
+        }
+    }
 }
 
 // Draw scaled Canvas
-void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep)
-{
-	if (controller.metricLegend)
-	{
-		// Clear space for colorbar
-		setSize(top_left, {bottom_right.x - 40, bottom_right.y});
-	}
+void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep) {
+    if (controller.metricLegend) {
+        // Clear space for colorbar
+        setSize(top_left, {bottom_right.x - 40, bottom_right.y});
+    }
 
-	glColor3d(1.0f, 1.0f, 1.0f);
-	glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
+    glColor3d(1.0f, 1.0f, 1.0f);
+    glRectd(top_left.x, top_left.y, bottom_right.x, bottom_right.y);
 
-	// Scale initial aspect ratio by new
-	glPushMatrix();
-	glTranslated(xOff, yOff, 0.0);
+    // Scale initial aspect ratio by new
+    glPushMatrix();
+    glTranslated(xOff, yOff, 0.0);
 
-	xRatio = currentWidth/initialWidth;
-	yRatio = currentHeight/initialHeight;
-	double minRatio = min(xRatio, yRatio);
-	glScaled(minRatio, minRatio, 1.0);
+    xRatio = currentWidth / initialWidth;
+    yRatio = currentHeight / initialHeight;
+    double minRatio = min(xRatio, yRatio);
+    glScaled(minRatio, minRatio, 1.0);
 
-	glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_LINE_SMOOTH);
 
-	unsigned rMetric = (unsigned) controller.radiusMetricIndex;
+    unsigned rMetric = (unsigned) controller.radiusMetricIndex;
 
-	// Draw halos
-	if (controller.halo)
-	{
-		for (auto entity : entityData->entities)
-		{
-			if (entity->showHalo)
-			{
-				Point p = getPoint(entity, Rt, animationStep);
-				double radius = entity->normalizedData[Rt][rMetric];
-				drawHalo(p.x, p.y, radius, animationStep);
-			}
-		}
-	}
+    // Draw halos
+    if (controller.halo) {
+        for (auto entity : entityData->entities) {
+            if (entity->showHalo) {
+                Point p = getPoint(entity, Rt, animationStep);
+                double radius = entity->normalizedData[Rt][rMetric];
+                drawHalo(p.x, p.y, radius, animationStep);
+            }
+        }
+    }
 
-	// Draw selected entities
-	for (auto selected : entityData->selected)
-	{
-		Point p = getPoint(selected, Rt, animationStep);
-		double value = selected->data[Rt][rMetric];
-		double radius = selected->normalizedData[Rt][rMetric];
-		double delta = (Rt > 1) ? (value - selected->data[Rt-1][rMetric])/value: 0;
-		drawEntity(p.x, p.y, radius, delta, colorSelection, 1);
-	}
+    // Draw selected entities
+    for (auto selected : entityData->selected) {
+        Point p = getPoint(selected, Rt, animationStep);
+        double value = selected->data[Rt][rMetric];
+        double radius = selected->normalizedData[Rt][rMetric];
+        double delta = (Rt > 1) ? (value - selected->data[Rt - 1][rMetric]) / value : 0;
+        drawEntity(p.x, p.y, radius, delta, colorSelection, 1);
+    }
 
-	// Draw hovered entities
-	if (entityData->hovered != NULL)
-	{
-		if (entityData->hovered->isEntity())
-		{
-			Entity *hovered = (Entity*) entityData->hovered;
-			Point p = getPoint(hovered, Rt, animationStep);
-			double value = hovered->data[Rt][rMetric];
-			double radius = hovered->normalizedData[Rt][rMetric];
-			double delta = (Rt > 1) ? (value - hovered->data[Rt-1][rMetric])/value: 0;
-			drawEntity(p.x, p.y, radius, delta, colorHover, 1);
-		}
-		else if (entityData->hovered->isPackage())
-		{
-			// Recursive lambda function to find all entities belonging to a package
-			Package *hovered = (Package*) entityData->hovered;
-			function<void (Package*)> f;
-			f = [&](Package* p)
-			{
-				if (p == NULL)
-					return;
-				else
-				{
-					for (auto c : p->childrenVector)
-						f(&c);
+    // Draw hovered entities
+    if (entityData->hovered != NULL) {
+        if (entityData->hovered->isEntity()) {
+            Entity *hovered = (Entity *) entityData->hovered;
+            Point p = getPoint(hovered, Rt, animationStep);
+            double value = hovered->data[Rt][rMetric];
+            double radius = hovered->normalizedData[Rt][rMetric];
+            double delta = (Rt > 1) ? (value - hovered->data[Rt - 1][rMetric]) / value : 0;
+            drawEntity(p.x, p.y, radius, delta, colorHover, 1);
+        } else if (entityData->hovered->isPackage()) {
+            // Recursive lambda function to find all entities belonging to a package
+            Package *hovered = (Package *) entityData->hovered;
+            function<void(Package *)> f;
+            f = [&](Package *p) {
+                if (p == NULL)
+                    return;
+                else {
+                    for (auto c : p->childrenVector)
+                        f(&c);
 
-					for (auto e : p->entityVector)
-					{
-						Point p = getPoint(&e, Rt, animationStep);
-						double value = e.data[Rt][rMetric];
-						double radius = e.normalizedData[Rt][rMetric];
-						double delta = (Rt > 1) ? (value - e.data[Rt-1][rMetric])/value: 0;
-						drawEntity(p.x, p.y, radius, delta, colorHover, 1);
-					}
-				}
-			};
-			f(hovered);
-		}
-	}
+                    for (auto e : p->entityVector) {
+                        Point p = getPoint(&e, Rt, animationStep);
+                        double value = e.data[Rt][rMetric];
+                        double radius = e.normalizedData[Rt][rMetric];
+                        double delta = (Rt > 1) ? (value - e.data[Rt - 1][rMetric]) / value : 0;
+                        drawEntity(p.x, p.y, radius, delta, colorHover, 1);
+                    }
+                }
+            };
+            f(hovered);
+        }
+    }
 
-	// Draw all entities
-	for (auto b : entityData->entities)
-	{
-		Point p = getPoint(b, Rt, animationStep);
-		Color c = getColor(controller.colormapIndex, b, Rt);
-		double radius = b->normalizedData[Rt][rMetric];
-		double delta = (Rt > 1) ? (b->data[Rt][rMetric] - b->data[Rt-1][rMetric])/b->data[Rt][rMetric]: 0;
-		drawEntity(p.x, p.y, radius, delta, c, 0);
-	}
+    // Draw all entities
+    for (auto b : entityData->entities) {
+        Point p = getPoint(b, Rt, animationStep);
+        Color c = getColor(controller.colormapIndex, b, Rt);
+        double radius = b->normalizedData[Rt][rMetric];
+        double delta = (Rt > 1) ? (b->data[Rt][rMetric] - b->data[Rt - 1][rMetric]) / b->data[Rt][rMetric] : 0;
+        drawEntity(p.x, p.y, radius, delta, c, 0);
+    }
 
 
-	glDisable(GL_LINE_SMOOTH);
-	glPopMatrix();
+    glDisable(GL_LINE_SMOOTH);
+    glPopMatrix();
 
-	if (controller.metricLegend)
-	{
-		displayRadiusLegend();
-		displayColorbar();
-	}
+    if (controller.metricLegend) {
+        displayRadiusLegend();
+        displayColorbar();
+    }
 }
 
 // Draw shadow
-void ProjectionCanvas::drawHalo(double x, double y, double radius, double animationStep)
-{
-	int triangleAmount = 360; //# of triangles/degrees used to draw circle
+void ProjectionCanvas::drawHalo(double x, double y, double radius, double animationStep) {
+    int triangleAmount = 360; //# of triangles/degrees used to draw circle
 
-	radius = (radius*20 + 7)*2; // Ugly as frick
+    radius = (radius * 20 + 7) * 2; // Ugly as frick
 
-	// Create the opacity curve like a triangle
-	animationStep = (animationStep < 0)? animationStep*(-1) : animationStep;
-	double opacity = (animationStep < 0.5)? 2*animationStep : 1 - (animationStep-0.5)*2;
+    // Create the opacity curve like a triangle
+    animationStep = (animationStep < 0) ? animationStep * (-1) : animationStep;
+    double opacity = (animationStep < 0.5) ? 2 * animationStep : 1 - (animationStep - 0.5) * 2;
 
-	double radians = 2.0f * PI;
+    double radians = 2.0f * PI;
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glBegin(GL_TRIANGLE_FAN);
-	glColor4d(0,0,0,opacity);
-	glVertex3d(x, y, 0);
-	glColor4d(0,0,0,0);
-	for (int i = 0; i <= triangleAmount;i++)
-	{
-		glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
-				   y + (radius * sin(i * radians / triangleAmount)), 0);
-	}
-	glEnd();
-	glDisable(GL_BLEND);
-
+    glBegin(GL_TRIANGLE_FAN);
+    glColor4d(0, 0, 0, opacity);
+    glVertex3d(x, y, 0);
+    glColor4d(0, 0, 0, 0);
+    for (int i = 0; i <= triangleAmount; i++) {
+        glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
+                   y + (radius * sin(i * radians / triangleAmount)), 0);
+    }
+    glEnd();
 }
 
 
 // Draw circles
-void ProjectionCanvas::drawEntity(double x, double y, double radius, double delta, Color c, int action)
-{
-	if (controller.deltaPie == 0 || fabs(delta) < 0.01) // 1% tolerance
-		drawSolidEntity(x, y, radius, c, action);
-	else
-		drawPieEntity(x, y, radius, delta, c, action);
+void ProjectionCanvas::drawEntity(double x, double y, double radius, double delta, Color color, int action) {
+    if (controller.deltaPie == 0 || fabs(delta) < 0.01) // 1% tolerance
+        drawSolidEntity(x, y, radius, color, action);
+    else
+        drawPieEntity(x, y, radius, delta, color, action);
 }
 
-void ProjectionCanvas::drawSolidEntity(double x, double y, double radius, Color c, int action)
-{
-	int triangleAmount = 360; //# of triangles/degrees used to draw circle
+void ProjectionCanvas::drawSolidEntity(double x, double y, double radius, Color color, int action) {
+    radius = radius * 20 + 3 + action * 4; // Scaling
+    if (color == colorHover)
+        radius += 2;
 
-	radius = radius*20 + 3 + action*4; // Scaling
-	if (c == colorHover)
-		radius += 2;
-
-	double radians = 2.0f * PI;
-
-	glBegin(GL_TRIANGLE_FAN);
-	glColor3d(c.R,c.G,c.B);
-	glVertex3d(x, y, 0);
-	for (int i = 0; i <= triangleAmount; ++i)
-	{
-		glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
-				   y + (radius * sin(i * radians / triangleAmount)), 0);
-	}
-	glEnd();
-
-	glBegin(GL_LINE_STRIP);
-	glColor3d(0,0,0);
-	for (int i = 0; i <= triangleAmount; ++i)
-	{
-		glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
-				   y + (radius * sin(i * radians / triangleAmount)), 0);
-	}
-	glEnd();
+    // Use 1px black border
+    drawCircle(x, y, 0, radius, Color {0, 0, 0});
+    drawCircle(x, y, 0, radius - 1, color);
 }
 
+// Draw smooth circles
+void ProjectionCanvas::drawCircle(double x, double y, double z, double radius, Color color) {
+    double triangleAmount = 360; //# of triangles/degrees used to draw circle
+    double radians = 2.0f * PI;
+    double smoothStep = 1;
 
-void ProjectionCanvas::drawPieEntity(double x, double y, double radius, double delta, Color c, int action)
-{
-	int triangleAmount = 360; //# of triangles/degrees used to draw circle
+    glBegin(GL_QUAD_STRIP);
+    for (int i = 0; i <= triangleAmount; ++i) {
+        glColor3d(color.R, color.G, color.B);
+        glVertex3d(x + ((radius - smoothStep) * cos(i * radians / triangleAmount)),
+                   y + ((radius - smoothStep) * sin(i * radians / triangleAmount)), z);
 
-	radius = radius*20 + 3 + action*4; // Scaling
-	if (c == colorHover)
-		radius += 2;
+        glColor4d(color.R, color.G, color.B, 0.0);
+        glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
+                   y + (radius * sin(i * radians / triangleAmount)), z);
+    }
+    glEnd();
 
-	double radians = 2.0f * PI;
-	if (controller.deltaPie)
-		radians *= (1 - fabs(delta)); // Take only a fraction of the 360 degrees
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3d(color.R, color.G, color.B);
+    glVertex3d(x, y, 0);
+    for (int i = 0; i <= triangleAmount; ++i) {
+        glVertex3d(x + ((radius - smoothStep) * cos(i * radians / triangleAmount)),
+                   y + ((radius - smoothStep) * sin(i * radians / triangleAmount)), z);
+    }
+    glEnd();
+}
 
-	// Old indian trick to rotate a circle around it's center
-	glPushMatrix();
-	glColor3d(c.R,c.G,c.B);
-	double rotation = 0;
-	glTranslated(x, y ,0); // Translate vector to the object's position
+void ProjectionCanvas::drawPieEntity(double x, double y, double radius, double delta, Color c, int action) {
+    int triangleAmount = 360; //# of triangles/degrees used to draw circle
 
-	// Define removed slice accordingly to delta value
-	if (delta > 0)
-		rotation = -90 + delta*180;
-	else
-		rotation = 90 - delta*180;
+    radius = radius * 20 + 3 + action * 4; // Scaling
+    if (c == colorHover)
+        radius += 2;
 
-	glRotated(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
+    double radians = 2.0f * PI;
+    if (controller.deltaPie)
+        radians *= (1 - fabs(delta)); // Take only a fraction of the 360 degrees
 
-	glTranslated(-x, -y ,0); // Translate to normal origin
+    // Old indian trick to rotate a circle around it's center
+    glPushMatrix();
+    glColor3d(c.R, c.G, c.B);
+    double rotation = 0;
+    glTranslated(x, y, 0); // Translate vector to the object's position
 
-	// Draw circle with missing slice
-	glBegin(GL_TRIANGLE_FAN);
-	glVertex3d(x, y, 0);
-	for (int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
-	{
-		glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
-				   y + (radius * sin(i * radians / triangleAmount)), 0);
-	}
-	glEnd();
+    // Define removed slice accordingly to delta value
+    if (delta > 0)
+        rotation = -90 + delta * 180;
+    else
+        rotation = 90 - delta * 180;
 
-	// Draw stroke
-	glBegin(GL_LINE_STRIP);
-	glColor3d(0,0,0);
-	glVertex3d(x, y, 0);
-	for (int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
-	{
-		glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
-				   y + (radius * sin(i * radians / triangleAmount)), 0);
-	}
-	glVertex3d(x, y, 0);
-	glEnd();
+    glRotated(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
 
-	glPopMatrix();
+    glTranslated(-x, -y, 0); // Translate to normal origin
 
-	// Draw missing slice
-	if (delta > 0)
-		radius *= 1.2;
-	else
-		radius = 0;
+    // Draw circle with missing slice
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3d(x, y, 0);
+    for (int i = 0; i <= triangleAmount; i++) // Draw x percent of circle
+    {
+        glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
+                   y + (radius * sin(i * radians / triangleAmount)), 0);
+    }
+    glEnd();
 
-	radians = 2*PI - radians;
+    // Draw stroke
+    glBegin(GL_LINE_STRIP);
+    glColor3d(0, 0, 0);
+    glVertex3d(x, y, 0);
+    for (int i = 0; i <= triangleAmount; i++) // Draw x percent of circle
+    {
+        glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
+                   y + (radius * sin(i * radians / triangleAmount)), 0);
+    }
+    glVertex3d(x, y, 0);
+    glEnd();
 
-	glPushMatrix();
-	glColor3d(c.R,c.G,c.B);
-	glTranslated(x, y ,0); // Translate vector to the object's position
+    glPopMatrix();
 
-	// Define removed slice accordingly to delta value
-	if (delta > 0)
-		rotation = -90 - delta*180;
-	else
-		rotation = 90 + delta*180;
+    // Draw missing slice
+    if (delta > 0)
+        radius *= 1.2;
+    else
+        radius = 0;
 
-	glRotated(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
+    radians = 2 * PI - radians;
 
-	glTranslated(-x, -y ,0); // Translate to normal origin
+    glPushMatrix();
+    glColor3d(c.R, c.G, c.B);
+    glTranslated(x, y, 0); // Translate vector to the object's position
 
-	// Draw missing slice
-	glBegin(GL_TRIANGLE_FAN);
-	glVertex3d(x, y, 0);
-	for (int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
-	{
-		glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
-				   y + (radius * sin(i * radians / triangleAmount)), 0);
-	}
-	glEnd();
-	glPopMatrix();
+    // Define removed slice accordingly to delta value
+    if (delta > 0)
+        rotation = -90 - delta * 180;
+    else
+        rotation = 90 + delta * 180;
 
-	glPushMatrix();
-	glColor3d(0, 0, 0);
-	glTranslated(x, y ,0); // Translate vector to the object's position
+    glRotated(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
 
-	// Define removed slice accordingly to delta value
-	if (delta > 0)
-		rotation = -90 - delta*180;
-	else
-		rotation = 90 + delta*180;
+    glTranslated(-x, -y, 0); // Translate to normal origin
 
-	glRotated(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
+    // Draw missing slice
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3d(x, y, 0);
+    for (int i = 0; i <= triangleAmount; i++) // Draw x percent of circle
+    {
+        glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
+                   y + (radius * sin(i * radians / triangleAmount)), 0);
+    }
+    glEnd();
+    glPopMatrix();
 
-	glTranslated(-x, -y ,0); // Translate to normal origin
+    glPushMatrix();
+    glColor3d(0, 0, 0);
+    glTranslated(x, y, 0); // Translate vector to the object's position
 
-	// Draw missing slice
-	glBegin(GL_LINE_STRIP);
-	glLineWidth(2.0);
-	glVertex3d(x, y, 0);
-	for (int i = 0; i <= triangleAmount;i++) // Draw x percent of circle
-	{
-		glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
-				   y + (radius * sin(i * radians / triangleAmount)), 0);
-	}
-	glVertex3d(x, y, 0);
-	glEnd();
-	glPopMatrix();
+    // Define removed slice accordingly to delta value
+    if (delta > 0)
+        rotation = -90 - delta * 180;
+    else
+        rotation = 90 + delta * 180;
+
+    glRotated(rotation, 0, 0, 1); // Use rotation matrix (clock-wise)
+
+    glTranslated(-x, -y, 0); // Translate to normal origin
+
+    // Draw missing slice
+    glBegin(GL_LINE_STRIP);
+    glLineWidth(2.0);
+    glVertex3d(x, y, 0);
+    for (int i = 0; i <= triangleAmount; i++) // Draw x percent of circle
+    {
+        glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
+                   y + (radius * sin(i * radians / triangleAmount)), 0);
+    }
+    glVertex3d(x, y, 0);
+    glEnd();
+    glPopMatrix();
 }
 
 // Interpolates points according to animation step
-Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep)
-{
-	Point p;
-	if (animationStep == 1 || animationStep == -1) // No movement
-	{
-		p.x = b->normalizedProjectionPoints[Rt].x;
-		p.y = b->normalizedProjectionPoints[Rt].y;
-	}
-	else if (animationStep > 0 && Rt > 0 && Rt < entityData->nRevisions) // Moving forwards
-	{
-		p.x = (1-animationStep)*b->normalizedProjectionPoints[Rt-1].x
-					+ animationStep  *b->normalizedProjectionPoints[Rt].x;
-		p.y = (1-animationStep)*b->normalizedProjectionPoints[Rt-1].y
-					+ animationStep  *b->normalizedProjectionPoints[Rt].y;
-	}
-	else if (animationStep < 0 && Rt < entityData->nRevisions) // Moving backwards
-	{
-		animationStep*=-1;
-		p.x = (1-animationStep)*b->normalizedProjectionPoints[Rt+1].x
-					+ animationStep  *b->normalizedProjectionPoints[Rt].x;
-		p.y = (1-animationStep)*b->normalizedProjectionPoints[Rt+1].y
-					+ animationStep  *b->normalizedProjectionPoints[Rt].y;
-	}
-	return p;
+Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep) {
+    Point p;
+    if (animationStep == 1 || animationStep == -1) // No movement
+    {
+        p.x = b->normalizedProjectionPoints[Rt].x;
+        p.y = b->normalizedProjectionPoints[Rt].y;
+    } else if (animationStep > 0 && Rt > 0 && Rt < entityData->nRevisions) // Moving forwards
+    {
+        p.x = (1 - animationStep) * b->normalizedProjectionPoints[Rt - 1].x
+              + animationStep * b->normalizedProjectionPoints[Rt].x;
+        p.y = (1 - animationStep) * b->normalizedProjectionPoints[Rt - 1].y
+              + animationStep * b->normalizedProjectionPoints[Rt].y;
+    } else if (animationStep < 0 && Rt < entityData->nRevisions) // Moving backwards
+    {
+        animationStep *= -1;
+        p.x = (1 - animationStep) * b->normalizedProjectionPoints[Rt + 1].x
+              + animationStep * b->normalizedProjectionPoints[Rt].x;
+        p.y = (1 - animationStep) * b->normalizedProjectionPoints[Rt + 1].y
+              + animationStep * b->normalizedProjectionPoints[Rt].y;
+    }
+    return p;
 }
 
 
-void ProjectionCanvas::displayRadiusLegend()
-{
-	glEnable(GL_BLEND);
-	double radiusMaxMetricValue = entityData->maxMetricValue[controller.radiusMetricIndex];
-	double radiusMinMetricValue = entityData->minMetricValue[controller.radiusMetricIndex];
+void ProjectionCanvas::displayRadiusLegend() {
+    double radiusMaxMetricValue = entityData->maxMetricValue[controller.radiusMetricIndex];
+    double radiusMinMetricValue = entityData->minMetricValue[controller.radiusMetricIndex];
 
-	// Format and print min/max metric values
-	stringstream stream;
-	stream << fixed << setprecision(2) << radiusMinMetricValue;
-	string min = stream.str();
-	min.replace(min.find(".00"), 3, "");
+    // Format and print min/max metric values
+    stringstream stream;
+    stream << fixed << setprecision(2) << radiusMinMetricValue;
+    string min = stream.str();
+    min.replace(min.find(".00"), 3, "");
 
-	stream.str(""); // Clear stream
-	stream << fixed << setprecision(2) << radiusMaxMetricValue;
-	string max = stream.str();
-	max.replace(max.find(".00"), 3, "");
+    stream.str(""); // Clear stream
+    stream << fixed << setprecision(2) << radiusMaxMetricValue;
+    string max = stream.str();
+    max.replace(max.find(".00"), 3, "");
 
-	string range = min + " - " + max;
+    string range = min + " - " + max;
 
-	glColor3d(0, 0, 0);
-	glRasterPos2d(currentWidth - (range.length()+1)*9, 30);
-	const unsigned char* s = reinterpret_cast<const unsigned char *>(range.c_str());
-	glutBitmapString(GLUT_BITMAP_9_BY_15, s);
+    glColor3d(0, 0, 0);
+    glRasterPos2d(currentWidth - (range.length() + 1) * 9, 30);
+    const unsigned char *s = reinterpret_cast<const unsigned char *>(range.c_str());
+    glutBitmapString(GLUT_BITMAP_9_BY_15, s);
 
-	// Draw min max radius circles
-	int triangleAmount = 360; //# of triangles/degrees used to draw circle
-	double radians = 2.0f * PI;
-	double radius = MAX_RADIUS * minRatio;
-	double x = currentWidth - radius;
-	double y = 60;
-	glBegin(GL_LINE_STRIP);
-	for (int i = 0; i <= triangleAmount; ++i)
-	{
-		glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
-				   y + (radius * sin(i * radians / triangleAmount)), 0);
-	}
-	glEnd();
+    // Draw min max radius circles
+    int triangleAmount = 360; //# of triangles/degrees used to draw circle
+    double radians = 2.0f * PI;
+    double radius = MAX_RADIUS * minRatio;
+    double x = currentWidth - radius;
+    double y = 60;
+    glBegin(GL_LINE_STRIP);
+    for (int i = 0; i <= triangleAmount; ++i) {
+        glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
+                   y + (radius * sin(i * radians / triangleAmount)), 0);
+    }
+    glEnd();
 
-	radius = MIN_RADIUS * minRatio;
-	x -= 50;
-	glBegin(GL_LINE_STRIP);
-	for (int i = 0; i <= triangleAmount; ++i)
-	{
-		glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
-				   y + (radius * sin(i * radians / triangleAmount)), 0);
-	}
-	glEnd();
+    radius = MIN_RADIUS * minRatio;
+    x -= 50;
+    glBegin(GL_LINE_STRIP);
+    for (int i = 0; i <= triangleAmount; ++i) {
+        glVertex3d(x + (radius * cos(i * radians / triangleAmount)),
+                   y + (radius * sin(i * radians / triangleAmount)), 0);
+    }
+    glEnd();
 
-	glColor4d(0,0,0,0.1);
-	glRectd(currentWidth + 10, 10, currentWidth - 100, 90);
-	glDisable(GL_BLEND);
+    glColor4d(0, 0, 0, 0.1);
+    glRectd(currentWidth + 10, 10, currentWidth - 100, 90);
 }
 
-void ProjectionCanvas::displayColorbar()
-{
-	double colorMaxMetricValue = entityData->maxMetricValue[controller.colorMetricIndex];
-	double colorMinMetricValue = entityData->minMetricValue[controller.colorMetricIndex];
+void ProjectionCanvas::displayColorbar() {
+    double colorMaxMetricValue = entityData->maxMetricValue[controller.colorMetricIndex];
+    double colorMinMetricValue = entityData->minMetricValue[controller.colorMetricIndex];
 
-	double stepSize = currentHeight/256;
-	double l = 0;
-	for (unsigned i = 0; i < 256; ++i)
-	{
-		double value = double (i)/256;
+    double stepSize = currentHeight / 256;
+    double l = 0;
+    for (unsigned i = 0; i < 256; ++i) {
+        double value = double(i) / 256;
 
-		Color c {1,1,1};
-		if (controller.evolutionColormapIndex == (int) COLORMAP::sequential)
-		{
-			c = sequentialColormap(value);
-		}
-		else if (controller.evolutionColormapIndex == (int) COLORMAP::divergent)
-		{
-			c = divergentColormap(value - 0.5);
-		}
-		glColor3d(c.R,c.G,c.B);
+        Color c{1, 1, 1};
+        if (controller.evolutionColormapIndex == (int) COLORMAP::sequential) {
+            c = sequentialColormap(value);
+        } else if (controller.evolutionColormapIndex == (int) COLORMAP::divergent) {
+            c = divergentColormap(value - 0.5);
+        }
+        glColor3d(c.R, c.G, c.B);
 
-		glRectd(bottom_right.x + 10, bottom_right.y - l, bottom_right.x + 35, bottom_right.y - l - stepSize);
-		l += stepSize;
-	}
+        glRectd(bottom_right.x + 10, bottom_right.y - l, bottom_right.x + 35, bottom_right.y - l - stepSize);
+        l += stepSize;
+    }
 
-	glColor3d(0,0,0);
-	glPushMatrix();
-	glTranslated(currentWidth + 39, currentHeight, 0);
-	glScalef(0.15f,-0.15f,0);
-	glRotated(90, 0, 0, 1);
+    glColor3d(0, 0, 0);
+    glPushMatrix();
+    glTranslated(currentWidth + 39, currentHeight, 0);
+    glScalef(0.15f, -0.15f, 0);
+    glRotated(90, 0, 0, 1);
 
-	stringstream stream;
-	stream << fixed << setprecision(2) << colorMinMetricValue;
-	string min = stream.str();
-	min.replace(min.find(".00"), 3, "");
-	const unsigned char *s = reinterpret_cast<const unsigned char *>(min.c_str());
-	glutStrokeString(GLUT_STROKE_ROMAN , s);
-	glPopMatrix();
+    stringstream stream;
+    stream << fixed << setprecision(2) << colorMinMetricValue;
+    string min = stream.str();
+    min.replace(min.find(".00"), 3, "");
+    const unsigned char *s = reinterpret_cast<const unsigned char *>(min.c_str());
+    glutStrokeString(GLUT_STROKE_ROMAN, s);
+    glPopMatrix();
 
-	stream.str("");
-	stream << fixed << setprecision(2) << colorMaxMetricValue;
-	string max = stream.str();
-	max.replace(max.find(".00"), 3, "");
-	s = reinterpret_cast<const unsigned char *>(max.c_str());
-	glColor3d(0,0,0);
-	glPushMatrix();
-	glTranslated(currentWidth + 39, max.length()*16 + 2, 0);
-	glScalef(0.15f,-0.15f,0);
-	glRotated(90, 0, 0, 1);
+    stream.str("");
+    stream << fixed << setprecision(2) << colorMaxMetricValue;
+    string max = stream.str();
+    max.replace(max.find(".00"), 3, "");
+    s = reinterpret_cast<const unsigned char *>(max.c_str());
+    glColor3d(0, 0, 0);
+    glPushMatrix();
+    glTranslated(currentWidth + 39, max.length() * 16 + 2, 0);
+    glScalef(0.15f, -0.15f, 0);
+    glRotated(90, 0, 0, 1);
 
-	glutStrokeString(GLUT_STROKE_ROMAN , s);
-	glPopMatrix();
+    glutStrokeString(GLUT_STROKE_ROMAN, s);
+    glPopMatrix();
 }
