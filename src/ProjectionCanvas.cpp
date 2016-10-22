@@ -34,8 +34,7 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
     for (auto entity : entityData->entities) {
         double bx = entity->normalizedProjectionPoints[Rt].x * minRatio;
         double by = entity->normalizedProjectionPoints[Rt].y * minRatio;
-        if ((drag[0] == drag[2] && drag[1] == drag[3])) // Case point click (or hover of click = 0)
-        {
+        if ((drag[0] == drag[2] && drag[1] == drag[3])) { // Case point click (or hover of click = 0)
             double distX = drag[0] - bx;
             double distY = drag[1] - by;
             double dist = sqrt(pow(distX, 2) + pow(distY, 2));
@@ -49,8 +48,7 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
                     entityData->hovered = entity;
                 }
             }
-        } else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) // If inside selection box
-        {
+        } else if (bx > drag[0] && bx < drag[2] && by > drag[1] && by < drag[3]) { // If inside selection box
             if ((std::find(entityData->selected.begin(), entityData->selected.end(), entity)) !=
                 entityData->selected.end()) {
                 entityData->selected.erase(std::find(entityData->selected.begin(), entityData->selected.end(), entity));
@@ -71,6 +69,7 @@ void ProjectionCanvas::getEntitiesByPositionOnProjection(int *drag, unsigned Rt,
 
 // Draw scaled Canvas
 void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep) {
+
     if (controller.metricLegend) {
         // Clear space for colorbar
         setSize(top_left, {bottom_right.x - 40, bottom_right.y});
@@ -87,8 +86,6 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep) {
     yRatio = currentHeight / initialHeight;
     double minRatio = min(xRatio, yRatio);
     glScaled(minRatio, minRatio, 1.0);
-
-    glEnable(GL_LINE_SMOOTH);
 
     unsigned rMetric = (unsigned) controller.radiusMetricIndex;
 
@@ -154,8 +151,6 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep) {
         drawEntity(p.x, p.y, radius, delta, c, 0);
     }
 
-
-    glDisable(GL_LINE_SMOOTH);
     glPopMatrix();
 
     if (controller.metricLegend) {
@@ -166,6 +161,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep) {
 
 // Draw shadow
 void ProjectionCanvas::drawHalo(double x, double y, double radius, double animationStep) {
+
     int triangleAmount = 360; //# of triangles/degrees used to draw circle
 
     radius = (radius * 20 + 7) * 2; // Ugly as frick
@@ -192,6 +188,7 @@ void ProjectionCanvas::drawHalo(double x, double y, double radius, double animat
 
 // Draw circles
 void ProjectionCanvas::drawEntity(double x, double y, double radius, double delta, Color color, int action) {
+
     if (controller.deltaPie == 0 || fabs(delta) < 0.01) // 1% tolerance
         drawSolidEntity(x, y, radius, color, action);
     else
@@ -199,6 +196,7 @@ void ProjectionCanvas::drawEntity(double x, double y, double radius, double delt
 }
 
 void ProjectionCanvas::drawSolidEntity(double x, double y, double radius, Color color, int action) {
+
     radius = radius * 20 + 3 + action * 4; // Scaling
     if (color == colorHover)
         radius += 2;
@@ -210,6 +208,7 @@ void ProjectionCanvas::drawSolidEntity(double x, double y, double radius, Color 
 
 // Draw smooth circles
 void ProjectionCanvas::drawCircle(double x, double y, double z, double radius, Color color) {
+
     double triangleAmount = 360; //# of triangles/degrees used to draw circle
     double radians = 2.0f * PI;
     double smoothStep = 1;
@@ -237,6 +236,7 @@ void ProjectionCanvas::drawCircle(double x, double y, double z, double radius, C
 }
 
 void ProjectionCanvas::drawPieEntity(double x, double y, double radius, double delta, Color c, int action) {
+
     int triangleAmount = 360; //# of triangles/degrees used to draw circle
 
     radius = radius * 20 + 3 + action * 4; // Scaling
@@ -350,6 +350,7 @@ void ProjectionCanvas::drawPieEntity(double x, double y, double radius, double d
 
 // Interpolates points according to animation step
 Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep) {
+
     Point p;
     if (animationStep == 1 || animationStep == -1) // No movement
     {
@@ -374,6 +375,7 @@ Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep) {
 
 
 void ProjectionCanvas::displayRadiusLegend() {
+
     double radiusMaxMetricValue = entityData->maxMetricValue[controller.radiusMetricIndex];
     double radiusMinMetricValue = entityData->minMetricValue[controller.radiusMetricIndex];
 
@@ -422,6 +424,7 @@ void ProjectionCanvas::displayRadiusLegend() {
 }
 
 void ProjectionCanvas::displayColorbar() {
+
     double colorMaxMetricValue = entityData->maxMetricValue[controller.colorMetricIndex];
     double colorMinMetricValue = entityData->minMetricValue[controller.colorMetricIndex];
 
@@ -430,11 +433,12 @@ void ProjectionCanvas::displayColorbar() {
     for (unsigned i = 0; i < 256; ++i) {
         double value = double(i) / 256;
 
-        Color c{1, 1, 1};
-        if (controller.evolutionColormapIndex == (int) COLORMAP::sequential) {
+        Color c {1, 1, 1};
+        if (controller.colormapIndex == (int) COLORMAP::sequential) {
             c = sequentialColormap(value);
-        } else if (controller.evolutionColormapIndex == (int) COLORMAP::divergent) {
-            c = divergentColormap(value - 0.5);
+        } else if (controller.colormapIndex == (int) COLORMAP::divergent) {
+            value -= 0.5;
+            c = divergentColormap(value);
         }
         glColor3d(c.R, c.G, c.B);
 
@@ -448,20 +452,28 @@ void ProjectionCanvas::displayColorbar() {
     glScalef(0.15f, -0.15f, 0);
     glRotated(90, 0, 0, 1);
 
-    stringstream stream;
-    stream << fixed << setprecision(2) << colorMinMetricValue;
-    string min = stream.str();
-    min.replace(min.find(".00"), 3, "");
+    string max = "", min = "";
+    if (controller.colormapIndex == (int) COLORMAP::sequential) {
+        stringstream streamMin, streamMax;
+        streamMin << fixed << setprecision(2) << colorMinMetricValue;
+        min = streamMin.str();
+        min.replace(min.find(".00"), 3, "");
+
+        streamMax.str("");
+        streamMax << fixed << setprecision(2) << colorMaxMetricValue;
+        max = streamMax.str();
+        max.replace(max.find(".00"), 3, "");
+    } else if (controller.colormapIndex == (int) COLORMAP::divergent) {
+        max = "0.5";
+        min = "-0.5";
+    }
+
     const unsigned char *s = reinterpret_cast<const unsigned char *>(min.c_str());
     glutStrokeString(GLUT_STROKE_ROMAN, s);
     glPopMatrix();
 
-    stream.str("");
-    stream << fixed << setprecision(2) << colorMaxMetricValue;
-    string max = stream.str();
-    max.replace(max.find(".00"), 3, "");
     s = reinterpret_cast<const unsigned char *>(max.c_str());
-    glColor3d(0, 0, 0);
+    glColor3d(1, 1, 1);
     glPushMatrix();
     glTranslated(currentWidth + 39, max.length() * 16 + 2, 0);
     glScalef(0.15f, -0.15f, 0);

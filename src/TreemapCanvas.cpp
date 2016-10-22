@@ -346,8 +346,8 @@ void TreemapCanvas::labelCells() {
                 glutStrokeString(GLUT_STROKE_ROMAN, s);
 
                 glPopMatrix();
-            } else if (y1 - y0 > width * 0.12 + 200 * 0.12) // Test for vertical fit
-            {
+            } else if (y1 - y0 > width * 0.12 + 200 * 0.12) {// Test for vertical fit
+
                 glTranslated(x0 + 13, y1 - 3, 0);
                 glScalef(0.1f, -0.12f, 0);
                 glRotated(90, 0, 0, 1);
@@ -357,8 +357,8 @@ void TreemapCanvas::labelCells() {
                 glutStrokeString(GLUT_STROKE_ROMAN, s);
 
                 glPopMatrix();
-            } else if (x1 - x0 > y1 - y0) // Fit all that's possible on horizontal plane
-            {
+            } else if (x1 - x0 > y1 - y0) { // Fit all that's possible on horizontal plane
+
                 glTranslated(x0 + 3, y0 + 15, 0);
                 glScalef(0.12f, -0.1f, 0);
 
@@ -374,8 +374,8 @@ void TreemapCanvas::labelCells() {
                 glutStrokeCharacter(GLUT_STROKE_ROMAN, '.');
 
                 glPopMatrix();
-            } else if (y1 - y0 > x1 - x0) // Fit all that's possible on vertical plane
-            {
+            } else if (y1 - y0 > x1 - x0) { // Fit all that's possible on vertical plane
+
                 glTranslated(x0 + 13, y1 - 3, 0);
                 glScalef(0.1f, -0.12f, 0);
                 glRotated(90, 0, 0, 1);
@@ -390,7 +390,6 @@ void TreemapCanvas::labelCells() {
                 }
                 glutStrokeCharacter(GLUT_STROKE_ROMAN, '.');
                 glutStrokeCharacter(GLUT_STROKE_ROMAN, '.');
-
 
                 glPopMatrix();
             }

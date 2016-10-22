@@ -17,16 +17,11 @@ void display() {
 }
 
 void idle() {
-    // Ugly fix for misclicks
-//	if (controller.windowQueue.size() < 5)
-//		controller.windowQueue.push((short)glutGetWindow());
-//	else
-//	{
-//		controller.windowQueue.pop();
-//		controller.windowQueue.push((short)glutGetWindow());
-//	}
-    if (glutGetWindow() != controller.mainWindow)
+
+    if (glutGetWindow() != controller.mainWindow) {
         glutSetWindow(controller.mainWindow);
+        render();
+    }
     glutPostRedisplay();
 }
 
@@ -153,7 +148,6 @@ void drawSelectionBox() {
 
     glColor4f(0, 0, 0, 0.4);
     glRecti(mouse->rawLastX, mouse->rawLastY, mouse->rawX, mouse->rawY);
-
 }
 
 void drawRt() {

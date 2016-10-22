@@ -210,6 +210,7 @@ void keyboard(unsigned char key, int x, int y) {
 void toggleControlWindowVisibility() {
 
     controller.displayControlWindow = !controller.displayControlWindow;
+
     int vx, vy, vw, vh;
     if (controller.displayControlWindow) {
         glui->show();

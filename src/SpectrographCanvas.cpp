@@ -136,20 +136,30 @@ void SpectrographCanvas::displayColorbar() {
     glScalef(0.15f, -0.15f, 0);
     glRotated(90, 0, 0, 1);
 
-    stringstream stream;
-    stream << fixed << setprecision(2) << colorMinMetricValue;
-    string min = stream.str();
-    min.replace(min.find(".00"), 3, "");
+    string max = "", min = "";
+    if (controller.evolutionColormapIndex == (int) COLORMAP::sequential) {
+        stringstream streamMin, streamMax;
+        streamMin << fixed << setprecision(2) << colorMinMetricValue;
+        min = streamMin.str();
+        min.replace(min.find(".00"), 3, "");
+
+        streamMax.str("");
+        streamMax << fixed << setprecision(2) << colorMaxMetricValue;
+        max = streamMax.str();
+        max.replace(max.find(".00"), 3, "");
+    } else if (controller.evolutionColormapIndex == (int) COLORMAP::divergent) {
+        max = "0.5";
+        min = "-0.5";
+    }
+
+
+    glColor3d(0, 0, 0);
     const unsigned char *s = reinterpret_cast<const unsigned char *>(min.c_str());
     glutStrokeString(GLUT_STROKE_ROMAN, s);
     glPopMatrix();
 
-    stream.str("");
-    stream << fixed << setprecision(2) << colorMaxMetricValue;
-    string max = stream.str();
-    max.replace(max.find(".00"), 3, "");
     s = reinterpret_cast<const unsigned char *>(max.c_str());
-    glColor3d(0, 0, 0);
+    glColor3d(1, 1, 1);
     glPushMatrix();
     glTranslated(currentWidth + 39, yOff + max.length() * 16 - 5, 0);
     glScalef(0.15f, -0.15f, 0);

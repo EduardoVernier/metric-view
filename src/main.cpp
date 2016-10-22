@@ -13,8 +13,8 @@
 using namespace std;
 
 void initializeVisualization(int argc, char **argv);
-
 void buildEntityData(int argc, char **argv, EntityData *ed);
+void configureGL();
 
 unsigned Rt = 0; // Current revision
 EntityData *entityData = new EntityData();
@@ -54,12 +54,16 @@ void initializeVisualization(int argc, char **argv) {
     glutPassiveMotionFunc(mousePassive);
     glutMotionFunc(mouseUpdate);
     glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
+    configureGL();
+}
+
+void configureGL() {
+
     //glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_LINE_SMOOTH);
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-
 }
 
 void buildEntityData(int argc, char **argv, EntityData *ed) {
