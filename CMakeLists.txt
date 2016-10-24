@@ -11,8 +11,7 @@ set(SOURCE_FILES
     include/Canvas.h
     include/Color.h
     include/Colormap.h
-    include/Container.h
-    include/Controller.h
+        include/Controller.h
     include/CsvParser.h
     include/Entity.h
         include/EntityData.h
@@ -32,8 +31,7 @@ set(SOURCE_FILES
     src/BaseEntity.cpp
     src/Canvas.cpp
     src/Colormap.cpp
-    src/Container.cpp
-    src/CsvParser.cpp
+        src/CsvParser.cpp
     src/Entity.cpp
         src/EntityData.cpp
     src/interaction.cpp
