@@ -22,7 +22,7 @@ Color getColor(int colormap, BaseEntity *b, unsigned Rt) {
             c = sequentialColormap(value);
             break;
         case (int) COLORMAP::qualitative:
-            c = qualitativeColormap(b->firstLevelId);
+            c = qualitativeColormap(b->getFirstLevelId());
             break;
         case (int) COLORMAP::divergent:
             if (Rt > 0) {

@@ -18,14 +18,15 @@ public:
 	double getNormalizedScore() { return normalizedScore; };
 	void setCoords(double *_coords);
 	double getCoord(int i);
-
-	int firstLevelId = -1;
+	int getFirstLevelId() const;
+	void setFirstLevelId(int firstLevelId);
 
 private:
 	double coords[4];
 	double normalizedScore = -1;
 	int packageFlag = 0;
 	int level = -1;
+	int firstLevelId = -1;
 };
 
 #endif

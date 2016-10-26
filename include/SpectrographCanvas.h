@@ -2,6 +2,7 @@
 
 #include <GL/glut.h>
 #include <iostream>
+#include <iomanip>
 
 #include "Canvas.h"
 #include "Entity.h"
@@ -27,8 +28,8 @@ private:
 	SpectrographCanvas();
 	SpectrographCanvas(SpectrographCanvas const&);
 	void operator=(SpectrographCanvas const&);
+	void displayColorbar();
 
 	EntityData *entityData;
 
-	void displayColorbar();
 };

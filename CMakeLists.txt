@@ -45,7 +45,7 @@ set(SOURCE_FILES
     src/StreamgraphCanvas.cpp
     src/SunburstCanvas.cpp
     src/Treemap.cpp
-    src/TreemapCanvas.cpp)
+    src/TreemapCanvas.cpp src/HierarchicalGraph.cpp include/HierarchicalGraph.h include/Node.h)
 
 add_custom_target(metric_view ALL COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 add_executable(metric_view_dummy ${SOURCE_FILES})

@@ -66,12 +66,12 @@ void EntityData::setHierarchicalLevel(Package *p, int level) {
 void EntityData::setFirstLevelId(Package *p, int level) {
 
     if (p->isPackage() == 1 && p->getLevel() <= 2)
-        p->firstLevelId = ++firstLevelGlobalCounter;
+        p->setFirstLevelId(++firstLevelGlobalCounter);
     else
-        p->firstLevelId = firstLevelGlobalCounter;
+        p->setFirstLevelId(firstLevelGlobalCounter);
 
     for (unsigned i = 0; i < p->entityVector.size(); ++i) {
-        p->entityVector[i].firstLevelId = firstLevelGlobalCounter;
+        p->entityVector[i].setFirstLevelId(firstLevelGlobalCounter);
     }
 
     for (unsigned i = 0; i < p->childrenVector.size(); ++i) {

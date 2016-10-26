@@ -89,6 +89,7 @@ void setCanvassesSizes(int W, int H) {
     // Instantiate if it's the first call, else just update size
     if (tCanvas == nullptr) {
         ProjectionCanvas::getInstance().init(pTL, pBR, entityData);
+        HierarchicalGraph::getInstance().init(pTL, pBR, entityData);
         tCanvas = std::make_shared<TreemapCanvas>(tTL, tBR, entityData);
         sbCanvas = std::make_shared<SunburstCanvas>(tTL, tBR, entityData);
         stCanvas = std::make_shared<StreamgraphCanvas>(Point {0, 0}, Point {0, 0}, entityData);
@@ -110,6 +111,7 @@ void setCanvassesSizes(int W, int H) {
         }
 
         ProjectionCanvas::getInstance().setSize(pTL, pBR);
+        HierarchicalGraph::getInstance().setSize(pTL, pBR);
         tCanvas->setSize(tTL, tBR);
         sbCanvas->setSize(tTL, tBR);
     }

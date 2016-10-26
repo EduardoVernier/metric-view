@@ -11,3 +11,11 @@ double BaseEntity::getCoord(int i) {
 
     return coords[i];
 }
+
+int BaseEntity::getFirstLevelId() const {
+    return firstLevelId;
+}
+
+void BaseEntity::setFirstLevelId(int firstLevelId) {
+    BaseEntity::firstLevelId = firstLevelId;
+}

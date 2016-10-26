@@ -13,6 +13,7 @@
 #include "ProjectionCanvas.h"
 #include "StreamgraphCanvas.h"
 #include "SpectrographCanvas.h"
+#include "HierarchicalGraph.h"
 #include "Mouse.h"
 #include "MetricRank.h"
 #include "Controller.h"

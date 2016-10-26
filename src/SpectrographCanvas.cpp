@@ -1,4 +1,3 @@
-#include <iomanip>
 #include "../include/SpectrographCanvas.h"
 
 SpectrographCanvas::SpectrographCanvas() {}

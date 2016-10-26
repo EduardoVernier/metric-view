@@ -128,16 +128,20 @@ void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlD
 
         // If package/entity is within bounds
         if (inBounds(theta, theta0, theta1) && inBounds(r, r0, r1)) {
-            if (!click)
+            if (!click) {
+                cout << b->getFirstLevelId() << endl;
                 entityData->hovered = b;
-            else if (click) {
+            }
+            else {
                 if (b->isEntity()) {
                     if ((std::find(entityData->selected.begin(), entityData->selected.end(), b)) !=
-                        entityData->selected.end())
+                        entityData->selected.end()) {
                         entityData->selected.erase(
                                 std::find(entityData->selected.begin(), entityData->selected.end(), b));
-                    else
+                    }
+                    else {
                         entityData->selected.push_back((Entity *) b);
+                    }
                 } else if (b->isPackage()) {
                     // Recursively push entities to selected vector
                     function<void(Package *)> f;
