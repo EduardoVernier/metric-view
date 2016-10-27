@@ -103,8 +103,8 @@ void HierarchicalGraph::drawCanvas(unsigned Rt, double animationStep) {
 
 void HierarchicalGraph::updatePositions(unsigned Rt, double animationStep) {
 
-    double REPULSION = 0.00002;
-    double ATTRACTION = 0.0001;
+    double REPULSION = 0.02;
+    double ATTRACTION = 0.01;
 
     // Update entity nodes position
     for (unsigned i = 0; i < nEdges; ++i) {
@@ -152,7 +152,7 @@ void HierarchicalGraph::updatePositions(unsigned Rt, double animationStep) {
     }
 
     for (unsigned i = 0; i < nNonLeafs + 1; ++i) {
-        nodes[i].velocity = nodes[i].velocity + nodes[i].netForce;
+        nodes[i].velocity = nodes[i].velocity*0.3 + nodes[i].netForce*0.7;
         nodes[i].position.x += (nodes[i].velocity.x);
         nodes[i].position.y += (nodes[i].velocity.y);
     }

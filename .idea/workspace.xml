@@ -13,16 +13,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44b0e904-8367-4a6a-8a70-212ecc6920a9" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/include/Vector2D.h" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Entity.h" afterPath="$PROJECT_DIR$/include/Entity.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/HierarchicalGraph.h" afterPath="$PROJECT_DIR$/include/HierarchicalGraph.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Node.h" afterPath="$PROJECT_DIR$/include/Node.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/Point.h" afterPath="$PROJECT_DIR$/include/Point.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Entity.cpp" afterPath="$PROJECT_DIR$/src/Entity.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/HierarchicalGraph.cpp" afterPath="$PROJECT_DIR$/src/HierarchicalGraph.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ProjectionCanvas.cpp" afterPath="$PROJECT_DIR$/src/ProjectionCanvas.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer.cpp" afterPath="$PROJECT_DIR$/src/renderer.cpp" />
     </list>
     <ignored path="metric-view.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -48,8 +40,8 @@
           <file leaf-file-name="HierarchicalGraph.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/HierarchicalGraph.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="39">
-                  <caret line="105" column="29" selection-start-line="105" selection-start-column="29" selection-end-line="105" selection-end-column="29" />
+                <state relative-caret-position="129">
+                  <caret line="105" column="25" selection-start-line="105" selection-start-column="25" selection-end-line="105" selection-end-column="25" />
                   <folding>
                     <element signature="e#0#41#0" expanded="true" />
                   </folding>
@@ -433,12 +425,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1477533802042</updated>
-      <workItem from="1477533805280" duration="14797000" />
+      <workItem from="1477533805280" duration="15676000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14797000" />
+    <option name="totallyTimeSpent" value="15676000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="21" width="1920" height="1059" extended-state="6" />
@@ -603,8 +595,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/HierarchicalGraph.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39">
-          <caret line="105" column="29" selection-start-line="105" selection-start-column="29" selection-end-line="105" selection-end-column="29" />
+        <state relative-caret-position="129">
+          <caret line="105" column="25" selection-start-line="105" selection-start-column="25" selection-end-line="105" selection-end-column="25" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
