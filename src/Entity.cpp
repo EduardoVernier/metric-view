@@ -73,6 +73,30 @@ double Entity::getScore() {
     return max;
 }
 
+// Interpolates points according to animation step
+Point Entity::getPosition(unsigned int Rt, double animationStep) {
+    Point p;
+    if (animationStep == 1 || animationStep == -1) // No movement
+    {
+        p.x = this->normalizedProjectionPoints[Rt].x;
+        p.y = this->normalizedProjectionPoints[Rt].y;
+    } else if (animationStep > 0 && Rt > 0 && Rt < normalizedProjectionPoints.size()) // Moving forwards
+    {
+        p.x = (1 - animationStep) * this->normalizedProjectionPoints[Rt - 1].x
+              + animationStep * this->normalizedProjectionPoints[Rt].x;
+        p.y = (1 - animationStep) * this->normalizedProjectionPoints[Rt - 1].y
+              + animationStep * this->normalizedProjectionPoints[Rt].y;
+    } else if (animationStep < 0 && Rt < normalizedProjectionPoints.size()) // Moving backwards
+    {
+        animationStep *= -1;
+        p.x = (1 - animationStep) * this->normalizedProjectionPoints[Rt + 1].x
+              + animationStep * this->normalizedProjectionPoints[Rt].x;
+        p.y = (1 - animationStep) * this->normalizedProjectionPoints[Rt + 1].y
+              + animationStep * this->normalizedProjectionPoints[Rt].y;
+    }
+    return p;
+}
+
 
 
 

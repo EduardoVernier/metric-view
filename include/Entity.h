@@ -30,6 +30,8 @@ public:
 	double value; // too much trouble to make private because of custom comparator
 	bool showHalo = false;
 
+    Point getPosition(unsigned int Rt, double animationStep);
+
 private:
 	string prefix = "";
 	string id;

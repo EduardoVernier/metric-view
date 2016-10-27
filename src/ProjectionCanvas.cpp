@@ -93,7 +93,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep) {
     if (controller.halo) {
         for (auto entity : entityData->entities) {
             if (entity->showHalo) {
-                Point p = getPoint(entity, Rt, animationStep);
+                Point p = entity->getPosition(Rt, animationStep);
                 double radius = entity->normalizedData[Rt][rMetric];
                 drawHalo(p.x, p.y, radius, animationStep);
             }
@@ -102,7 +102,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep) {
 
     // Draw selected entities
     for (auto selected : entityData->selected) {
-        Point p = getPoint(selected, Rt, animationStep);
+        Point p = selected->getPosition(Rt, animationStep);
         double value = selected->data[Rt][rMetric];
         double radius = selected->normalizedData[Rt][rMetric];
         double delta = (Rt > 1) ? (value - selected->data[Rt - 1][rMetric]) / value : 0;
@@ -113,7 +113,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep) {
     if (entityData->hovered != NULL) {
         if (entityData->hovered->isEntity()) {
             Entity *hovered = (Entity *) entityData->hovered;
-            Point p = getPoint(hovered, Rt, animationStep);
+            Point p = hovered->getPosition(Rt, animationStep);
             double value = hovered->data[Rt][rMetric];
             double radius = hovered->normalizedData[Rt][rMetric];
             double delta = (Rt > 1) ? (value - hovered->data[Rt - 1][rMetric]) / value : 0;
@@ -130,7 +130,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep) {
                         f(&c);
 
                     for (auto e : p->entityVector) {
-                        Point p = getPoint(&e, Rt, animationStep);
+                        Point p = e.getPosition(Rt, animationStep);
                         double value = e.data[Rt][rMetric];
                         double radius = e.normalizedData[Rt][rMetric];
                         double delta = (Rt > 1) ? (value - e.data[Rt - 1][rMetric]) / value : 0;
@@ -144,7 +144,7 @@ void ProjectionCanvas::drawCanvas(unsigned Rt, double animationStep) {
 
     // Draw all entities
     for (auto b : entityData->entities) {
-        Point p = getPoint(b, Rt, animationStep);
+        Point p = b->getPosition(Rt, animationStep);
         Color c = getColor(controller.colormapIndex, b, Rt);
         double radius = b->normalizedData[Rt][rMetric];
         double delta = (Rt > 1) ? (b->data[Rt][rMetric] - b->data[Rt - 1][rMetric]) / b->data[Rt][rMetric] : 0;
@@ -347,32 +347,6 @@ void ProjectionCanvas::drawPieEntity(double x, double y, double radius, double d
     glEnd();
     glPopMatrix();
 }
-
-// Interpolates points according to animation step
-Point ProjectionCanvas::getPoint(Entity *b, unsigned Rt, double animationStep) {
-
-    Point p;
-    if (animationStep == 1 || animationStep == -1) // No movement
-    {
-        p.x = b->normalizedProjectionPoints[Rt].x;
-        p.y = b->normalizedProjectionPoints[Rt].y;
-    } else if (animationStep > 0 && Rt > 0 && Rt < entityData->nRevisions) // Moving forwards
-    {
-        p.x = (1 - animationStep) * b->normalizedProjectionPoints[Rt - 1].x
-              + animationStep * b->normalizedProjectionPoints[Rt].x;
-        p.y = (1 - animationStep) * b->normalizedProjectionPoints[Rt - 1].y
-              + animationStep * b->normalizedProjectionPoints[Rt].y;
-    } else if (animationStep < 0 && Rt < entityData->nRevisions) // Moving backwards
-    {
-        animationStep *= -1;
-        p.x = (1 - animationStep) * b->normalizedProjectionPoints[Rt + 1].x
-              + animationStep * b->normalizedProjectionPoints[Rt].x;
-        p.y = (1 - animationStep) * b->normalizedProjectionPoints[Rt + 1].y
-              + animationStep * b->normalizedProjectionPoints[Rt].y;
-    }
-    return p;
-}
-
 
 void ProjectionCanvas::displayRadiusLegend() {
 
