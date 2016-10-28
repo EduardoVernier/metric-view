@@ -3,6 +3,7 @@
 #include <GL/glut.h>
 #include <iostream>
 #include <iomanip>
+#include <vector>
 
 #include "Canvas.h"
 #include "Entity.h"

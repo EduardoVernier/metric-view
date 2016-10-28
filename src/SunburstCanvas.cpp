@@ -129,7 +129,6 @@ void SunburstCanvas::getEntitiesByPosition(int *drag, unsigned click, bool ctrlD
         // If package/entity is within bounds
         if (inBounds(theta, theta0, theta1) && inBounds(r, r0, r1)) {
             if (!click) {
-                cout << b->getFirstLevelId() << endl;
                 entityData->hovered = b;
             }
             else {

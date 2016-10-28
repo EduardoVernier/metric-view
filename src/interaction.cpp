@@ -127,6 +127,10 @@ void mouseClick(int button, int state, int x, int y) {
             else
                 sbCanvas->getEntitiesByPosition(drag, 1, controller.ctrlDown);
             break;
+        case 3:
+            if (controller.evolutionView == SPECTROGRAPH)
+                SpectrographCanvas::getInstance().getEntitiesOnSpectrograph(drag, 1, controller.ctrlDown);
+            break;
         default:
             break;
     }

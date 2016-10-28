@@ -99,11 +99,26 @@ void SpectrographCanvas::drawCanvas(unsigned Rt, double animationStep) {
 
 void SpectrographCanvas::getEntitiesOnSpectrograph(int *drag, unsigned click, bool ctrlDown) {
 
-    double y = drag[1] - top_left.y + 20;
-    double cellHeight = (getHeight() - 10) / entityData->selected.size();
-    unsigned index = (unsigned) floor(y / cellHeight) - 1;
-    if (index >= 0 && index < entityData->selected.size()) {
-        entityData->hovered = entityData->selected[index];
+    double yB = drag[1] - top_left.y + 10;
+    double yE = drag[3] - top_left.y + 10;
+    double cellHeight = getHeight() / entityData->selected.size();
+    unsigned indexBegin = (unsigned) (yB / cellHeight);
+    unsigned indexEnd = (unsigned) (yE / cellHeight);
+
+
+    if (click) {
+        if (indexBegin == indexEnd) {
+            entityData->selected.clear();
+            entityData->selected.push_back(entityData->selected[indexBegin]);
+        } else {
+            for (unsigned i = indexBegin; i < indexEnd; ++i) {
+                std::vector<Entity*> temp(entityData->selected.begin() + indexBegin, entityData->selected.begin() + indexEnd);
+                entityData->selected = temp;
+            }
+        }
+    }
+    else {
+        entityData->hovered = entityData->selected[indexBegin];
     }
 }
 
