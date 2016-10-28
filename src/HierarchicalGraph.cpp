@@ -1,5 +1,4 @@
 #include "../include/HierarchicalGraph.h"
-#include "../include/Colormap.h"
 
 HierarchicalGraph::HierarchicalGraph() {}
 
@@ -31,7 +30,7 @@ void HierarchicalGraph::buildGraph() {
 
     for (unsigned i = 1; i < nNonLeafs; ++i) {
         if (childrenCount[i] != 0) {
-            nodes[i].position = (nodes[i].position  + Point {10,10}) / childrenCount[i];
+            nodes[i].position = (nodes[i].position + Point {10, 10}) / childrenCount[i];
             nodes[0].position = nodes[0].position + nodes[i].position;
         }
     }
@@ -40,7 +39,7 @@ void HierarchicalGraph::buildGraph() {
     nodes[0].position = nodes[0].position / (nNonLeafs - 1); // Avoid putting on top of entity
 
     // Add entities to nodes
-    for (unsigned i = 0; i < entityData->entities.size(); ++i ){
+    for (unsigned i = 0; i < entityData->entities.size(); ++i) {
         Node node = Node {false};
         node.position = entityData->entities[i]->normalizedProjectionPoints[0];
         node.entity = entityData->entities[i];
@@ -77,33 +76,69 @@ void HierarchicalGraph::drawCanvas(unsigned Rt, double animationStep) {
     double minRatio = min(xRatio, yRatio);
     glScaled(minRatio, minRatio, 1.0);
 
-    glColor3d(0,0,0);
-    glBegin(GL_LINES);
 
     for (unsigned i = 0; i < nEdges; ++i) {
-        pair<Node*, Node*> edge = adjacencyList[i];
+        pair<Node *, Node *> edge = adjacencyList[i];
         Node *nodeA = edge.first;
         Node *nodeB = edge.second;
 
-        Color c {.5, .5, .5};
-        if (nodeA->entity != NULL) {
-            c = getColor((int) COLORMAP::qualitative, nodeA->entity, 0);
-        } else if (nodeB->entity != NULL) {
-            c = getColor((int) COLORMAP::qualitative, nodeB->entity, 0);
-        }
-        glColor3d(c.R, c.G, c.B);
+        if (entityData->selected.size() != 0) {
+            bool skipFlag = true;
+            for (Entity *entity : entityData->selected) {
+                if (entity == nodeA->entity || entity == nodeB->entity) {
+                    skipFlag = false;
+                }
+            }
 
-        glVertex2d(nodeA->position.x, nodeA->position.y);
-        glVertex2d(nodeB->position.x, nodeB->position.y);
+            if (skipFlag) {
+                continue;
+            }
+        }
+
+        if (nodeA->entity == NULL && nodeB->entity == NULL) {
+            drawEdge(nodeA->position, nodeB->position, Color{.5, .5, .5});
+            drawNonLeafNode(nodeA->position, Color{.5, .5, .5});
+            drawNonLeafNode(nodeB->position, Color{.5, .5, .5});
+        } else if (nodeA->entity == NULL) {
+            Color color = getColor((int) COLORMAP::qualitative, nodeB->entity, 0);
+            drawEdge(nodeA->position, nodeB->position, color);
+            drawNonLeafNode(nodeA->position, color);
+        } else if (nodeB->entity == NULL) {
+            Color color = getColor((int) COLORMAP::qualitative, nodeA->entity, 0);
+            drawEdge(nodeA->position, nodeB->position, color);
+            drawNonLeafNode(nodeB->position, color);
+        }
     }
-    glEnd();
 
     glPopMatrix();
 }
 
+void HierarchicalGraph::drawEdge(Point pointA, Point pointB, Color color) {
+
+    glColor3d(color.R, color.G, color.B);
+    // Draw edge
+    glBegin(GL_LINES);
+    glVertex2d(pointA.x, pointA.y);
+    glVertex2d(pointB.x, pointB.y);
+    glEnd();
+}
+
+void HierarchicalGraph::drawNonLeafNode(Point point, Color color) {
+
+    double d = 5;
+    glColor3d(color.R, color.G, color.B);
+    // Draw edge
+    glBegin(GL_POLYGON);
+    glVertex2d(point.x, point.y - d);
+    glVertex2d(point.x + d, point.y);
+    glVertex2d(point.x, point.y + d);
+    glVertex2d(point.x - d, point.y);
+    glEnd();
+}
+
 void HierarchicalGraph::updatePositions(unsigned Rt, double animationStep) {
 
-    double REPULSION = 0.02;
+    double REPULSION = 1.0 / nNodes;
     double ATTRACTION = 0.01;
 
     // Update entity nodes position
@@ -111,6 +146,7 @@ void HierarchicalGraph::updatePositions(unsigned Rt, double animationStep) {
         pair<Node*, Node*> edge = adjacencyList[i];
         Node *nodeA = edge.first;
         Node *nodeB = edge.second;
+
         if (nodeA->entity != NULL) {
             nodeA->position = nodeA->entity->getPosition(Rt, animationStep);
         }
@@ -126,35 +162,29 @@ void HierarchicalGraph::updatePositions(unsigned Rt, double animationStep) {
         for (unsigned j = 0; j < nNodes; ++j) {
             if (i != j) {
                 double dist = nodes[i].position.euclidianDistance(nodes[j].position);
-                nodes[i].netForce = nodes[i].netForce +
-                        ((nodes[i].position - nodes[j].position)*(REPULSION/dist));
-                int a = 12+i;
+                nodes[i].netForce += (nodes[i].position - nodes[j].position) * (REPULSION / dist);
             }
         }
     }
 
     // Compute attraction
     for (unsigned i = 0; i < nEdges; ++i) {
-        pair<Node*, Node*> edge = adjacencyList[i];
+        pair<Node*, Node *> edge = adjacencyList[i];
         Node *nodeA = edge.first;
         Node *nodeB = edge.second;
 
-        double dist = nodeA->position.euclidianDistance(nodeB->position);
         if (nodeA->movable) {
-            nodeA->netForce.x += (nodeB->position.x - nodeA->position.x) * ATTRACTION;
-            nodeA->netForce.y += (nodeB->position.y - nodeA->position.y) * ATTRACTION;
+            nodeA->netForce += (nodeB->position - nodeA->position) * ATTRACTION;
         }
 
         if (nodeB->movable) {
-            nodeB->netForce.x += (nodeA->position.x - nodeB->position.x) * ATTRACTION;
-            nodeB->netForce.y += (nodeA->position.y - nodeB->position.y) * ATTRACTION;
+            nodeB->netForce += (nodeA->position - nodeB->position) * ATTRACTION;
         }
     }
 
     for (unsigned i = 0; i < nNonLeafs + 1; ++i) {
-        nodes[i].velocity = nodes[i].velocity*0.3 + nodes[i].netForce*0.7;
-        nodes[i].position.x += (nodes[i].velocity.x);
-        nodes[i].position.y += (nodes[i].velocity.y);
+        nodes[i].velocity = nodes[i].velocity * 0.3 + nodes[i].netForce * 0.7;
+        nodes[i].position += (nodes[i].velocity);
     }
 }
 

@@ -5,6 +5,7 @@
 #include "EntityData.h"
 #include "Node.h"
 #include "Canvas.h"
+#include "Colormap.h"
 
 using namespace std;
 
@@ -25,4 +26,8 @@ public:
     void drawCanvas(unsigned Rt, double animationStep);
     void buildGraph();
     void updatePositions(unsigned int i, double d);
+
+    void drawEdge(Point pointA, Point pointB, Color color);
+
+    void drawNonLeafNode(Point point, Color color);
 };
