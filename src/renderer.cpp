@@ -32,7 +32,10 @@ void render() {
     setCanvassesSizes(controller.winWidth, controller.winHeight);
 
     ProjectionCanvas::getInstance().drawCanvas(Rt, controller.animationStep);
-    HierarchicalGraph::getInstance().drawCanvas(Rt, controller.animationStep);
+
+    if (controller.hierarchyGraph) {
+        HierarchicalGraph::getInstance().drawCanvas(Rt, controller.animationStep);
+    }
 
     if (controller.hierarchicalView == TREEMAP) {
         tCanvas->drawCanvas(Rt, controller.animationStep);

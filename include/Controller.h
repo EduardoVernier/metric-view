@@ -35,5 +35,6 @@ public:
 	double animationStep = 1.0;
 	double accelerationRatio = 1;
 	int similarityGraph = 0;
+    int hierarchyGraph = 0;
 
 };

@@ -71,6 +71,7 @@ void initializeUI() {
     glui->add_checkbox("Enable halos", &controller.halo);
     glui->add_checkbox("Show metric legend", &controller.metricLegend);
     glui->add_checkbox("Graph similarity on treemap", &controller.similarityGraph);
+    glui->add_checkbox("Hierarchy on projection", &controller.hierarchyGraph);
 
     glui->sync_live();
     toggleControlWindowVisibility();
