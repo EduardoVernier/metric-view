@@ -142,7 +142,7 @@ void HierarchicalGraph::updatePositions(unsigned Rt, double animationStep) {
     double REPULSION = 500.0;
     double ATTRACTION = 0.01;
 
-    // Update entity nodes position information
+    // Update fixed entities position
     for (unsigned i = 0; i < nEdges; ++i) {
         pair<Node *, Node *> edge = adjacencyList[i];
         Node *nodeA = edge.first;
@@ -163,7 +163,7 @@ void HierarchicalGraph::updatePositions(unsigned Rt, double animationStep) {
         nodes[i].netForce.y = 0;
         for (unsigned j = 0; j < nNodes; ++j) {
             if (i != j) {
-                // nonLeafs and big nodes have a bigger repelling "charge" than small nodes (big and small relate to the radius metric)
+                // Big nodes (regarding the radius metric) have a bigger repelling "charge" than small nodes and nonLeafs
                 double repulsionBoost = (!nodes[j].movable) ? nodes[j].entity->normalizedData[Rt][controller.radiusMetricIndex] : 0.5;
                 double dist = nodes[i].position.euclidianDistance(nodes[j].position);
                 // Normalize repulsion vector and scale it by the distance between nodes
