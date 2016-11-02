@@ -156,8 +156,7 @@ void mousePassive(int x, int y) {
         } else if (controller.evolutionView == SPECTROGRAPH) {
             SpectrographCanvas::getInstance().getEntitiesOnSpectrograph(drag, 0, controller.ctrlDown);
         }
-    } else if (mouse->canvas == 2) // Hovering treemap
-    {
+    } else if (mouse->canvas == 2) { // Hovering treemap
         int drag[4] = {mouse->x, mouse->y, mouse->x, mouse->y};
         if (controller.hierarchicalView == TREEMAP)
             tCanvas->getEntitiesByPositionOnTreemap(drag, 0, controller.ctrlDown);

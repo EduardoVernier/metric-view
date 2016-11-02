@@ -30,4 +30,6 @@ public:
     void drawEdge(Point pointA, Point pointB, Color color);
 
     void drawNonLeafNode(Point point, Color color);
+
+    Point normalize(Point vector);
 };

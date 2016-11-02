@@ -1,3 +1,4 @@
+#include <complex>
 #include "../include/HierarchicalGraph.h"
 
 HierarchicalGraph::HierarchicalGraph() {}
@@ -138,39 +139,43 @@ void HierarchicalGraph::drawNonLeafNode(Point point, Color color) {
 
 void HierarchicalGraph::updatePositions(unsigned Rt, double animationStep) {
 
-    double REPULSION = 5.0;
+    double REPULSION = 500.0;
     double ATTRACTION = 0.01;
 
-    // Update entity nodes position
+    // Update entity nodes position information
     for (unsigned i = 0; i < nEdges; ++i) {
-        pair<Node*, Node*> edge = adjacencyList[i];
+        pair<Node *, Node *> edge = adjacencyList[i];
         Node *nodeA = edge.first;
         Node *nodeB = edge.second;
 
-        if (nodeA->entity != NULL) {
+        if (!nodeA->movable) {
             nodeA->position = nodeA->entity->getPosition(Rt, animationStep);
         }
-        if (nodeB->entity != NULL) {
+        if (!nodeB->movable) {
             nodeB->position = nodeB->entity->getPosition(Rt, animationStep);
         }
     }
 
     // Compute repulsion force on each nonLeaf
     for (unsigned i = 0; i < nNonLeafs + 1; ++i) {
+        // Reset forces for each nonLeaf
         nodes[i].netForce.x = 0;
         nodes[i].netForce.y = 0;
         for (unsigned j = 0; j < nNodes; ++j) {
             if (i != j) {
+                // nonLeafs and big nodes have a bigger repelling "charge" than small nodes (big and small relate to the radius metric)
+                double repulsionBoost = (!nodes[j].movable) ? nodes[j].entity->normalizedData[Rt][controller.radiusMetricIndex] : 0.5;
                 double dist = nodes[i].position.euclidianDistance(nodes[j].position);
-                nodes[i].netForce += (nodes[i].position - nodes[j].position)
-                                     * (REPULSION / (dist*dist));
+                // Normalize repulsion vector and scale it by the distance between nodes
+                nodes[i].netForce += normalize(nodes[i].position - nodes[j].position)
+                                     * ((REPULSION * repulsionBoost) / (dist * dist));
             }
         }
     }
 
     // Compute attraction
     for (unsigned i = 0; i < nEdges; ++i) {
-        pair<Node*, Node *> edge = adjacencyList[i];
+        pair<Node *, Node *> edge = adjacencyList[i];
         Node *nodeA = edge.first;
         Node *nodeB = edge.second;
 
@@ -183,10 +188,18 @@ void HierarchicalGraph::updatePositions(unsigned Rt, double animationStep) {
         }
     }
 
+    // Simulates momentum in the system
     for (unsigned i = 0; i < nNonLeafs + 1; ++i) {
         nodes[i].velocity = nodes[i].velocity * 0.3 + nodes[i].netForce * 0.7;
         nodes[i].position += (nodes[i].velocity);
     }
+}
+
+Point HierarchicalGraph::normalize(Point vector) {
+
+    double length = Point(0, 0).euclidianDistance(vector);
+    return vector / length;
+
 }
 
 
