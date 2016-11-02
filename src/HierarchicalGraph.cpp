@@ -37,7 +37,7 @@ void HierarchicalGraph::buildGraph() {
     }
 
     // Compute root position
-    nodes[0].position = nodes[0].position / (nNonLeafs - 1); // Avoid putting on top of entity
+    nodes[0].position = nodes[0].position / (nNonLeafs - 1);
 
     // Add entities to nodes
     for (unsigned i = 0; i < entityData->entities.size(); ++i) {
