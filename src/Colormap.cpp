@@ -26,8 +26,30 @@ Color getColor(int colormap, BaseEntity *b, unsigned Rt) {
             break;
         case (int) COLORMAP::divergent:
             if (Rt > 0) {
-                double pValue = ((Entity *) b)->normalizedData[Rt - 1][cMetric];
-                c = divergentColormap(value - pValue);
+                if (b->isEntity()) {
+                    double pValue = ((Entity *) b)->normalizedData[Rt - 1][cMetric];
+                    c = divergentColormap(value - pValue);
+                }
+                else {
+                    // Lambda function to get value of children
+                    function<void(Package *, double *total)> f;
+                    f = [&](Package *p, double *total) {
+                        if (p == NULL)
+                            return;
+                        else {
+                            for (auto c : p->childrenVector)
+                                f(&c, total);
+
+                            for (auto e : p->entityVector) {
+                                *total += e.normalizedData[Rt][cMetric] - e.normalizedData[Rt-1][cMetric];
+                            }
+                        }
+                    };
+                    double sum = 0.0;
+                    f((Package *) b, &sum);
+                    double mean = sum/((Package *) b)->numberOfEntities;
+                    c = divergentColormap(mean);
+                }
             }
             break;
         default:
