@@ -431,12 +431,16 @@ void ProjectionCanvas::displayColorbar() {
         stringstream streamMin, streamMax;
         streamMin << fixed << setprecision(2) << colorMinMetricValue;
         min = streamMin.str();
-        min.replace(min.find(".00"), 3, "");
+        if (min.find(".00") != std::string::npos) {
+            min.replace(min.find(".00"), 3, "");
+        }
 
         streamMax.str("");
         streamMax << fixed << setprecision(2) << colorMaxMetricValue;
         max = streamMax.str();
-        max.replace(max.find(".00"), 3, "");
+        if (max.find(".00") != std::string::npos) {
+            max.replace(max.find(".00"), 3, "");
+        }
     } else if (controller.colormapIndex == (int) COLORMAP::divergent) {
         max = "0.5";
         min = "-0.5";
