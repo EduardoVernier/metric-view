@@ -262,7 +262,7 @@ void EntityData::updateSelectedEntities() {
     for (Entity *entity : selected) {
         double metricMean = 0.0;
         for (unsigned i = 0; i < nRevisions; ++i) {
-            metricMean += entity->data[i][controller.colorMetricIndex];
+            metricMean += entity->data[i][controller.evolutionMetricIndex];
         }
 
         pair<double, Entity *> selectedPair = std::make_pair(metricMean / nRevisions, entity);

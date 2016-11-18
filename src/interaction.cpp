@@ -33,7 +33,7 @@ void initializeUI() {
 
 
     glui->add_statictext("Evolution View Metric");
-    GLUI_Listbox *streamLB = glui->add_listbox("", &controller.evolutionMetricIndex, STREAMMETRIC_LB);
+    GLUI_Listbox *streamLB = glui->add_listbox("", &controller.evolutionMetricIndex, STREAMMETRIC_LB, controlCB);
     for (unsigned i = 0; i < entityData->metricVector.size(); ++i) {
         colorLB->add_item(i, entityData->metricVector[i].c_str());
         radiusLB->add_item(i, entityData->metricVector[i].c_str());
@@ -41,7 +41,7 @@ void initializeUI() {
     }
 
     glui->add_statictext("Evolution View");
-    GLUI_Listbox *evolutionLB = glui->add_listbox("", &controller.evolutionView, HIERARCHICAL_LB, controlCB);
+    GLUI_Listbox *evolutionLB = glui->add_listbox("", &controller.evolutionView, EVOLUTION_LB, controlCB);
     evolutionLB->add_item(HIDE, "None");
     evolutionLB->add_item(STREAMGRAPH, "Streamgraph");
     evolutionLB->add_item(SPECTROGRAPH, "Spectrograph");
@@ -81,6 +81,10 @@ void initializeUI() {
 void controlCB(int control) {
 
     switch (control) {
+        case STREAMMETRIC_LB:
+            entityData->updateSelectedEntities();
+            break;
+
         case ACCELERATION_LB:
             switch (controller.accelerationRatioIndex) {
                 case 0:
