@@ -428,6 +428,7 @@ void TreemapCanvas::linkEntities(double alpha, Entity *a, Entity *b) {
     glBegin(GL_LINE_STRIP);
     glVertex3d(aX, aY, 0);
     glVertex3d(bX, bY, 0);
+    glLineWidth(1);
     glEnd();
 }
 
