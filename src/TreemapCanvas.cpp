@@ -399,13 +399,23 @@ void TreemapCanvas::labelCells() {
 
 void TreemapCanvas::drawSimilar() {
 
-    unsigned nLinks = (unsigned) (entityData->similarityRank.size() * 0.01); // One percent most similar entities
+    unsigned nLinks = (unsigned) (entityData->similarityRank.size()); // One percent most similar entities
+
+    double maxSimilarity = DBL_MIN;
+    double minSimilarity = DBL_MAX;
     for (unsigned i = 0; i < nLinks; ++i) {
-        linkEntities(entityData->similarityRank[i].first, entityData->similarityRank[i].second);
+        double similarity = entityData->similarityRank[i].first;
+        maxSimilarity = similarity > maxSimilarity ? similarity : maxSimilarity;
+        minSimilarity = similarity < minSimilarity ? similarity : minSimilarity;
+    }
+
+    for (unsigned i = 0; i < nLinks; ++i) {
+        double alpha = (entityData->similarityRank[i].first - minSimilarity)/(maxSimilarity - minSimilarity);
+        linkEntities(alpha, entityData->similarityRank[i].second.first, entityData->similarityRank[i].second.second);
     }
 }
 
-void TreemapCanvas::linkEntities(Entity *a, Entity *b) {
+void TreemapCanvas::linkEntities(double alpha, Entity *a, Entity *b) {
 
     double aX = (a->getCoord(0) + a->getCoord(2)) / 2.0;
     double aY = (a->getCoord(1) + a->getCoord(3)) / 2.0;
@@ -413,10 +423,12 @@ void TreemapCanvas::linkEntities(Entity *a, Entity *b) {
     double bX = (b->getCoord(0) + b->getCoord(2)) / 2.0;
     double bY = (b->getCoord(1) + b->getCoord(3)) / 2.0;
 
-    glColor3d(0, 0, 0);
+    glColor4d(0, 0, 0, alpha);
+    glLineWidth(2);
     glBegin(GL_LINE_STRIP);
     glVertex3d(aX, aY, 0);
     glVertex3d(bX, bY, 0);
+    glLineWidth(1);
     glEnd();
 }
 

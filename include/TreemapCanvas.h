@@ -36,4 +36,6 @@ private:
 	void drawSimilar();
 
 	void linkEntities(Entity *a, Entity *b);
+
+    void linkEntities(double dist, Entity *a, Entity *b);
 };

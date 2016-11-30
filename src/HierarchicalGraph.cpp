@@ -140,7 +140,7 @@ void HierarchicalGraph::drawNonLeafNode(Point point, Color color) {
 void HierarchicalGraph::updatePositions(unsigned Rt, double animationStep) {
 
     double REPULSION = 500.0;
-    double ATTRACTION = 0.01;
+    double ATTRACTION = 0.0001;
 
     // Update fixed entities position
     for (unsigned i = 0; i < nEdges; ++i) {
@@ -179,12 +179,14 @@ void HierarchicalGraph::updatePositions(unsigned Rt, double animationStep) {
         Node *nodeA = edge.first;
         Node *nodeB = edge.second;
 
+        double dist = nodeA->position.euclidianDistance(nodeB->position);
+
         if (nodeA->movable) {
-            nodeA->netForce += (nodeB->position - nodeA->position) * ATTRACTION;
+            nodeA->netForce += (nodeB->position - nodeA->position) * ATTRACTION * dist;
         }
 
         if (nodeB->movable) {
-            nodeB->netForce += (nodeA->position - nodeB->position) * ATTRACTION;
+            nodeB->netForce += (nodeA->position - nodeB->position) * ATTRACTION * dist;
         }
     }
 

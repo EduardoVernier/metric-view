@@ -86,13 +86,15 @@ void StreamgraphCanvas::drawCanvas(unsigned Rt, double animationStep) {
     }
 
     // Draw lines
-    for (unsigned i = 0; i < entityData->selected.size() + 1; ++i) {
-        glColor3f(0, 0, 0);
-        glBegin(GL_LINE_STRIP);
-        for (unsigned revision = 0; revision < entityData->nRevisions; ++revision) {
-            glVertex3d(revision * cellWidth, +yPos[revision][i], 0);
+    if (entityData->selected.size() < 15) {
+        for (unsigned i = 0; i < entityData->selected.size() + 1; ++i) {
+            glColor3f(0, 0, 0);
+            glBegin(GL_LINE_STRIP);
+            for (unsigned revision = 0; revision < entityData->nRevisions; ++revision) {
+                glVertex3d(revision * cellWidth, +yPos[revision][i], 0);
+            }
+            glEnd();
         }
-        glEnd();
     }
 
     // Redraw lines with highlight

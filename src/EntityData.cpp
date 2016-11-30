@@ -262,7 +262,7 @@ void EntityData::updateSelectedEntities() {
     for (Entity *entity : selected) {
         double metricMean = 0.0;
         for (unsigned i = 0; i < nRevisions; ++i) {
-            metricMean += entity->data[i][controller.colorMetricIndex];
+            metricMean += entity->data[i][controller.evolutionMetricIndex];
         }
 
         pair<double, Entity *> selectedPair = std::make_pair(metricMean / nRevisions, entity);
@@ -290,9 +290,11 @@ void EntityData::computeMostSimilarPairs(unsigned Rt) {
         }
     }
 
-    // Fill a sorted vector with most similar entities on first indexes
+    // Fill a sorted vector with 1% most similar entities on first indexes
     similarityRank.clear();
-    for (auto it = multimap.begin(); it != multimap.end(); ++it) {
-        similarityRank.push_back(make_pair((*it).second.first, (*it).second.second));
+    int i = 0;
+    for (auto it = multimap.begin(); i < 0.01*multimap.size() ; ++it) {
+        similarityRank.push_back(make_pair((*it).first, make_pair((*it).second.first, (*it).second.second)));
+        ++i;
     }
 }
